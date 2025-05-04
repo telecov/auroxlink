@@ -38,7 +38,7 @@
 
 ```
 
-👉 [Ver INSTALL.md](INSTALL.md)
+👉 [Ver INSTALL.md](INSTALL.md) 
 
 - Opcional: bot de Telegram y clave de bot
 
