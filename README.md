@@ -43,7 +43,7 @@
 - Opcional: bot de Telegram y clave de bot
 
 ## 📦 Versión actual
-- v1.4 – Primera versión estable de AuroxLink
+- v1.5 – Primera versión estable de AuroxLink
 - Ver Release →
 
 ## 📝 Log
