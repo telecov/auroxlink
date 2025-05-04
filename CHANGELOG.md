@@ -1,6 +1,6 @@
 # CHANGELOG – AUROXLINK
 
-## v1.4 – Carrier On (2025-05-02)
+## v1.5 – Carrier On (2025-05-04)
 
 > “AUROXLINK está al aire. Y llegó para quedarse.”
 
@@ -20,3 +20,5 @@
 - Fecha y hora formateadas correctamente en conexiones activas
 - Separación visual y estilo más claro para cada tarjeta
 - Ajustes de seguridad en sesiones y rutas protegidas
+- Ajuste de lectura de graficos diarios e historicos
+- bugs de seguridad
