@@ -52,7 +52,8 @@
 
 ## ✨ Créditos
 - Autor principal:
-- 📡 Román – CA2RDP
+- 📡 [Román – CA2RDP](https://www.qrz.com/db/CA2RDP)
 
 ## Agradecimientos especiales:
-🔐 [Esteban - CA3EUO](https://www.qrz.com/db/CA3EUO) – Auditoría de seguridad y desarrollo.
+– Auditoría de seguridad y desarrollo.
+- 🔐 [Esteban - CA3EUO](https://www.qrz.com/db/CA3EUO) 
