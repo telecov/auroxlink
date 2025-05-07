@@ -195,11 +195,11 @@
                 <!-- Contenido -->
 
                 <!-- ALERTAS -->
-                <?php if ($guardado_ok): ?><div class="alert alert-success">✅ Personalización guardada correctamente.</div><?php endif; ?>
-                <?php if ($guardado_ip): ?><div class="alert alert-info">✅ IP configurada y aplicada correctamente.</div><?php endif; ?>
-                <?php if ($guardado_wifi): ?><div class="alert alert-info">📶 WiFi conectado exitosamente.</div><?php endif; ?>
-                <?php if ($error_red): ?><div class="alert alert-danger"><?= $error_red ?></div><?php endif; ?>
-                <?php if (isset($message)): ?><div class="alert alert-warning"><?= $message ?></div><?php endif; ?>
+                <?php if ($guardado_ok): ?><div class="alert alert-success mt-2">✅ Personalización guardada correctamente.</div><?php endif; ?>
+                <?php if ($guardado_ip): ?><div class="alert alert-info mt-2">✅ IP configurada y aplicada correctamente.</div><?php endif; ?>
+                <?php if ($guardado_wifi): ?><div class="alert alert-info mt-2">📶 WiFi conectado exitosamente.</div><?php endif; ?>
+                <?php if ($error_red): ?><div class="alert alert-danger mt-2"><?= $error_red ?></div><?php endif; ?>
+                <?php if (isset($message)): ?><div class="alert alert-warning mt-2"><?= $message ?></div><?php endif; ?>
 
                 <div class="row mt-3">
                     <div class="col-md-6">
