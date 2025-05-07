@@ -152,7 +152,12 @@ lsb_release -a			-- REVISAR VERSION DE LINUX
 - crea un canal o agraga tu bot como admin al grupo Telegram
 - buscar el ID del canal o grupo a utilizar
 	https://api.telegram.org/bot<token-de-telegram->/getUpdates
+### 8. Personalizacion
 
+- imagen debes subirla en 1500 px x 150 px
+- debe estar en formato .png
+- debes subirla con el nombre ----->>>>  auroxlink_banner.png
+- puede ser cualquier imagen personalizada a tu antojo pero debe ser subida con ese nombre.
 
 🧯 Soporte
 Cualquier duda o aporte, estare agradecido de tu feedback - Román (CA2RDP)
