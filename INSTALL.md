@@ -34,6 +34,7 @@ sudo apt update
 sudo apt install apache2 -y
 sudo apt install php libapache2-mod-php -y
 sudo apt install network-manager alsa-utils -y
+sudo apt install git -y
 ```
 ### 2. Instalar SVXlink Server  (SvxLink v1.7.0 Copyright (C) 2003-2019 Tobias Blomberg / SM0SVX)
 ```bash
