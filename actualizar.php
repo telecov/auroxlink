@@ -1,8 +1,11 @@
 <?php
-// Seguridad básica: solo ejecutar desde localhost
-if ($_SERVER['REMOTE_ADDR'] !== '127.0.0.1' && $_SERVER['REMOTE_ADDR'] !== '::1') {
+// Seguridad básica: solo ejecutar desde una red local tipica
+<?php
+$ip = $_SERVER['REMOTE_ADDR'];
+
+if (!preg_match('/^(127\.0\.0\.1|::1|192\.168\.|10\.)/', $ip)) {
     http_response_code(403);
-    echo "Acceso denegado.";
+    echo "Acceso denegado para IP: $ip";
     exit;
 }
 
