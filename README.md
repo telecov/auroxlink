@@ -44,7 +44,7 @@
 
 ## 📦 Versión actual
 - v1.5 – Primera versión estable de AuroxLink
-- Ver Release →
+- Ver Release → [AUROXLINK v1.6](https://github.com/telecov/auroxlink/releases/tag/v1.6)
 
 ## 📝 Log
 
