@@ -7,9 +7,11 @@ Este documento explica cómo instalar **AuroxLink**, el sistema de control web p
 ## 🖥️ Requisitos
 
 ### Hardware recomendado:
-- Raspberry Pi 3, 4, Zero 2 W
-- Conectividad a Internet (Ethernet o WiFi)
-- BANANA PI M2 ZERO EN PRUEBAS<------
+AUROXLINK ha sido probado y funciona de forma óptima en:
+
+- **Distribución recomendada:** Debian 11+
+- **Entornos compatibles:** Raspberry Pi OS, Ubuntu Server, Armbian
+- **Equipo recomendado:** Computador o mini-servidor con Linux
 
 ### Software necesario:
 - Sistema operativo basado en Debian (Raspbian, debian,...)
