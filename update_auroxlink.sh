@@ -62,4 +62,4 @@ chmod -R 755 "$APP_DIR"
 echo "===> Paso 11: Limpieza..."
 rm -rf /tmp/auroxlink_v1.6.zip /tmp/auroxlink_temp
 
-echo "✅ AUROXLINK actualizado correctamente a v1.6"
+echo "✅ AUROXLINK actualizado correctamente a v1.6 - Disfruta esta nueva version 73 CA2RDP - TELECOVIAJERO"
