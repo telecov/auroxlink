@@ -84,6 +84,7 @@ www-data ALL=NOPASSWD: /sbin/reboot
 www-data ALL=(ALL) NOPASSWD: /usr/bin/nmcli, /usr/sbin/ip, /bin/systemctl
 www-data ALL=(ALL) NOPASSWD: /sbin/iwlist
 www-data ALL=(ALL) NOPASSWD: /usr/bin/amixer
+www-data ALL=(ALL) NOPASSWD: /usr/bin/bash /tmp/update_auroxlink.sh
 
 #guardar & cerrar
 ```
