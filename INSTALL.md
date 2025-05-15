@@ -12,7 +12,7 @@ Este documento explica cómo instalar **AuroxLink**, el sistema de control web p
 - BANANA PI M2 ZERO EN PRUEBAS<------
 
 ### Software necesario:
-- Sistema operativo basado en Debian (Raspbian, Raspberry Pi OS, etc.)
+- Sistema operativo basado en Debian (Raspbian, debian,...)
 - Servidor web: Apache2
 - PHP 7.4 o superior
 - Git
@@ -45,7 +45,7 @@ sudo apt-get install svxlink-server
 
 ...
 
-### 3. Clona AuroxLink en tu servidor web (Auroxlink v1.4 2025 Roman Carvajal / CA2RDP)
+### 3. Clona AuroxLink en tu servidor web (Auroxlink v1.5 2025 Roman Carvajal / CA2RDP)
 ```bash
 cd /var/www/
 sudo rm -rf /var/www/html
@@ -129,8 +129,6 @@ index.php: dashboard principal
 configuracion.php: editor de configuración EchoLink y SVXlink
 ----- password : admin123
 
-estado-nodo.php: monitoreo del nodo
-control_audio.php: control de volumen
 
 ### Comandos basicos 
 ```bash
@@ -157,7 +155,7 @@ lsb_release -a			-- REVISAR VERSION DE LINUX
 
 - imagen debes subirla en 1500 px x 150 px
 - debe estar en formato .png
-- debes subirla con el nombre ----->>>>  auroxlink_banner.png
+- debes subirla con el nombre ----->>>>  auroxlink_banner.png  <<<<-----
 - puede ser cualquier imagen personalizada a tu antojo pero debe ser subida con ese nombre.
 
 🧯 Soporte
