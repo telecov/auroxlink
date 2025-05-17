@@ -13,7 +13,7 @@ PRESERVAR=(
 )
 
 # Obtener última versión desde GitHub
-LATEST_TAG=$(curl -s https://api.github.com/repos/telecov/auroxlink/releases/latest | grep '"tag_name":' | cut -d '"' -f4)
+LATEST_TAG=$(curl -s -H "Accept: application/vnd.github+json" -H "User-Agent: AuroxlinkUpdater" https://api.github.com/repos/telecov/auroxlink/releases/latest | grep '"tag_name":' | cut -d '"' -f4)
 VERSION_CLEAN=$(echo "$LATEST_TAG" | sed 's/^v//')
 ZIP_NAME="auroxlink_${VERSION_CLEAN}.zip"
 ZIP_URL="https://github.com/telecov/auroxlink/releases/download/$LATEST_TAG/$ZIP_NAME"
