@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "===> [AUROXLINK] Iniciando actualización automática a v1.6..."
+echo "===> [AUROXLINK] Iniciando actualización dinámica..."
 
 APP_DIR="/var/www/html"
 BACKUP_DIR="/var/www/backup_auroxlink_$(date +%Y%m%d_%H%M)"
@@ -12,6 +12,14 @@ PRESERVAR=(
   "img/auroxlink_banner.png"
 )
 
+# Obtener última versión desde GitHub
+LATEST_TAG=$(curl -s https://api.github.com/repos/telecov/auroxlink/releases/latest | grep '"tag_name":' | cut -d '"' -f4)
+VERSION_CLEAN=$(echo "$LATEST_TAG" | sed 's/^v//')
+ZIP_NAME="auroxlink_${VERSION_CLEAN}.zip"
+ZIP_URL="https://github.com/telecov/auroxlink/releases/download/$LATEST_TAG/$ZIP_NAME"
+
+echo "===> Última versión detectada: $LATEST_TAG"
+
 echo "===> Paso 1: Respaldando en $BACKUP_DIR"
 mkdir -p "$BACKUP_DIR"
 cp -r "$APP_DIR"/* "$BACKUP_DIR"
@@ -20,13 +28,13 @@ echo "===> Paso 2: Instalando php8.2-curl"
 sudo apt update -y
 sudo apt install -y php8.2-curl
 
-echo "===> Paso 3: Descargando AUROXLINK v1.6"
+echo "===> Paso 3: Descargando AUROXLINK $LATEST_TAG"
 cd /tmp || exit 1
-wget https://github.com/telecov/auroxlink/releases/download/v1.6/auroxlink_v1.6.zip -O auroxlink_v1.6.zip
+wget "$ZIP_URL" -O "$ZIP_NAME"
 
 echo "===> Paso 4: Descomprimiendo en carpeta temporal..."
 mkdir -p /tmp/auroxlink_temp
-unzip -o auroxlink_v1.6.zip -d /tmp/auroxlink_temp
+unzip -o "$ZIP_NAME" -d /tmp/auroxlink_temp
 
 echo "===> Paso 5: Copiando nueva versión a $APP_DIR"
 cp -r /tmp/auroxlink_temp/* "$APP_DIR"
@@ -60,6 +68,8 @@ chown -R www-data:www-data "$APP_DIR"
 chmod -R 755 "$APP_DIR"
 
 echo "===> Paso 11: Limpieza..."
-rm -rf /tmp/auroxlink_v1.6.zip /tmp/auroxlink_temp
+rm -rf /tmp/"$ZIP_NAME" /tmp/auroxlink_temp
 
-echo "✅ AUROXLINK actualizado correctamente a v1.6 - Disfruta esta nueva version 73 CA2RDP - TELECOVIAJERO"
+echo "$VERSION_CLEAN" > "$APP_DIR/version.txt"
+
+echo "✅ AUROXLINK actualizado correctamente a $VERSION_CLEAN - 73 de TELECOVIAJERO"
