@@ -12,8 +12,16 @@ PRESERVAR=(
   "img/auroxlink_banner.png"
 )
 
-# Obtener última versión desde GitHub
+# Paso 0: Obtener la última versión correctamente desde GitHub
 LATEST_TAG=$(curl -s -H "Accept: application/vnd.github+json" -H "User-Agent: AuroxlinkUpdater" https://api.github.com/repos/telecov/auroxlink/releases/latest | grep '"tag_name":' | cut -d '"' -f4)
+
+# Validar que se obtuvo algo
+if [ -z "$LATEST_TAG" ]; then
+  echo "❌ ERROR: No se pudo obtener la última versión desde GitHub."
+  exit 1
+fi
+
+# Limpiar el prefijo 'v' para nombre del zip
 VERSION_CLEAN=$(echo "$LATEST_TAG" | sed 's/^v//')
 ZIP_NAME="auroxlink_${VERSION_CLEAN}.zip"
 ZIP_URL="https://github.com/telecov/auroxlink/releases/download/$LATEST_TAG/$ZIP_NAME"
