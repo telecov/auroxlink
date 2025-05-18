@@ -22,7 +22,7 @@ sudo apt install -y php8.2-curl
 
 echo "===> Paso 3: Descargando AUROXLINK v1.6.1"
 cd /tmp || exit 1
-wget https://github.com/telecov/auroxlink/releases/download/v1.6/auroxlink_v1.6.1.zip -O auroxlink_v1.6.1.zip
+wget https://github.com/telecov/auroxlink/releases/download/v1.6.1/auroxlink_v1.6.1.zip -O auroxlink_v1.6.1.zip
 
 echo "===> Paso 4: Descomprimiendo en carpeta temporal..."
 mkdir -p /tmp/auroxlink_temp
