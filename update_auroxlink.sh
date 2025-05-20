@@ -7,7 +7,7 @@ BACKUP_DIR="/var/www/backup_auroxlink_$(date +%Y%m%d_%H%M)"
 
 PRESERVAR=(
   "telegram_config.json"
-  "estilo.json"
+  "estilos.json"
   "data/qsls.json"
   "img/auroxlink_banner.png"
 )
@@ -58,6 +58,24 @@ sudo chmod 777 /tmp/auroxlink_logs
 echo "===> Paso 10: Corrigiendo permisos..."
 chown -R www-data:www-data "$APP_DIR"
 chmod -R 755 "$APP_DIR"
+
+echo "===> Paso 10.1: Agregando permiso sudo para alsactl en archivo existente..."
+SUDOERS_FILE="/etc/sudoers.d/99-www-data-svxlink"
+LINEA="www-data ALL=NOPASSWD: /usr/bin/alsactl"
+
+if [ ! -f "$SUDOERS_FILE" ]; then
+  sudo touch "$SUDOERS_FILE"
+  sudo chmod 440 "$SUDOERS_FILE"
+  echo "  - Archivo sudoers creado."
+fi
+
+if ! grep -Fxq "$LINEA" "$SUDOERS_FILE"; then
+  echo "$LINEA" | sudo tee -a "$SUDOERS_FILE" > /dev/null
+  sudo chmod 440 "$SUDOERS_FILE"
+  echo "  - Permiso agregado correctamente."
+else
+  echo "  - Permiso ya existía. No se modifica."
+fi
 
 echo "===> Paso 11: Limpieza..."
 rm -rf /tmp/auroxlink_v1.6.1.zip /tmp/auroxlink_temp
