@@ -61,7 +61,7 @@ chmod -R 755 "$APP_DIR"
 
 echo "===> Paso 10.1: Agregando permiso sudo para alsactl en archivo existente..."
 SUDOERS_FILE="/etc/sudoers.d/99-www-data-svxlink"
-LINEA="www-data ALL=NOPASSWD: /usr/bin/alsactl"
+LINEA="www-data ALL=(ALL) NOPASSWD: /usr/bin/alsactl"
 
 if [ ! -f "$SUDOERS_FILE" ]; then
   sudo touch "$SUDOERS_FILE"
