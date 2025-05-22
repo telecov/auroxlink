@@ -118,7 +118,7 @@ sudo chmod 440 "$SUDOERS_FILE"
 echo "===> Paso 12: Activando tailscaled"
 sudo systemctl enable --now tailscaled
 
-# ===> Paso 13: Conexión VPN con clave
+# ===> Paso 13: Conexión VPN con clave o manual
 echo "===> Paso 13: Preparando clave VPN"
 sudo mkdir -p /etc/auroxlink
 sudo chown www-data:www-data /etc/auroxlink
@@ -128,7 +128,8 @@ if [ -f /etc/auroxlink/tailscale.key ]; then
   echo "  - Conectando VPN con authkey"
   sudo tailscale up --authkey=$(cat /etc/auroxlink/tailscale.key) --ssh --shields-up=false
 else
-  echo "⚠️ No se encontró clave Tailscale. Ejecuta 'sudo tailscale up' manualmente o guarda la clave en /etc/auroxlink/tailscale.key"
+  echo "⚠️ No se encontró clave Tailscale. Intentando conexión manual..."
+  sudo tailscale up --ssh || echo "⚠️ Autenticación manual requerida: ejecuta 'sudo tailscale up'"
 fi
 
 # ===> Paso 14: Limpieza
@@ -141,6 +142,9 @@ sudo systemctl daemon-reexec
 sudo systemctl daemon-reload
 sudo systemctl restart auroralink-monitor.service
 
+# ===> Paso 16: Verificar estado Apache
+echo "===> Paso 16: Verificando estado Apache"
+sudo systemctl status apache2 --no-pager
+
 # ===> Final
 echo "✅ AUROXLINK actualizado correctamente a la versión 1.6.2 - 73 de CA2RDP - TELECOVIAJERO"
-
