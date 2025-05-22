@@ -1,6 +1,7 @@
 #!/bin/bash
+set -e
 
-echo "===> [AUROXLINK] Iniciando actualización de nueva Version..."
+echo "===> [AUROXLINK] Iniciando actualización de nueva Versión..."
 
 APP_DIR="/var/www/html"
 BACKUP_DIR="/var/www/backup_auroxlink_$(date +%Y%m%d_%H%M)"
@@ -15,7 +16,6 @@ PRESERVAR=(
   "data/qsls.json"
   "img/auroxlink_banner.png"
   "img/admin.png"
-  
 )
 
 # ===> Paso 0: Determinar origen de ZIP
@@ -25,7 +25,7 @@ if [ -f "$ZIP_LOCAL" ]; then
 else
   echo "🌐 No se encontró ZIP en pendrive. Descargando desde GitHub..."
   wget "$GITHUB_URL" -O "$ZIP_TMP"
-  if [ ! -f "$ZIP_TMP" ]; then
+  if [ $? -ne 0 ] || [ ! -f "$ZIP_TMP" ]; then
     echo "❌ Error: No se pudo descargar el ZIP desde GitHub."
     exit 1
   fi
@@ -49,6 +49,10 @@ curl -fsSL https://tailscale.com/install.sh | sh
 echo "===> Paso 4: Descomprimiendo actualización"
 mkdir -p /tmp/auroxlink_temp
 unzip -o "$ZIP_TMP" -d /tmp/auroxlink_temp
+if [ $? -ne 0 ]; then
+  echo "❌ Error al descomprimir el archivo ZIP."
+  exit 1
+fi
 
 # ===> Paso 5: Copiar archivos
 echo "===> Paso 5: Instalando nueva versión"
@@ -63,7 +67,7 @@ for archivo in "${PRESERVAR[@]}"; do
   fi
 done
 
-# ===> Paso 7: Cron
+# ===> Paso 7: Configurar cron
 echo "===> Paso 7: Configurando cron"
 CRON_ENTRY="00 12 * * * /usr/bin/php /var/www/html/send_daily_status.php >> /tmp/estado_diario_cron.log 2>&1"
 (crontab -l 2>/dev/null | grep -F "$CRON_ENTRY") || (
@@ -77,17 +81,18 @@ sudo systemctl enable cron.service
 sudo systemctl start cron.service
 sudo systemctl restart cron.service
 
-# ===> Paso 9: Logs
+# ===> Paso 9: Crear carpeta de logs
 echo "===> Paso 9: Carpeta logs"
 sudo mkdir -p /tmp/auroxlink_logs
 sudo chmod 777 /tmp/auroxlink_logs
 
-# ===> Paso 10: Permisos
+# ===> Paso 10: Permisos correctos
 echo "===> Paso 10: Corrigiendo permisos"
 sudo chown -R www-data:www-data "$APP_DIR"
-sudo chmod -R 755 "$APP_DIR"
+sudo find "$APP_DIR" -type d -exec chmod 755 {} \;
+sudo find "$APP_DIR" -type f -exec chmod 644 {} \;
 
-# ===> Paso 11: sudoers
+# ===> Paso 11: sudoers para servicios necesarios
 echo "===> Paso 11: sudoers para servicios necesarios"
 SUDOERS_FILE="/etc/sudoers.d/99-www-data-svxlink"
 PERMISOS=(
@@ -109,11 +114,11 @@ for permiso in "${PERMISOS[@]}"; do
 done
 sudo chmod 440 "$SUDOERS_FILE"
 
-# ===> Paso 12: Habilitar tailscale
+# ===> Paso 12: Activar tailscaled
 echo "===> Paso 12: Activando tailscaled"
 sudo systemctl enable --now tailscaled
 
-# ===> Paso 13: Autenticación VPN
+# ===> Paso 13: Conexión VPN con clave
 echo "===> Paso 13: Preparando clave VPN"
 sudo mkdir -p /etc/auroxlink
 sudo chown www-data:www-data /etc/auroxlink
@@ -130,5 +135,12 @@ fi
 echo "===> Paso 14: Limpieza temporal"
 rm -rf /tmp/auroxlink_temp "$ZIP_TMP"
 
-echo "✅ AUROXLINK actualizado correctamente a la version 1.6.2 - 73 de CA2RDP - TELECOVIAJERO"
+# ===> Paso 15: Reiniciar servicios AUROXLINK
+echo "===> Paso 15: Reiniciando servicios AUROXLINK"
+sudo systemctl daemon-reexec
+sudo systemctl daemon-reload
+sudo systemctl restart auroralink-monitor.service
+
+# ===> Final
+echo "✅ AUROXLINK actualizado correctamente a la versión 1.6.2 - 73 de CA2RDP - TELECOVIAJERO"
 
