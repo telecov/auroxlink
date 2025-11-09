@@ -16,7 +16,7 @@ AUROXLINK ha sido probado y funciona de forma óptima en:
 ### Software necesario:
 - Sistema operativo basado en Debian (Raspbian, debian,...)
 - Servidor web: Apache2
-- PHP 7.4 o superior
+- PHP 8.2 o superior
 - Git
 - SVXLink instalado y funcionando
 - NetworkManager nmcli
@@ -173,4 +173,5 @@ Ve al repositorio en GitHub (por ejemplo: https://github.com/telecov/auroxlink)
 -Una descripción detallada del problema o idea
 
 - Haz clic en "Submit new issue"
+
 
