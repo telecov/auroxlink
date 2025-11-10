@@ -6,9 +6,9 @@ echo "===> [AUROXLINK] Iniciando actualización de nueva Versión..."
 APP_DIR="/var/www/html"
 BACKUP_DIR="/var/www/backup_auroxlink_$(date +%Y%m%d_%H%M)"
 PENDRIVE_DIR="/mnt/usb"
-ZIP_LOCAL="$PENDRIVE_DIR/auroxlink_v1.6.2.zip"
-ZIP_TMP="/tmp/auroxlink_v1.6.2.zip"
-GITHUB_URL="https://github.com/telecov/auroxlink/releases/download/v1.6.2/auroxlink_v1.6.2.zip"
+ZIP_LOCAL="$PENDRIVE_DIR/auroxlink_v1.6.3.zip"
+ZIP_TMP="/tmp/auroxlink_v1.6.3.zip"
+GITHUB_URL="https://github.com/telecov/auroxlink/releases/download/v1.6.3/auroxlink_v1.6.3.zip"
 
 PRESERVAR=(
   "telegram_config.json"
@@ -147,4 +147,4 @@ echo "===> Paso 16: Verificando estado Apache"
 sudo systemctl status apache2 --no-pager
 
 # ===> Final
-echo "✅ AUROXLINK actualizado correctamente a la versión 1.6.2 - 73 de CA2RDP - TELECOVIAJERO"
+echo "✅ AUROXLINK actualizado correctamente a la versión 1.6.3 - 73 de CA2RDP - TELECOVIAJERO"
