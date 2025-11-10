@@ -1,7 +1,10 @@
 # 🌌 Auroxlink - Sistema de Control para SVXLink y EchoLink
 
 **AuroxLink** es un sistema web avanzado para monitoreo, gestión y personalización de nodos SVXLink. Desarrollado desde cero por [CA2RDP - TELECOVIAJERO](https://youtube.com/@TelecoViajero), AuroxLink une tecnología, radioafición y pasion por el hobbie.
+
+ # Puedes Apoyar este proyecto de manera voluntaria
  
+ https://www.paypal.com/donate/?hosted_button_id=SRA7QC84FAV3A
 ---
 
 ## 🚀 Características principales
@@ -56,4 +59,5 @@
 
 ## Agradecimientos especiales:
 – Auditoría de seguridad y desarrollo.
-- 🔐 [Esteban - CA3EUO](https://www.qrz.com/db/CA3EUO) 
+- 🔐 [Esteban - CA3EUO](https://www.qrz.com/db/CA3EUO)
+
