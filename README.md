@@ -8,7 +8,6 @@
 ---
 
 ## Presentacion
-https://www.youtube.com/watch?v=Cia-4NrZDGo&t=3s
 
 [![](https://markdown-videos.deta.dev/youtube.com/Cia-4NrZDGo)](https://youtu.be/Cia-4NrZDGo)
 
