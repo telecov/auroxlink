@@ -128,10 +128,14 @@ Ahora puedes acceder a tu panel desde el navegador:
 http://IP-DE-TU-RASPBERRY/
 
 🔧 Archivos importantes
-index.php: dashboard principal
-configuracion.php: editor de configuración EchoLink y SVXlink
------ password : admin123
+index: dashboard principal
+configuracion: editor de configuración EchoLink y SVXlink
+personalizacion: editar de datos para personalizar tu AUROXLINK
 
+```bash
+password : admin123
+```
+en la pagina de configuracion, al inicio de la pagina encontraras un menu de ayuda, que te guiara en la correcta configuracion de tu dashboad
 
 ### Comandos basicos 
 ```bash
@@ -154,6 +158,7 @@ lsb_release -a			-- REVISAR VERSION DE LINUX
 - crea un canal o agraga tu bot como admin al grupo Telegram
 - buscar el ID del canal o grupo a utilizar
 	https://api.telegram.org/bot<token-de-telegram->/getUpdates
+
 ### 8. Personalizacion
 
 - imagen debes subirla en 1500 px x 150 px
@@ -173,5 +178,6 @@ Ve al repositorio en GitHub (por ejemplo: https://github.com/telecov/auroxlink)
 -Una descripción detallada del problema o idea
 
 - Haz clic en "Submit new issue"
+
 
 
