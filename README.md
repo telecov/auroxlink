@@ -7,10 +7,6 @@
 https://www.youtube.com/watch?v=Cia-4NrZDGo
 [![](https://markdown-videos.deta.dev/youtube.com/Cia-4NrZDGo)](https://youtu.be/Cia-4NrZDGo)
 
-
-# Puedes Apoyar este proyecto de manera voluntaria
- 
- https://www.paypal.com/donate/?hosted_button_id=SRA7QC84FAV3A
 ---
 
 ##
@@ -69,3 +65,7 @@ https://www.youtube.com/watch?v=Cia-4NrZDGo
 – Auditoría de seguridad y desarrollo.
 - 🔐 [Esteban - CA3EUO](https://www.qrz.com/db/CA3EUO)
 
+
+## Puedes Apoyar este proyecto de manera voluntaria
+ 
+ https://www.paypal.com/donate/?hosted_button_id=SRA7QC84FAV3A
