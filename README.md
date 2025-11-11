@@ -2,15 +2,16 @@
 
 **AuroxLink** es un sistema web avanzado para monitoreo, gestión y personalización de nodos SVXLink. Desarrollado desde cero por [CA2RDP - TELECOVIAJERO](https://youtube.com/@TelecoViajero), AuroxLink une tecnología, radioafición y pasion por el hobbie.
 
- # Puedes Apoyar este proyecto de manera voluntaria
- 
- https://www.paypal.com/donate/?hosted_button_id=SRA7QC84FAV3A
----
-
-## Presentacion de Auroxlink
+# Presentacion de Auroxlink
 
 https://www.youtube.com/watch?v=Cia-4NrZDGo
 [![](https://markdown-videos.deta.dev/youtube.com/Cia-4NrZDGo)](https://youtu.be/Cia-4NrZDGo)
+
+
+# Puedes Apoyar este proyecto de manera voluntaria
+ 
+ https://www.paypal.com/donate/?hosted_button_id=SRA7QC84FAV3A
+---
 
 ##
 
@@ -54,7 +55,7 @@ https://www.youtube.com/watch?v=Cia-4NrZDGo
 
 ## 📦 Versión actual
 - v1.5 – Primera versión estable de AuroxLink
-- Ver Release → [AUROXLINK v1.6.1](https://github.com/telecov/auroxlink/releases/tag/v1.6.1)
+- Ver Release Actual → [AUROXLINK v1.6.3](https://github.com/telecov/auroxlink/releases/tag/v1.6.3)
 
 ## 📝 Log
 
