@@ -7,6 +7,13 @@
  https://www.paypal.com/donate/?hosted_button_id=SRA7QC84FAV3A
 ---
 
+## Presentacion
+https://www.youtube.com/watch?v=Cia-4NrZDGo&t=3s
+
+[![](https://markdown-videos.deta.dev/https://www.youtube.com/watch?v=Cia-4NrZDGo&t=3s)](https://www.youtube.com/watch?v=Cia-4NrZDGo&t=3s)
+
+##
+
 ## 🚀 Características principales
 
 - 📡 **Dashboard en tiempo real** con información de conexiones, estado del nodo, tráfico de voz y estadísticas.
