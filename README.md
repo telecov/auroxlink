@@ -60,13 +60,21 @@ https://www.youtube.com/watch?v=Cia-4NrZDGo
 
 👉 [Ver cambios recientes](CHANGELOG.md)
 
-## ✨ Créditos
-- Autor principal:
-- 📡 [Román – CA2RDP](https://www.qrz.com/db/CA2RDP)
 
 ## Agradecimientos especiales:
 – Auditoría de seguridad y desarrollo.
 - 🔐 [Esteban - CA3EUO](https://www.qrz.com/db/CA3EUO)
+
+## 🧑‍💻 Autor
+
+CA2RDP - TelecoViajero
+Radioaficionado, desarrollador autodidacta y creador de contenidos digitales:
+
+# 🌐 GitHub: https://github.com/telecov
+# 🌐 QRZ: https://www.qrz.com/db/CA2RDP
+# 🔗 TikTok: https://tiktok.com/@telecoviajero
+# 🔗 Instagram: https://instagram.com/telecoviajero
+# 📺 YouTube: https://www.youtube.com/@Telecoviajero
 
 
 ## Puedes Apoyar este proyecto de manera voluntaria
