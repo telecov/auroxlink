@@ -55,7 +55,7 @@ https://www.youtube.com/watch?v=Cia-4NrZDGo
 
 ## 📝 Log
 
-👉 [Ver CHANGELOG.md](CHANGELOG.md)
+👉 [Ver cambios recientes](CHANGELOG.md)
 
 ## ✨ Créditos
 - Autor principal:
