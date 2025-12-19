@@ -2,6 +2,9 @@
 
 **AuroxLink** es un sistema web avanzado para monitoreo, gestión y personalización de nodos SVXLink. Desarrollado desde cero por [CA2RDP - TELECOVIAJERO](https://youtube.com/@TelecoViajero), AuroxLink une tecnología, radioafición y pasion por el hobbie.
 
+## DASHBOARD ![Dashboard AUROXLINK](img/dashboard.png)
+
+
 # Presentacion de Auroxlink
 
 https://www.youtube.com/watch?v=Cia-4NrZDGo
