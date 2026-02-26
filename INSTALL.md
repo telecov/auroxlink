@@ -74,9 +74,13 @@ sudo usermod -aG audio www-data
 sudo chown www-data:www-data /etc/svxlink/svxlink.conf
 sudo chown www-data:www-data /etc/svxlink/svxlink.d/ModuleEchoLink.conf
 ```
-sudo nano /etc/sudoers.d/99-www-data-svxlink
+```bash
 
-#escribir estos permisos 
+sudo nano /etc/sudoers.d/99-www-data-svxlink
+```
+
+# escribir estos permisos 
+
 ```bash
 www-data ALL=NOPASSWD: /bin/systemctl restart svxlink
 www-data ALL=NOPASSWD: /bin/systemctl start svxlink
@@ -87,12 +91,18 @@ www-data ALL=(ALL) NOPASSWD: /sbin/iwlist
 www-data ALL=(ALL) NOPASSWD: /usr/bin/amixer
 www-data ALL=(ALL) NOPASSWD: /usr/bin/bash /tmp/update_auroxlink.sh
 
-#guardar & cerrar
 ```
+# guardar & cerrar
+
+
 ### 5. Crear servicio log monitor para telegram
+
 ```bash
 sudo nano /etc/systemd/system/auroralink-monitor.service
+```
 #escribir esto
+
+```bash
 
 [Unit]
 Description=AuroraLink - Monitor de Conexiones SVXLink
@@ -179,6 +189,7 @@ Ve al repositorio en GitHub (por ejemplo: https://github.com/telecov/auroxlink)
 -Una descripción detallada del problema o idea
 
 - Haz clic en "Submit new issue"
+
 
 
 
