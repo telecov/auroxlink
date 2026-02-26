@@ -126,11 +126,14 @@ WantedBy=multi-user.target
 ### 6. Inicia Servicios
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl enable auroralink-monitor.service
 sudo systemctl enable svxlink
-
 sudo systemctl start svxlink
+sudo systemctl status svxlink
+```
+```bash
+sudo systemctl enable auroralink-monitor.service
 sudo systemctl start auroralink-monitor.service
+sudo systemctl status auroralink-monitor.service
 ```
 
 ✅ ¡AuroxLink está listo!
@@ -189,6 +192,7 @@ Ve al repositorio en GitHub (por ejemplo: https://github.com/telecov/auroxlink)
 -Una descripción detallada del problema o idea
 
 - Haz clic en "Submit new issue"
+
 
 
 
