@@ -73,10 +73,11 @@ sudo chmod -R 775 /var/www/html/
 sudo usermod -aG audio www-data
 sudo chown www-data:www-data /etc/svxlink/svxlink.conf
 sudo chown www-data:www-data /etc/svxlink/svxlink.d/ModuleEchoLink.conf
-
+```
 sudo nano /etc/sudoers.d/99-www-data-svxlink
-#escribir estos permisos 
 
+#escribir estos permisos 
+```bash
 www-data ALL=NOPASSWD: /bin/systemctl restart svxlink
 www-data ALL=NOPASSWD: /bin/systemctl start svxlink
 www-data ALL=NOPASSWD: /bin/systemctl stop svxlink
@@ -178,6 +179,7 @@ Ve al repositorio en GitHub (por ejemplo: https://github.com/telecov/auroxlink)
 -Una descripción detallada del problema o idea
 
 - Haz clic en "Submit new issue"
+
 
 
 
