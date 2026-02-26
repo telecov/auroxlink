@@ -36,10 +36,39 @@ echo "===> Paso 1: Respaldo en $BACKUP_DIR"
 mkdir -p "$BACKUP_DIR"
 cp -r "$APP_DIR"/* "$BACKUP_DIR"
 
-# ===> Paso 2: Dependencias
+# ===> Paso 2: Dependencias (AUTOMÁTICO PHP CURL SEGÚN VERSIÓN)
 echo "===> Paso 2: Instalando dependencias necesarias"
 sudo apt update -y
-sudo apt install -y php8.2-curl curl unzip
+
+# Detectar versión mayor.menor de PHP (ej: 8.4)
+PHP_MM="$(php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;')"
+PKG_VER="php${PHP_MM}-curl"
+
+echo "  - PHP detectado: ${PHP_MM}"
+echo "  - Intentando instalar: ${PKG_VER}"
+
+# Instalar el paquete específico si existe; si no, usar meta-paquete php-curl
+if apt-cache show "$PKG_VER" >/dev/null 2>&1; then
+  sudo apt install -y "$PKG_VER"
+else
+  echo "  - No existe ${PKG_VER} en repos. Usando meta-paquete php-curl..."
+  sudo apt install -y php-curl
+fi
+
+# Resto de dependencias necesarias
+sudo apt install -y curl unzip
+
+# Verificación rápida de curl en PHP
+if php -m | grep -qi '^curl$'; then
+  echo "  ✅ Extensión curl activa en PHP"
+else
+  echo "  ⚠️ curl NO aparece en 'php -m'. Se intentará reiniciar servicios web igual."
+fi
+
+# Reinicio seguro de servicios web (sin romper si no existen)
+sudo systemctl restart apache2 2>/dev/null || true
+sudo systemctl restart "php${PHP_MM}-fpm" 2>/dev/null || true
+sudo systemctl restart nginx 2>/dev/null || true
 
 # ===> Paso 3: Tailscale
 echo "===> Paso 3: Instalando Tailscale desde script oficial"
@@ -144,7 +173,7 @@ sudo systemctl restart auroralink-monitor.service
 
 # ===> Paso 16: Verificar estado Apache
 echo "===> Paso 16: Verificando estado Apache"
-sudo systemctl status apache2 --no-pager
+sudo systemctl status apache2 --no-pager || true
 
 # ===> Final
 echo "✅ AUROXLINK actualizado correctamente a la versión 1.6.3 - 73 de CA2RDP - TELECOVIAJERO"
