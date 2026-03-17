@@ -166,6 +166,9 @@ aplay -l 			-- LISTA DISPOSITIVOS CONECTADO
 lsusb 				-- LISTA DISPOSITIVOS USB 
 alsamixer			-- AJUSTAR AUDIO DE INTERFACE
 lsb_release -a			-- REVISAR VERSION DE LINUX
+sudo ls -l /dev/ttyUSB* -- REVISAR USB CONECTADO
+sudo dmesg | grep ttyUSB -- REVISAR USB CONECTADO
+
 ```
 ### 7. Configura Telegram (opcional)
 
