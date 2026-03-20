@@ -17,8 +17,10 @@
 
 <p align="center">
   <a href="https://youtu.be/Cia-4NrZDGo">
-    <img src="https://markdown-videos.deta.dev/youtube.com/Cia-4NrZDGo">
+    <img src="https://img.youtube.com/vi/Cia-4NrZDGo/hqdefault.jpg" width="800">
   </a>
+  <br>
+  <b>▶️ Watch AuroxLink presentation on YouTube</b>
 </p>
 
 ---
