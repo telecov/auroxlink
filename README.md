@@ -31,20 +31,6 @@
 ---
 
 
-## ❤️ Apoya el proyecto
-
-<p align="center">
-  <b>Si este proyecto te ha ayudado, apóyalo 🚀</b><br><br>
-
-  <a href="https://www.youtube.com/channel/UCekZOnVxrOoDuJlFCgGKi9A/join">
-    <img src="https://img.shields.io/badge/Unirme%20como%20miembro-YouTube-red?style=for-the-badge&logo=youtube">
-  </a>
-
-  <br><br>
-  <i>Gracias por apoyar el desarrollo de herramientas para la comunidad 📡</i>
-</p>
-
-
 👉 [Ver INSTALL.md](INSTALL.md) 
 
 - Opcional: bot de Telegram y clave de bot
@@ -72,3 +58,18 @@ Radioaficionado, desarrollador autodidacta y creador de contenidos digitales:
 * 🔗 TikTok: https://tiktok.com/@telecoviajero
 * 🔗 Instagram: https://instagram.com/telecoviajero
 * 📺 YouTube: https://www.youtube.com/@Telecoviajero
+
+## ❤️ Apoya el proyecto
+
+<p align="center">
+  <b>Si este proyecto te ha ayudado, apóyalo 🚀</b><br><br>
+
+  <a href="https://www.youtube.com/channel/UCekZOnVxrOoDuJlFCgGKi9A/join">
+    <img src="https://img.shields.io/badge/Unirme%20como%20miembro-YouTube-red?style=for-the-badge&logo=youtube">
+  </a>
+
+  <br><br>
+  <i>Gracias por apoyar el desarrollo de herramientas para la comunidad 📡</i>
+</p>
+
+
