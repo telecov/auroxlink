@@ -19,6 +19,8 @@
   <a href="https://youtu.be/Cia-4NrZDGo">
     <img src="https://img.youtube.com/vi/Cia-4NrZDGo/maxresdefault.jpg" width="800">
   </a>
+  <br>
+  <b>▶️ Ver presentación de AuroxLink en YouTube</b>
 </p>
 
 ---
