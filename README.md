@@ -30,23 +30,20 @@
 
 ---
 
-## 📁 Estructura del Proyecto
 
-```bash
-├── index.php                # Dashboard principal
-├── configuracion.php        # Configuración ModuleEchoLink
-├── estado-nodo.php          # Estado del nodo y conexión actual
-├── trafico-echolink.php     # Estadísticas de uso y tráfico
-├── control_audio.php        # Control de niveles ALSA
-├── red.php                  # Configuración IP y redes WiFi
-├── personalizacion.php      # Editor visual de AuroraLink
-├── telegram_alert.php       # Envío de alertas por Telegram
-├── includes/                # Funciones auxiliares y datos compartidos
-├── guardar_*.php            # Archivos de backend para guardar configuración
-├── style/                   # CSS personalizado
-└── logs/                    # Logs del sistema (opcional, ignorado en Git)
+## ❤️ Apoya el proyecto
 
-```
+<p align="center">
+  <b>Si este proyecto te ha ayudado, apóyalo 🚀</b><br><br>
+
+  <a href="https://www.youtube.com/channel/UCekZOnVxrOoDuJlFCgGKi9A/join">
+    <img src="https://img.shields.io/badge/Unirme%20como%20miembro-YouTube-red?style=for-the-badge&logo=youtube">
+  </a>
+
+  <br><br>
+  <i>Gracias por apoyar el desarrollo de herramientas para la comunidad 📡</i>
+</p>
+
 
 👉 [Ver INSTALL.md](INSTALL.md) 
 
@@ -75,7 +72,3 @@ Radioaficionado, desarrollador autodidacta y creador de contenidos digitales:
 * 🔗 TikTok: https://tiktok.com/@telecoviajero
 * 🔗 Instagram: https://instagram.com/telecoviajero
 * 📺 YouTube: https://www.youtube.com/@Telecoviajero
-
-
-## Te invito a suscribirte a miembros de youtube, tu aporte sin duda apoya a seguir creando contenido
-https://www.youtube.com/channel/UCekZOnVxrOoDuJlFCgGKi9A/join
