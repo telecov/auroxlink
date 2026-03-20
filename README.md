@@ -1,5 +1,7 @@
 # 🌌 AuroxLink – Sistema Web para SVXLink y EchoLink
 
+🇪🇸 Español | 🇺🇸 [English](README.EN.md)
+
 <p align="center">
   <img src="img/dashboard.png" alt="Dashboard AuroxLink" width="900">
 </p>
