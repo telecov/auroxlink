@@ -94,7 +94,8 @@ Diseñado para radioaficionados que buscan **control total de su nodo sin depend
 - **Versión estable:** v1.5  
 - **Última release:**  
 👉 https://github.com/telecov/auroxlink/releases/tag/v1.6.3
-👉 TRABAJANDO YA EN VERSION 1.7 CON IDIOMAS..
+
+👉 TRABAJANDO YA EN VERSION 1.7 CON IDIOMAS, PROXIMA ACTUALIZACION ATENTOS
 
 ---
 
