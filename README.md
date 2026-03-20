@@ -1,63 +1,128 @@
-# 🌌 Auroxlink - Sistema de Control para SVXLink y EchoLink
+# 🌌 AuroxLink – Sistema Web para SVXLink y EchoLink
 
-**AuroxLink** es un sistema web avanzado para monitoreo, gestión y personalización de nodos SVXLink. Desarrollado por [CA2RDP - TELECOVIAJERO](https://youtube.com/@TelecoViajero), AuroxLink une tecnología, radioafición y pasion por el hobbie.
+<p align="center">
+  <img src="img/dashboard.png" alt="Dashboard AuroxLink" width="900">
+</p>
 
-## DASHBOARD ![Dashboard AUROXLINK](img/dashboard.png)
-
-
-# Presentacion de Auroxlink
-
-[VIDEO DE YOUTUBE AUROXLINK](https://www.youtube.com/watch?v=Cia-4NrZDGo)
-[![](https://markdown-videos.deta.dev/youtube.com/Cia-4NrZDGo)](https://youtu.be/Cia-4NrZDGo)
-
----
-
-##
-
-## 🚀 Características principales
-
-- 📡 **Dashboard en tiempo real** con información de conexiones, estado del nodo, tráfico de voz y estadísticas.
-- 🎚️ **Control de audio ALSA via web** (volumen, ganancia, niveles, sin necesidad de usar alsamixer).
-- 🌐 **Configuración de red** (IP estática/dinámica, escaneo de WiFi y conexión directa desde el navegador).
-- 📊 **Gráficos interactivos** de transmisiones por hora, duración y actividad diaria.
-- ⚙️ **Editor web seguro** de los archivos `svxlink.conf` y `ModuleEchoLink.conf`.
-- 🔁 **Control de servicios SVXLink**: iniciar, detener o reiniciar desde el navegador.
-- 🔔 **Alertas por Telegram** al detectar conexiones o desconexiones de estaciones/nodos (opcional).
-- 🖼️ **Personalización visual**: cambia banners, colores y branding desde la interfaz.
-- 🔒 **Protección por contraseña** en secciones sensibles (configuración y control).
-- 🧪 **Módulo de pruebas y monitoreo** de logs en vivo.
-- 📱 **Modo escritorio y móvil** con diseño responsive adaptable.
+<p align="center">
+  <b>Monitoreo, control y personalización avanzada para nodos SVXLink</b><br>
+  Desarrollado con pasión por la radioafición 📡
+</p>
 
 ---
 
+## 🎥 Presentación del Proyecto
 
-👉 [Ver INSTALL.md](INSTALL.md) 
+<p align="center">
+  <a href="https://youtu.be/Cia-4NrZDGo">
+    <img src="https://markdown-videos.deta.dev/youtube.com/Cia-4NrZDGo">
+  </a>
+</p>
 
-- Opcional: bot de Telegram y clave de bot
+---
 
-## 📦 Versión actual
-- v1.5 – Primera versión estable de AuroxLink
-- Ver Release Actual → [AUROXLINK v1.6.3](https://github.com/telecov/auroxlink/releases/tag/v1.6.3)
+## 🚀 ¿Qué es AuroxLink?
 
-## 📝 Log
+**AuroxLink** es un sistema web avanzado que permite **controlar, monitorear y administrar nodos SVXLink y EchoLink** desde una interfaz moderna, intuitiva y accesible desde cualquier dispositivo.
 
-👉 [Ver cambios recientes](CHANGELOG.md)
+Diseñado para radioaficionados que buscan **control total de su nodo sin depender de la consola Linux**.
 
+---
 
-## Agradecimientos especiales:
-– Auditoría de seguridad y desarrollo.
-- 🔐 [Esteban - CA3EUO](https://www.qrz.com/db/CA3EUO)
+## ✨ Características principales
+
+### 📡 Monitoreo en tiempo real
+- Estado del nodo SVXLink
+- Conexiones activas
+- Tráfico de voz en vivo
+- Estadísticas operativas
+
+### 🎚️ Control de audio (ALSA)
+- Ajuste de volumen
+- Ganancia de entrada/salida
+- Control completo sin usar `alsamixer`
+
+### 🌐 Configuración de red
+- IP estática / dinámica
+- Escaneo de redes WiFi
+- Conexión directa desde la web
+
+### 📊 Estadísticas y gráficos
+- Actividad por hora
+- Duración de transmisiones
+- Uso diario del sistema
+
+### ⚙️ Administración avanzada
+- Editor seguro de:
+  - `svxlink.conf`
+  - `ModuleEchoLink.conf`
+- Control de servicios:
+  - ▶️ Iniciar
+  - ⏹️ Detener
+  - 🔄 Reiniciar SVXLink
+
+### 🔔 Integraciones
+- Alertas por Telegram (opcional)
+- Notificaciones de conexión/desconexión
+
+### 🎨 Personalización
+- Cambia banners e identidad visual
+- Ajusta colores y branding
+- Interfaz adaptable (responsive)
+
+### 🔒 Seguridad
+- Protección por contraseña
+- Control de accesos a configuración
+
+### 🧪 Herramientas extra
+- Logs en tiempo real
+- Módulo de pruebas
+
+---
+
+## 📦 Instalación
+
+👉 [Ver guía completa de instalación](INSTALL.md)
+
+**Opcional:**
+- Integración con bot de Telegram
+
+---
+
+## 🆕 Versión actual
+
+- **Versión estable:** v1.5  
+- **Última release:**  
+👉 https://github.com/telecov/auroxlink/releases/tag/v1.6.3
+
+---
+
+## 📝 Cambios y mejoras
+
+👉 [Ver CHANGELOG](CHANGELOG.md)
+
+---
+
+## 🙌 Agradecimientos
+
+- 🔐 **Esteban - CA3EUO**  
+  Auditoría de seguridad y apoyo en desarrollo  
+  https://www.qrz.com/db/CA3EUO
+
+---
 
 ## 🧑‍💻 Autor
 
-CA2RDP - TelecoViajero
-Radioaficionado, desarrollador autodidacta y creador de contenidos digitales:
+**CA2RDP – TelecoViajero**  
+Radioaficionado | Desarrollador | Creador de contenido
 
-* 🌐 GitHub: https://github.com/telecov
-* 🌐 QRZ: https://www.qrz.com/db/CA2RDP
-* 🔗 TikTok: https://tiktok.com/@telecoviajero
-* 🔗 Instagram: https://instagram.com/telecoviajero
-* 📺 YouTube: https://www.youtube.com/@Telecoviajero
+- 🌐 GitHub: https://github.com/telecov  
+- 🌐 QRZ: https://www.qrz.com/db/CA2RDP  
+- 📺 YouTube: https://www.youtube.com/@Telecoviajero  
+- 📱 TikTok: https://tiktok.com/@telecoviajero  
+- 📸 Instagram: https://instagram.com/telecoviajero  
+
+---
 
 ## ❤️ Apoya el proyecto
 
@@ -71,5 +136,11 @@ Radioaficionado, desarrollador autodidacta y creador de contenidos digitales:
   <br><br>
   <i>Gracias por apoyar el desarrollo de herramientas para la comunidad 📡</i>
 </p>
+
+---
+
+## ⭐ Si te gusta el proyecto
+
+No olvides dejar una ⭐ en GitHub y compartirlo con la comunidad.
 
 
