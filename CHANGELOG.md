@@ -21,12 +21,13 @@ El versionado sigue un esquema evolutivo basado en hitos funcionales del sistema
 Se agrega
 * Libro de guardia 
 * Idiomas INGLES - PORTUGUES - ESPAÑOL
-
-## Mencion especial a Fábio Guilherme PY2FGD  quien apoyo la traduccion a idioma PORTUGUES. muchas gracias amigo
-
 * Se cambia boton paypal por miebros youtube
 * Se agrega opcion de backup
 * Mejoras de seguridad
+
+
+## Mencion especial a Fábio Guilherme PY2FGD  quien apoyo la traduccion a idioma PORTUGUES. muchas gracias amigo
+
 
 ---
 
