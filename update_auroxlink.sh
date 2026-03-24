@@ -3,14 +3,16 @@ set -euo pipefail
 
 echo "===> [AUROXLINK] Iniciando actualización de nueva versión..."
 
+VERSION="1.7"
 APP_DIR="/var/www/html"
 BACKUP_DIR="/var/www/backup_auroxlink_$(date +%Y%m%d_%H%M)"
 PENDRIVE_DIR="/mnt/usb"
-ZIP_LOCAL="$PENDRIVE_DIR/auroxlink_v1.7.zip"
-ZIP_TMP="/tmp/auroxlink_v1.7.zip"
+ZIP_LOCAL="$PENDRIVE_DIR/auroxlink_v${VERSION}.zip"
+ZIP_TMP="/tmp/auroxlink_v${VERSION}.zip"
 TMP_DIR="/tmp/auroxlink_temp"
-GITHUB_URL="https://github.com/telecov/auroxlink/releases/download/v1.7/auroxlink_v1.7.zip"
+GITHUB_URL="https://github.com/telecov/auroxlink/releases/download/v${VERSION}/auroxlink_v${VERSION}.zip"
 SUDOERS_FILE="/etc/sudoers.d/99-www-data-svxlink"
+APT_TIMEOUT=180
 
 PRESERVAR=(
   "telegram_config.json"
@@ -25,8 +27,6 @@ PERMISOS=(
   "/usr/bin/tailscale"
   "/usr/sbin/tailscale"
 )
-
-APT_TIMEOUT=180
 
 log() {
   echo -e "$1"
@@ -67,93 +67,17 @@ apt_install_safe() {
   sudo apt-get install -y -o DPkg::Lock::Timeout="$APT_TIMEOUT" "$@"
 }
 
-detect_php_version() {
-  php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;' 2>/dev/null || echo "desconocida"
-}
-
-download_zip() {
-  if [ -f "$ZIP_LOCAL" ]; then
-    log "📦 Usando actualización desde PENDRIVE: $ZIP_LOCAL"
-    cp -f "$ZIP_LOCAL" "$ZIP_TMP"
-  else
-    log "🌐 No se encontró ZIP en pendrive. Descargando desde GitHub..."
-    wget -q --show-progress "$GITHUB_URL" -O "$ZIP_TMP"
+# ===> Paso 0: Determinar origen del ZIP
+if [ -f "$ZIP_LOCAL" ]; then
+  log "📦 Usando actualización desde PENDRIVE: $ZIP_LOCAL"
+  cp -f "$ZIP_LOCAL" "$ZIP_TMP"
+else
+  log "🌐 No se encontró ZIP en pendrive. Descargando desde GitHub..."
+  wget -q --show-progress "$GITHUB_URL" -O "$ZIP_TMP"
+  if [ ! -f "$ZIP_TMP" ] || [ ! -s "$ZIP_TMP" ]; then
+    fail "No se pudo descargar el ZIP desde GitHub."
   fi
-
-  [ -f "$ZIP_TMP" ] && [ -s "$ZIP_TMP" ] || fail "No se pudo obtener el ZIP de actualización."
-}
-
-restore_preserved_files() {
-  log "===> Paso 6: Restaurando archivos personalizados"
-  for archivo in "${PRESERVAR[@]}"; do
-    if [ -f "$BACKUP_DIR/$archivo" ]; then
-      mkdir -p "$(dirname "$APP_DIR/$archivo")"
-      cp -f "$BACKUP_DIR/$archivo" "$APP_DIR/$archivo"
-      log "  - Restaurado: $archivo"
-    else
-      log "  - No existía en backup: $archivo"
-    fi
-  done
-}
-
-setup_cron() {
-  log "===> Paso 7: Configurando cron"
-  local CRON_ENTRY="00 12 * * * /usr/bin/php /var/www/html/send_daily_status.php >> /tmp/estado_diario_cron.log 2>&1"
-
-  if crontab -l 2>/dev/null | grep -Fq "$CRON_ENTRY"; then
-    log "  - Entrada cron ya existe."
-  else
-    (crontab -l 2>/dev/null; echo "$CRON_ENTRY") | crontab -
-    log "  - Entrada cron agregada."
-  fi
-}
-
-setup_sudoers() {
-  log "===> Paso 11: sudoers para servicios necesarios"
-
-  sudo touch "$SUDOERS_FILE"
-
-  for permiso in "${PERMISOS[@]}"; do
-    local LINEA="www-data ALL=(ALL) NOPASSWD: $permiso"
-    if ! sudo grep -Fxq "$LINEA" "$SUDOERS_FILE" 2>/dev/null; then
-      echo "$LINEA" | sudo tee -a "$SUDOERS_FILE" >/dev/null
-      log "  - Permiso agregado: $permiso"
-    else
-      log "  - Permiso ya existía: $permiso"
-    fi
-  done
-
-  sudo chmod 440 "$SUDOERS_FILE"
-
-  if ! sudo visudo -cf "$SUDOERS_FILE" >/dev/null; then
-    fail "El archivo sudoers tiene un problema de sintaxis."
-  fi
-}
-
-restart_services() {
-  log "===> Paso 15: Reiniciando servicios AUROXLINK"
-  sudo systemctl daemon-reexec
-  sudo systemctl daemon-reload
-
-  if systemctl list-unit-files | grep -q "^auroralink-monitor.service"; then
-    sudo systemctl restart auroralink-monitor.service
-    log "  - auroralink-monitor.service reiniciado"
-  else
-    log "⚠️ auroralink-monitor.service no existe en este sistema. Se omite reinicio."
-  fi
-
-  log "===> Paso 16: Verificando estado Apache"
-  sudo systemctl restart apache2
-  sudo systemctl --no-pager --full status apache2 || true
-}
-
-cleanup_temp() {
-  log "===> Paso 14: Limpieza temporal"
-  rm -rf "$TMP_DIR" "$ZIP_TMP"
-}
-
-# ===> Paso 0: Obtener ZIP
-download_zip
+fi
 
 # ===> Paso 1: Respaldo
 log "===> Paso 1: Respaldo en $BACKUP_DIR"
@@ -163,9 +87,9 @@ cp -a "$APP_DIR"/. "$BACKUP_DIR"/
 # ===> Paso 2: Dependencias
 log "===> Paso 2: Instalando dependencias necesarias"
 apt_update_safe
-apt_install_safe php php-curl curl unzip wget ca-certificates lsb-release
+apt_install_safe php php-curl curl unzip wget ca-certificates lsb-release psmisc
 
-PHP_VERSION_INSTALADA="$(detect_php_version)"
+PHP_VERSION_INSTALADA=$(php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;' 2>/dev/null || echo "desconocida")
 log "  - PHP detectado: $PHP_VERSION_INSTALADA"
 
 # ===> Paso 3: Instalar Tailscale sin conectar
@@ -180,17 +104,39 @@ mkdir -p "$TMP_DIR"
 unzip -o "$ZIP_TMP" -d "$TMP_DIR" >/dev/null
 
 ZIP_ROOT="$(find "$TMP_DIR" -mindepth 1 -maxdepth 1 -type d | head -n 1)"
-[ -n "$ZIP_ROOT" ] || fail "No se encontró contenido válido dentro del ZIP."
+
+if [ -z "$ZIP_ROOT" ]; then
+  fail "No se encontró contenido válido dentro del ZIP."
+fi
+
+# Validación mínima del paquete
+if [ ! -f "$ZIP_ROOT/index.php" ]; then
+  fail "El ZIP no contiene un index.php válido en su raíz."
+fi
 
 # ===> Paso 5: Instalar nueva versión
 log "===> Paso 5: Instalando nueva versión"
 cp -a "$ZIP_ROOT"/. "$APP_DIR"/
 
 # ===> Paso 6: Restaurar archivos personalizados
-restore_preserved_files
+log "===> Paso 6: Restaurando archivos personalizados"
+for archivo in "${PRESERVAR[@]}"; do
+  if [ -f "$BACKUP_DIR/$archivo" ]; then
+    mkdir -p "$(dirname "$APP_DIR/$archivo")"
+    cp -f "$BACKUP_DIR/$archivo" "$APP_DIR/$archivo"
+    log "  - Restaurado: $archivo"
+  fi
+done
 
 # ===> Paso 7: Configurar cron
-setup_cron
+log "===> Paso 7: Configurando cron"
+CRON_ENTRY="00 12 * * * /usr/bin/php /var/www/html/send_daily_status.php >> /tmp/estado_diario_cron.log 2>&1"
+(
+  crontab -l 2>/dev/null | grep -F "$CRON_ENTRY"
+) || (
+  (crontab -l 2>/dev/null; echo "$CRON_ENTRY") | crontab -
+  log "  - Entrada cron agregada."
+)
 
 # ===> Paso 8: Asegurar cron activo
 log "===> Paso 8: Asegurando cron.service activo"
@@ -201,7 +147,8 @@ sudo systemctl restart cron.service
 # ===> Paso 9: Carpeta de logs
 log "===> Paso 9: Carpeta logs"
 sudo mkdir -p /tmp/auroxlink_logs
-sudo chmod 777 /tmp/auroxlink_logs
+sudo chown www-data:www-data /tmp/auroxlink_logs
+sudo chmod 775 /tmp/auroxlink_logs
 
 # ===> Paso 10: Permisos web
 log "===> Paso 10: Corrigiendo permisos"
@@ -213,8 +160,25 @@ if [ -f "$APP_DIR/update_auroxlink.sh" ]; then
   sudo chmod +x "$APP_DIR/update_auroxlink.sh"
 fi
 
-# ===> Paso 11: sudoers
-setup_sudoers
+# ===> Paso 11: sudoers para servicios necesarios
+log "===> Paso 11: sudoers para servicios necesarios"
+
+if [ ! -f "$SUDOERS_FILE" ]; then
+  sudo touch "$SUDOERS_FILE"
+fi
+
+for permiso in "${PERMISOS[@]}"; do
+  LINEA="www-data ALL=(ALL) NOPASSWD: $permiso"
+  if ! sudo grep -Fxq "$LINEA" "$SUDOERS_FILE" 2>/dev/null; then
+    echo "$LINEA" | sudo tee -a "$SUDOERS_FILE" >/dev/null
+  fi
+done
+
+sudo chmod 440 "$SUDOERS_FILE"
+
+if ! sudo visudo -cf "$SUDOERS_FILE" >/dev/null; then
+  fail "El archivo sudoers tiene un problema de sintaxis."
+fi
 
 # ===> Paso 12: Activar tailscaled, sin conectar VPN
 log "===> Paso 12: Activando tailscaled"
@@ -235,11 +199,26 @@ else
 fi
 
 # ===> Paso 14: Limpieza temporal
-cleanup_temp
+log "===> Paso 14: Limpieza temporal"
+rm -rf "$TMP_DIR" "$ZIP_TMP"
 
-# ===> Paso 15 y 16: Reinicio de servicios
-restart_services
+# ===> Paso 15: Reiniciar servicios AUROXLINK
+log "===> Paso 15: Reiniciando servicios AUROXLINK"
+sudo systemctl daemon-reexec
+sudo systemctl daemon-reload
+
+if systemctl list-unit-files | grep -q "^auroralink-monitor.service"; then
+  sudo systemctl restart auroralink-monitor.service
+  log "  - auroralink-monitor.service reiniciado"
+else
+  log "⚠️ auroralink-monitor.service no existe en este sistema. Se omite reinicio."
+fi
+
+# ===> Paso 16: Verificar Apache
+log "===> Paso 16: Verificando estado Apache"
+sudo systemctl restart apache2
+sudo systemctl --no-pager --full status apache2 || true
 
 # ===> Final
-log "✅ AUROXLINK actualizado correctamente a la versión 1.7 - 73 de CA2RDP - TELECOVIAJERO"
+log "✅ AUROXLINK actualizado correctamente a la versión ${VERSION} - CA2RDP - TELECOVIAJERO"
 log "ℹ️ Nota: la VPN Tailscale quedó en modo diferido y puede activarse después manualmente."
