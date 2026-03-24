@@ -52,7 +52,10 @@ cp -a "$APP_DIR"/. "$BACKUP_DIR"/
 # ===> Paso 2: Dependencias
 log "===> Paso 2: Instalando dependencias necesarias"
 sudo apt-get update -y
-sudo apt-get install -y php8.2-curl curl unzip wget
+sudo apt-get install -y php php-curl curl unzip wget
+
+PHP_VERSION_INSTALADA=$(php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;' 2>/dev/null || echo "desconocida")
+log "  - PHP detectado: $PHP_VERSION_INSTALADA"
 
 # ===> Paso 3: Instalar Tailscale sin conectar
 log "===> Paso 3: Instalando Tailscale desde script oficial"
