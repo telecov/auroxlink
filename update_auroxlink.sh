@@ -6,10 +6,10 @@ echo "===> [AUROXLINK] Iniciando actualización de nueva versión..."
 APP_DIR="/var/www/html"
 BACKUP_DIR="/var/www/backup_auroxlink_$(date +%Y%m%d_%H%M)"
 PENDRIVE_DIR="/mnt/usb"
-ZIP_LOCAL="$PENDRIVE_DIR/auroxlink_v1.6.3.zip"
-ZIP_TMP="/tmp/auroxlink_v1.6.3.zip"
+ZIP_LOCAL="$PENDRIVE_DIR/auroxlink_v1.7.zip"
+ZIP_TMP="/tmp/auroxlink_v1.7.zip"
 TMP_DIR="/tmp/auroxlink_temp"
-GITHUB_URL="https://github.com/telecov/auroxlink/releases/download/v1.6.3/auroxlink_v1.6.3.zip"
+GITHUB_URL="https://github.com/telecov/auroxlink/releases/download/v1.7/auroxlink_v1.7.zip"
 SUDOERS_FILE="/etc/sudoers.d/99-www-data-svxlink"
 
 PRESERVAR=(
@@ -183,5 +183,5 @@ sudo systemctl restart apache2
 sudo systemctl --no-pager --full status apache2 || true
 
 # ===> Final
-log "✅ AUROXLINK actualizado correctamente a la versión 1.6.3 - 73 de CA2RDP - TELECOVIAJERO"
+log "✅ AUROXLINK actualizado correctamente a la versión 1.7 - 73 de CA2RDP - TELECOVIAJERO"
 log "ℹ️ Nota: la VPN Tailscale quedó en modo diferido y puede activarse después manualmente."
