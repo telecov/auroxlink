@@ -114,7 +114,10 @@ Diseñado para radioaficionados que buscan **control total de su nodo sin depend
 - 🔐 **Esteban - CA3EUO**  
   Auditoría de seguridad y apoyo en desarrollo  
   https://www.qrz.com/db/CA3EUO
-
+  
+- ** Fábio Guilherme - PY2FGD**
+  traducción de idioma español - portugués
+  https://www.qrz.com/db/PY2GD
 ---
 
 ## 🧑‍💻 Autor
