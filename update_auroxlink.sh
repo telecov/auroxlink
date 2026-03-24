@@ -103,16 +103,22 @@ rm -rf "$TMP_DIR"
 mkdir -p "$TMP_DIR"
 unzip -o "$ZIP_TMP" -d "$TMP_DIR" >/dev/null
 
-ZIP_ROOT="$(find "$TMP_DIR" -mindepth 1 -maxdepth 1 -type d | head -n 1)"
+# Buscar index.php en distintos niveles
+ZIP_ROOT=""
 
-if [ -z "$ZIP_ROOT" ]; then
-  fail "No se encontró contenido válido dentro del ZIP."
+if [ -f "$TMP_DIR/index.php" ]; then
+  ZIP_ROOT="$TMP_DIR"
+else
+  ZIP_ROOT="$(find "$TMP_DIR" -type f -name 'index.php' | head -n 1 | xargs -r dirname)"
 fi
 
-# Validación mínima del paquete
-if [ ! -f "$ZIP_ROOT/index.php" ]; then
-  fail "El ZIP no contiene un index.php válido en su raíz."
+if [ -z "$ZIP_ROOT" ] || [ ! -f "$ZIP_ROOT/index.php" ]; then
+  log "📂 Contenido encontrado en el ZIP:"
+  find "$TMP_DIR" -maxdepth 3 -type f | sed 's/^/  - /'
+  fail "No se encontró un index.php válido dentro del ZIP."
 fi
+
+log "  - Carpeta raíz detectada: $ZIP_ROOT"
 
 # ===> Paso 5: Instalar nueva versión
 log "===> Paso 5: Instalando nueva versión"
