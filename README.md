@@ -115,8 +115,8 @@ Diseñado para radioaficionados que buscan **control total de su nodo sin depend
   Auditoría de seguridad y apoyo en desarrollo  
   https://www.qrz.com/db/CA3EUO
   
-- ** Fábio Guilherme - PY2FGD**
-  traducción de idioma español - portugués
+- 📜 **Fábio Guilherme - PY2FGD**
+  Traducción de idioma español - portugués
   https://www.qrz.com/db/PY2GD
 ---
 
