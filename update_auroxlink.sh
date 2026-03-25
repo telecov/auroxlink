@@ -222,7 +222,7 @@ fi
 
 # ===> Paso 16: Verificar Apache
 log "===> Paso 16: Verificando estado Apache"
-sudo systemctl restart apache2
+systemctl reload apache2 2>/dev/null || true
 sudo systemctl --no-pager --full status apache2 || true
 
 # ===> Final
