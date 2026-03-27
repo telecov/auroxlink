@@ -117,7 +117,7 @@ Diseñado para radioaficionados que buscan **control total de su nodo sin depend
   
 - 📜 **Fábio Guilherme - PY2FGD**  
   Traducción de idioma español - portugués
-  https://www.qrz.com/db/PY2GD
+  https://www.qrz.com/db/PY2FGD
 ---
 
 ## 🧑‍💻 Autor
