@@ -113,6 +113,9 @@ No more dependency on Linux terminal — everything is accessible from your brow
   Security audit and development support  
   https://www.qrz.com/db/CA3EUO
 
+- 📜 **Fábio Guilherme - PY2FGD**  
+  Spanish - Portuguese language translation
+  https://www.qrz.com/db/PY2FGD
 ---
 
 ## 🧑‍💻 Author
