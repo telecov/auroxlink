@@ -1,5 +1,7 @@
 # 📦 Guía de Instalación de AuroxLink
 
+🇪🇸 Español | 🇺🇸 [English](INSTALL_EN.md)
+
 Este documento explica cómo instalar **AuroxLink**, el sistema de control web para nodos SVXLink y estaciones EchoLink, en una Raspberry Pi o servidor Linux compatible.
 
 ---
