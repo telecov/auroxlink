@@ -33,44 +33,62 @@ AUROXLINK has been tested and works optimally on:
 ## ⚙️ Step-by-step Installation
 
 ### 1. Install base packages
+
+```bash
 sudo apt update
 sudo apt install apache2 -y
 sudo apt install php libapache2-mod-php -y
 sudo apt install network-manager alsa-utils -y
 sudo apt install git -y
+```
 
 ### 2. Install SVXLink Server
+
+```bash
 sudo apt-get update
 sudo apt-get install svxlink-server
+```
 
 ### 2.1 Install SVXLink Server [Upgrade]
 
 ...
 
 ### 3. Clone AuroxLink into your web server
+
+```bash
 cd /var/www/
 sudo rm -rf /var/www/html
 sudo git clone https://github.com/telecov/auroxlink.git html
+```
 
 ### 3.1 Install ENGLISH language
+
+```bash
 cd /usr/share/svxlink/sounds/
 sudo wget https://github.com/sm0svx/svxlink-sounds-en_US-heather/releases/download/14.08/svxlink-sounds-en_US-heather-16k-13.12.tar.bz2
 sudo tar xvjf svxlink-sounds-en_US-heather-16k-13.12.tar.bz2
 sudo ln -s en_US-heather-16k en_US
+```
 
 ### 3.2 Install SPANISH language
 
 COMING SOON....
 
 ### 4. Configure permissions
+
+```bash
 sudo chown -R www-data:www-data /var/www/html/
 sudo chmod -R 775 /var/www/html/
 sudo usermod -aG audio www-data
 sudo chown www-data:www-data /etc/svxlink/svxlink.conf
 sudo chown www-data:www-data /etc/svxlink/svxlink.d/ModuleEchoLink.conf
+```
 
+```bash
 sudo nano /etc/sudoers.d/99-www-data-svxlink
+```
 
+```bash
 www-data ALL=NOPASSWD: /bin/systemctl restart svxlink
 www-data ALL=NOPASSWD: /bin/systemctl start svxlink
 www-data ALL=NOPASSWD: /bin/systemctl stop svxlink
@@ -79,10 +97,15 @@ www-data ALL=(ALL) NOPASSWD: /usr/bin/nmcli, /usr/sbin/ip, /bin/systemctl
 www-data ALL=(ALL) NOPASSWD: /sbin/iwlist
 www-data ALL=(ALL) NOPASSWD: /usr/bin/amixer
 www-data ALL=(ALL) NOPASSWD: /usr/bin/bash /tmp/update_auroxlink.sh
+```
 
 ### 5. Create log monitor service
-sudo nano /etc/systemd/system/auroralink-monitor.service
 
+```bash
+sudo nano /etc/systemd/system/auroralink-monitor.service
+```
+
+```bash
 [Unit]
 Description=AuroxLink - SVXLink Connection Monitor
 After=network.target
@@ -97,28 +120,33 @@ StandardError=append:/var/log/auroralink_monitor_error.log
 
 [Install]
 WantedBy=multi-user.target
+```
 
 ### 6. Start Services
+
+```bash
 sudo systemctl daemon-reload
 sudo systemctl enable svxlink
 sudo systemctl start svxlink
 sudo systemctl status svxlink
+```
 
+```bash
 sudo systemctl enable auroralink-monitor.service
 sudo systemctl start auroralink-monitor.service
 sudo systemctl status auroralink-monitor.service
-
----
+```
 
 AuroxLink is ready!
 
+```bash
 Access from browser:
 http://IP-OF-YOUR-RASPBERRY/
 
 password : admin123
 
----
-
+```
+```bash
 ### Basic commands
 sudo systemctl enable svxlink
 sudo systemctl disable svxlink
@@ -133,8 +161,7 @@ alsamixer
 lsb_release -a
 sudo ls -l /dev/ttyUSB*
 sudo dmesg | grep ttyUSB
-
----
+```
 
 ### Telegram (optional)
 - Create bot in @BotFather
