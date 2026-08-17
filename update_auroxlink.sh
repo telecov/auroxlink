@@ -10,6 +10,7 @@ PENDRIVE_DIR="/mnt/usb"
 TMP_DIR="/tmp/auroxlink_temp"
 SUDOERS_FILE="/etc/sudoers.d/99-www-data-svxlink"
 CRON_FILE="/etc/cron.d/auroxlink"
+SERVICE_FILE="/etc/systemd/system/auroralink-monitor.service"
 LIBEXEC_DIR="/usr/local/libexec/auroxlink"
 APT_TIMEOUT=180
 
@@ -288,16 +289,45 @@ fi
 log "===> Paso 14: Limpieza temporal"
 rm -rf "$TMP_DIR" "$ZIP_TMP"
 
-# ===> Paso 15: Reiniciar servicios AUROXLINK
-log "===> Paso 15: Reiniciando servicios AUROXLINK"
-sudo systemctl daemon-reexec
-sudo systemctl daemon-reload
+# ===> Paso 15: Crear/actualizar servicios AUROXLINK
+log "===> Paso 15: Configurando servicios AUROXLINK"
 
-if systemctl list-unit-files | grep -q "^auroralink-monitor.service"; then
-  sudo systemctl restart auroralink-monitor.service
-  log "  - auroralink-monitor.service reiniciado"
+cat > "$SERVICE_FILE" <<'SERVICE'
+[Unit]
+Description=AUROXLINK - Monitor de conexiones SVXLink y alertas Telegram
+After=network-online.target svxlink.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/php /var/www/html/monitor_log_svx.php
+Restart=always
+RestartSec=5
+User=www-data
+Group=www-data
+StandardOutput=append:/var/log/auroralink_monitor.log
+StandardError=append:/var/log/auroralink_monitor_error.log
+
+[Install]
+WantedBy=multi-user.target
+SERVICE
+
+chown root:root "$SERVICE_FILE"
+chmod 0644 "$SERVICE_FILE"
+
+# El monitor necesita poder leer el log de SvxLink
+if [[ -f /var/log/svxlink ]]; then
+  chmod 0644 /var/log/svxlink || true
+fi
+
+systemctl daemon-reload
+systemctl enable auroralink-monitor.service
+
+if systemctl restart auroralink-monitor.service; then
+  log "  - auroralink-monitor.service activo"
 else
-  log "⚠️ auroralink-monitor.service no existe en este sistema. Se omite reinicio."
+  log "⚠️ auroralink-monitor.service no pudo iniciar."
+  systemctl --no-pager --full status auroralink-monitor.service || true
 fi
 
 # ===> Paso 16: Verificar Apache

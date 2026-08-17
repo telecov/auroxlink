@@ -133,7 +133,7 @@ update_auroxlink.sh            Actualizador de AUROXLINK
 
 ## 📦 Versión actual
 
-**AUROXLINK v1.8.2**
+**AUROXLINK v1.8.3**
 
 La rama `main` puede contener mejoras posteriores en preparación. Las versiones estables quedan identificadas mediante tags/releases.
 

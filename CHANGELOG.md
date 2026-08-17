@@ -1,5 +1,15 @@
 # CHANGELOG – AUROXLINK
 
+## v1.8.3 – Servicio de monitor AUROXLINK (2026-08-17)
+
+### Correcciones
+
+- El actualizador crea automáticamente `auroralink-monitor.service` si no existe.
+- El servicio se actualiza, habilita y reinicia durante cada actualización.
+- Se garantiza la ejecución permanente de `monitor_log_svx.php`.
+- Se restablece el monitoreo de conexiones SvxLink y las alertas Telegram.
+- Se mantiene el estado diario de Telegram mediante `/etc/cron.d/auroxlink`.
+
 ## v1.8.2 – Corrección del actualizador (2026-08-17)
 
 ### Correcciones
