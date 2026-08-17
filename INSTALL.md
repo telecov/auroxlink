@@ -1,5 +1,7 @@
 # 📦 Instalación de AUROXLINK
 
+🇪🇸 Español | 🇺🇸 [English](INSTALL_EN.md)
+
 AUROXLINK incluye un instalador automático que prepara el servidor web, PHP, SvxLink base, Tailscale, permisos, servicios y archivos necesarios para dejar el sistema operativo.
 
 La actualización de **SvxLink a la última release oficial de SM0SVX es opcional** y se realiza con un instalador separado.
