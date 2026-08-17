@@ -1,5 +1,15 @@
 # CHANGELOG – AUROXLINK
 
+## v1.8.2 – Corrección del actualizador (2026-08-17)
+
+### Correcciones
+
+- Se corrige el fallo del actualizador en el Paso 7 al configurar cron.
+- Se reemplaza el uso de `crontab` del usuario root por `/etc/cron.d/auroxlink`.
+- El trabajo diario de AUROXLINK se ejecuta correctamente como `www-data`.
+- Se agrega `cron` explícitamente a las dependencias del actualizador.
+- La actualización ya no debe finalizar con código 1 durante la configuración de cron.
+
 ## v1.8.1 – Corrección de versión dinámica (2026-08-17)
 
 ### Correcciones

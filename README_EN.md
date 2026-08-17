@@ -133,7 +133,7 @@ update_auroxlink.sh            AUROXLINK updater
 
 ## 📦 Current version
 
-**AUROXLINK v1.8.1**
+**AUROXLINK v1.8.2**
 
 The `main` branch may contain later improvements under preparation. Stable versions are identified using tags/releases.
 

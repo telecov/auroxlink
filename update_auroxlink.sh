@@ -9,6 +9,7 @@ BACKUP_DIR="/var/www/backup_auroxlink_$(date +%Y%m%d_%H%M)"
 PENDRIVE_DIR="/mnt/usb"
 TMP_DIR="/tmp/auroxlink_temp"
 SUDOERS_FILE="/etc/sudoers.d/99-www-data-svxlink"
+CRON_FILE="/etc/cron.d/auroxlink"
 LIBEXEC_DIR="/usr/local/libexec/auroxlink"
 APT_TIMEOUT=180
 
@@ -134,7 +135,7 @@ cp -a "$APP_DIR"/. "$BACKUP_DIR"/
 # ===> Paso 2: Dependencias
 log "===> Paso 2: Instalando dependencias necesarias"
 apt_update_safe
-apt_install_safe php php-curl curl unzip wget ca-certificates lsb-release psmisc
+apt_install_safe php php-curl curl unzip wget ca-certificates lsb-release psmisc cron
 
 PHP_VERSION_INSTALADA=$(php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;' 2>/dev/null || echo "desconocida")
 log "  - PHP detectado: $PHP_VERSION_INSTALADA"
@@ -191,13 +192,16 @@ shopt -u nullglob
 
 # ===> Paso 7: Configurar cron
 log "===> Paso 7: Configurando cron"
-CRON_ENTRY="00 12 * * * /usr/bin/php /var/www/html/send_daily_status.php >> /tmp/estado_diario_cron.log 2>&1"
-(
-  crontab -l 2>/dev/null | grep -F "$CRON_ENTRY"
-) || (
-  (crontab -l 2>/dev/null; echo "$CRON_ENTRY") | crontab -
-  log "  - Entrada cron agregada."
-)
+
+cat > "$CRON_FILE" <<'CRON'
+# AUROXLINK - estado diario por Telegram
+0 12 * * * www-data /usr/bin/php /var/www/html/send_daily_status.php >> /tmp/estado_diario_cron.log 2>&1
+CRON
+
+chown root:root "$CRON_FILE"
+chmod 0644 "$CRON_FILE"
+
+log "  - Cron AUROXLINK configurado en $CRON_FILE"
 
 # ===> Paso 8: Asegurar cron activo
 log "===> Paso 8: Asegurando cron.service activo"
