@@ -68,54 +68,24 @@ function mostrarLinea($texto, $tipo = 'info')
 <div class="log-box" id="log">
 <?php
 
-$sh_url   = "https://raw.githubusercontent.com/telecov/auroxlink/main/update_auroxlink.sh";
-$tmp_path = "/tmp/update_auroxlink.sh";
+$updater = "/usr/local/libexec/auroxlink/update_auroxlink.sh";
 
 mostrarLinea("[INFO] Iniciando proceso de actualización...");
 
-if (!function_exists('curl_init')) {
-    mostrarLinea("[WARN] cURL no está disponible. Intentando con file_get_contents()", "warn");
-}
-
-$contenido = false;
-
-/* Intentar primero con cURL */
-if (function_exists('curl_init')) {
-    $ch = curl_init($sh_url);
-    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
-    curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 15);
-    curl_setopt($ch, CURLOPT_TIMEOUT, 60);
-
-    $contenido = curl_exec($ch);
-
-    if ($contenido === false) {
-        mostrarLinea("[ERROR] Error descargando script con cURL: " . curl_error($ch), "error");
-    }
-
-    curl_close($ch);
-}
-
-/* Si cURL falla, usar file_get_contents */
-if ($contenido === false) {
-    $contenido = @file_get_contents($sh_url);
-}
-
-if ($contenido === false || trim($contenido) === '') {
-    mostrarLinea("[ERROR] No se pudo descargar el script update_auroxlink.sh desde GitHub.", "error");
-    mostrarLinea("[ERROR] Revisa conexión a internet, permisos de PHP o acceso a GitHub.", "error");
+if (!is_file($updater)) {
+    mostrarLinea(
+        "[ERROR] No se encontró el actualizador protegido: $updater",
+        "error"
+    );
     exit;
 }
 
-if (@file_put_contents($tmp_path, $contenido) === false) {
-    mostrarLinea("[ERROR] No se pudo guardar el script temporal en $tmp_path", "error");
+if (!is_executable($updater)) {
+    mostrarLinea(
+        "[ERROR] El actualizador protegido no es ejecutable.",
+        "error"
+    );
     exit;
-}
-
-if (!@chmod($tmp_path, 0755)) {
-    mostrarLinea("[WARN] No se pudo aplicar chmod 755 a $tmp_path", "warn");
-} else {
-    mostrarLinea("[OK] Script descargado y permisos aplicados correctamente.", "ok");
 }
 
 /*
@@ -124,7 +94,7 @@ if (!@chmod($tmp_path, 0755)) {
  * Por eso se usa -n (non-interactive).
  * Si sudo no está permitido sin contraseña, fallará de inmediato y lo verás.
  */
-$comando = "sudo -n /usr/bin/bash " . escapeshellarg($tmp_path) . " 2>&1";
+$comando = "sudo -n /usr/bin/bash " . escapeshellarg($updater) . " 2>&1";
 
 mostrarLinea("[INFO] Ejecutando comando:");
 mostrarLinea($comando);

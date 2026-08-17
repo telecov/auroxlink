@@ -266,6 +266,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_audio'])) {
                     <a href="index.php" class="btn btn-outline-secondary">⬅️ <?= t('settings_back_dashboard', 'Back to Dashboard'); ?></a>
                 </div>
 
+
                 <div class="row">
                     <div class="col-md-6">
                         <div class="d-flex align-items-center">
@@ -367,6 +368,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_audio'])) {
                                     <?= t('settings_save_audio_config', 'Save audio settings'); ?></button>
                             </form>
                         </div>
+
+                        <?php require __DIR__ . '/includes/svxlink_update_panel.php'; ?>
+
                     </div>
 
                     <div class="col-md-6">

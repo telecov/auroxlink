@@ -91,7 +91,7 @@ apt_install_safe() {
   DEBIAN_FRONTEND=noninteractive apt-get install -y -o DPkg::Lock::Timeout="$APT_TIMEOUT" "$@"
 }
 
-log "[2/13] Instalando dependencias de AUROXLINK v1.7"
+log "[2/13] Instalando dependencias de AUROXLINK"
 apt_update_safe
 apt_install_safe \
   apache2 \
@@ -239,6 +239,37 @@ find "$APP_DIR" -type f -exec chmod 644 {} +
 chmod 755 "$APP_DIR/update_auroxlink.sh" 2>/dev/null || true
 chmod 755 "$APP_DIR/install_auroxlink.sh" 2>/dev/null || true
 
+# Componentes privilegiados del actualizador SvxLink.
+# Nunca se ejecutan como root directamente desde /var/www/html.
+SVX_LIBEXEC="/usr/local/libexec/auroxlink"
+SVX_UPDATE_STATE="/var/lib/auroxlink/svxlink-update"
+
+[[ -f "$APP_DIR/install_svxlink_latest.sh" ]] \
+  || fail "Falta install_svxlink_latest.sh"
+
+[[ -f "$APP_DIR/svxlink_update_worker.sh" ]] \
+  || fail "Falta svxlink_update_worker.sh"
+
+mkdir -p "$SVX_LIBEXEC"
+mkdir -p "$SVX_UPDATE_STATE"
+
+install -o root -g root -m 0755 \
+  "$APP_DIR/install_svxlink_latest.sh" \
+  "$SVX_LIBEXEC/install_svxlink_latest.sh"
+
+install -o root -g root -m 0755 \
+  "$APP_DIR/svxlink_update_worker.sh" \
+  "$SVX_LIBEXEC/svxlink_update_worker.sh"
+
+install -o root -g root -m 0755 \
+  "$APP_DIR/update_auroxlink.sh" \
+  "$SVX_LIBEXEC/update_auroxlink.sh"
+
+chown root:www-data "$SVX_UPDATE_STATE"
+chmod 0750 "$SVX_UPDATE_STATE"
+
+ok "Actualizador SvxLink instalado en área protegida."
+
 # La aplicación v1.7 escribe estos archivos/directorios desde PHP.
 WRITABLE_DIRS=(
   "$APP_DIR/qsl"
@@ -318,7 +349,8 @@ www-data ALL=(root) NOPASSWD: /usr/bin/amixer
 www-data ALL=(root) NOPASSWD: /usr/bin/alsactl
 www-data ALL=(root) NOPASSWD: /usr/bin/tailscale
 www-data ALL=(root) NOPASSWD: /usr/sbin/tailscale
-www-data ALL=(root) NOPASSWD: /usr/bin/bash /tmp/update_auroxlink.sh
+www-data ALL=(root) NOPASSWD: /usr/bin/bash /usr/local/libexec/auroxlink/update_auroxlink.sh
+www-data ALL=(root) NOPASSWD: /usr/bin/bash /usr/local/libexec/auroxlink/svxlink_update_worker.sh
 SUDOERS
 chmod 440 "$SUDOERS_FILE"
 visudo -cf "$SUDOERS_FILE" >/dev/null || fail "Error de sintaxis en $SUDOERS_FILE"
@@ -379,6 +411,11 @@ log "[13/13] Verificación final"
 [[ -f "$APP_DIR/estilos.json" ]] || fail "Falta estilos.json"
 [[ -f "$APP_DIR/data/eventos.json" ]] || fail "Falta data/eventos.json"
 [[ -f "$APP_DIR/data/qsls.json" ]] || fail "Falta data/qsls.json"
+[[ -f "$APP_DIR/svxlink_update_api.php" ]] || fail "Falta svxlink_update_api.php"
+[[ -f "$APP_DIR/includes/svxlink_update_panel.php" ]] || fail "Falta includes/svxlink_update_panel.php"
+[[ -x "/usr/local/libexec/auroxlink/svxlink_update_worker.sh" ]] || fail "Falta worker protegido de SvxLink"
+[[ -x "/usr/local/libexec/auroxlink/install_svxlink_latest.sh" ]] || fail "Falta actualizador protegido de SvxLink"
+[[ -x "/usr/local/libexec/auroxlink/update_auroxlink.sh" ]] || fail "Falta actualizador protegido de AUROXLINK"
 
 LOCAL_IP="$(hostname -I 2>/dev/null | awk '{print $1}')"
 COMMIT="$(git -C "$APP_DIR" rev-parse --short HEAD 2>/dev/null || echo n/a)"

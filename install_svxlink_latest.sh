@@ -417,31 +417,72 @@ WORKDIR="${WORK_ROOT}/${LATEST_TAG}"
 SOURCE_DIR="${WORKDIR}/source"
 BUILD_DIR="${SOURCE_DIR}/src/build"
 STAGE_DIR="${WORKDIR}/stage"
-ARCHIVE="${WORKDIR}/svxlink-${LATEST_TAG}.tar.gz"
 
 RELEASE_DIR="${RELEASES_DIR}/${LATEST_TAG}"
 STAGED_RELEASE_DIR="${STAGE_DIR}${RELEASE_DIR}"
 
+SVXLINK_GIT_URL="https://github.com/sm0svx/svxlink.git"
+
 rm -rf "$WORKDIR"
-mkdir -p "$SOURCE_DIR" "$STAGE_DIR"
+mkdir -p "$STAGE_DIR"
 
-curl -fL \
-  --retry 3 \
-  --retry-delay 2 \
-  -H 'Accept: application/vnd.github+json' \
-  -H 'User-Agent: AUROXLINK-SvxLink-Installer' \
-  "$TARBALL_URL" \
-  -o "$ARCHIVE"
+log "Descarga pública vía Git del tag ${LATEST_TAG}"
 
-tar -xzf "$ARCHIVE" \
-  -C "$SOURCE_DIR" \
-  --strip-components=1
+CLONE_OK=0
+
+for ATTEMPT in 1 2 3; do
+  rm -rf "$SOURCE_DIR"
+
+  echo "Intento Git ${ATTEMPT}/3..."
+
+  if git \
+      -c advice.detachedHead=false \
+      clone \
+      --depth 1 \
+      --branch "$LATEST_TAG" \
+      --single-branch \
+      "$SVXLINK_GIT_URL" \
+      "$SOURCE_DIR"
+  then
+    CLONE_OK=1
+    break
+  fi
+
+  warn "No se pudo clonar SvxLink en el intento ${ATTEMPT}/3."
+
+  if [[ "$ATTEMPT" -lt 3 ]]; then
+    warn "Reintentando en 15 segundos..."
+    sleep 15
+  fi
+done
+
+[[ "$CLONE_OK" -eq 1 ]] \
+  || die "No fue posible descargar SvxLink ${LATEST_TAG} mediante Git público."
 
 [[ -d "${SOURCE_DIR}/src" ]] \
   || die "El código descargado no contiene src/."
 
+CHECKOUT_TAG="$(
+  git -C "$SOURCE_DIR" \
+    describe \
+    --tags \
+    --exact-match HEAD \
+    2>/dev/null || true
+)"
+
+[[ "$CHECKOUT_TAG" == "$LATEST_TAG" ]] \
+  || die "El código descargado no corresponde al tag ${LATEST_TAG}. Detectado: ${CHECKOUT_TAG:-desconocido}"
+
+SOURCE_COMMIT="$(
+  git -C "$SOURCE_DIR" rev-parse --short=12 HEAD
+)"
+
+ok "SvxLink ${LATEST_TAG} descargado correctamente mediante Git."
+ok "Commit fuente: ${SOURCE_COMMIT}"
+
 [[ -f "${SOURCE_DIR}/INSTALL.adoc" ]] \
   || warn "No se encontró INSTALL.adoc en la release."
+
 
 # ---------------------------------------------------------------------
 # Compilación
@@ -649,7 +690,11 @@ EVENT_HANDLER="$(
 log "Preparando prueba previa de compatibilidad"
 
 TEST_CONFIG="/etc/svxlink/.auroxlink-test-${LATEST_TAG}.conf"
-TEST_LOG="/tmp/auroxlink-svxlink-${LATEST_TAG}-test.log"
+
+TEST_LOG_DIR="/var/lib/auroxlink/svxlink-update"
+TEST_LOG="${TEST_LOG_DIR}/test-${LATEST_TAG}.log"
+
+mkdir -p "$TEST_LOG_DIR"
 
 rm -f "$TEST_CONFIG" "$TEST_LOG"
 
@@ -676,16 +721,17 @@ ACTIVATION_STARTED=1
 
 LIB_PATH="${RELEASE_DIR}/lib:${RELEASE_DIR}/lib64"
 
-set +e
-runuser -u svxlink -- \
+if runuser -u svxlink -- \
   env LD_LIBRARY_PATH="$LIB_PATH" \
   timeout --signal=TERM "${TEST_SECONDS}s" \
   "${RELEASE_DIR}/bin/svxlink" \
   --config="$TEST_CONFIG" \
   --logfile="$TEST_LOG"
-
-TEST_RC=$?
-set -e
+then
+  TEST_RC=0
+else
+  TEST_RC=$?
+fi
 
 if [[ "$TEST_RC" -ne 124 ]]; then
   echo

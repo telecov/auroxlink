@@ -31,6 +31,7 @@ It provides node status, activity, service controls, main configuration editing,
 - 📡 **Real-time dashboard** with node and connection status.
 - 📊 **Activity and statistics** for transmissions and EchoLink traffic.
 - 🎚️ **ALSA audio control from the web**.
+- 🔄 **Safe SvxLink updates from the web interface**, with isolated builds, pre-testing and automatic rollback.
 - ⚙️ **Editing of `svxlink.conf` and `ModuleEchoLink.conf`**.
 - ▶️ **SvxLink service control**: start, stop and restart.
 - 🌐 **Network and WiFi configuration** from the interface.
@@ -132,7 +133,7 @@ update_auroxlink.sh            AUROXLINK updater
 
 ## 📦 Current version
 
-**AUROXLINK v1.7**
+**AUROXLINK v1.8**
 
 The `main` branch may contain later improvements under preparation. Stable versions are identified using tags/releases.
 
