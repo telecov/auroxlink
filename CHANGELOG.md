@@ -1,5 +1,14 @@
 # CHANGELOG – AUROXLINK
 
+## v1.8.1 – Corrección de versión dinámica (2026-08-17)
+
+### Correcciones
+
+- Se elimina la versión fija `1.7` del sidebar.
+- La versión mostrada por AUROXLINK ahora se obtiene automáticamente desde `version.txt`.
+- El sidebar queda preparado para futuras versiones sin necesidad de modificar código.
+- Se corrige el aviso falso de actualización cuando la versión instalada es superior a la última Release publicada.
+
 ## v1.8 – Actualización segura de SvxLink (2026-08-17)
 
 ### Novedades

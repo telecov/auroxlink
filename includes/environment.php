@@ -30,7 +30,12 @@ $teleco = 'Román - CA2RDP';
 $hammer = 'Esteban - CA3EUO';
 
 $titleSite = $nombreZona;
-$version = 'Versión 1.7';
+$versionFile = __DIR__ . '/../version.txt';
+$versionNumber = file_exists($versionFile)
+    ? trim(file_get_contents($versionFile))
+    : '';
+
+$version = 'Versión ' . ($versionNumber !== '' ? $versionNumber : 'desconocida');
 
 $modo_sistema = $style['modo_sistema'] ?? 'echolink';
 $log_path = ($modo_sistema === 'echolink')

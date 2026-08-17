@@ -96,7 +96,7 @@ fetch('check_version.php')
     const txtUpdate = <?= json_encode(t('sidebar_update_button', 'Update')); ?>;
     const txtConfirm = <?= json_encode(t('sidebar_confirm_update', 'Do you want to update AUROXLINK right now?')); ?>;
 
-    if (data.local === data.remota) {
+    if (!data.disponible) {
       contenido = `<div class="alert alert-success p-1 mb-1" style="font-size: 0.8rem;">✅ ${txtUpdated} (v${data.local})</div>`;
     } else {
       contenido = `
