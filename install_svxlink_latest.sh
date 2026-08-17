@@ -220,6 +220,34 @@ active_exec() {
 # Consultar release oficial
 # ---------------------------------------------------------------------
 
+cat <<'BANNER'
+
+    _   _   _ ____   _____  __ _     ___ _   _ _  __
+   / \ | | | |  _ \ / _ \ \/ /| |   |_ _| \ | | |/ /
+  / _ \| | | | |_) | | | \  / | |    | ||  \| | ' /
+ / ___ \ |_| |  _ <| |_| /  \ | |___ | || |\  | . \
+/_/   \_\___/|_| \_\\___/_/\_\|_____|___|_| \_|_|\_\
+
+                  AUROXLINK
+          Gestor seguro de actualización
+
+              SvxLink by SM0SVX
+
+------------------------------------------------------------
+ AUROXLINK
+   Instalación, validación y rollback automatizado.
+
+ SvxLink
+   Proyecto original : SM0SVX / Tobias Blomberg
+   GitHub SM0SVX     : https://github.com/sm0svx
+   SvxLink oficial   : https://github.com/sm0svx/svxlink
+
+ AUROXLINK gestiona la instalación y actualización.
+ SvxLink continúa siendo un proyecto independiente de SM0SVX.
+------------------------------------------------------------
+
+BANNER
+
 log "AUROXLINK SvxLink Installer v${INSTALLER_VERSION}"
 echo "Sistema       : $OS_NAME"
 echo "Arquitectura  : $ARCH"
