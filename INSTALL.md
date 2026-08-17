@@ -1,176 +1,270 @@
-# 📦 Guía de Instalación de AuroxLink
+# 📦 Instalación de AUROXLINK
 
-Este documento explica cómo instalar **AuroxLink**, el sistema de control web para nodos SVXLink y estaciones EchoLink, en una Raspberry Pi o servidor Linux compatible.
+AUROXLINK incluye un instalador automático que prepara el servidor web, PHP, SvxLink base, Tailscale, permisos, servicios y archivos necesarios para dejar el sistema operativo.
+
+La actualización de **SvxLink a la última release oficial de SM0SVX es opcional** y se realiza con un instalador separado.
 
 ---
 
 ## 🖥️ Requisitos
 
-### Hardware recomendado:
-AUROXLINK ha sido probado y funciona de forma óptima en:
+### Sistema recomendado
 
-- **Distribución recomendada:** Debian 12+
-- **Entornos compatibles:** Raspberry Pi OS, Ubuntu Server, Armbian (bookwoorm)
-- **Equipo recomendado:** Computador o mini-servidor con Linux
+- Raspberry Pi OS o Debian basado en APT
+- Raspberry Pi, mini PC o servidor Linux
+- Acceso a Internet
+- Acceso SSH o consola
+- Usuario con permisos `sudo`
 
-### Software necesario:
-- Sistema operativo basado en Debian (Raspbian, debian,...)
-- Servidor web: Apache2
-- PHP 7.4 o superior
-- Git
-- SVXLink instalado y funcionando
-- NetworkManager nmcli
-- alsa-utils 
+AUROXLINK instala automáticamente las dependencias necesarias, entre ellas Apache, PHP, PHP cURL, PHP Zip, Git, NetworkManager, ALSA, Tailscale y `svxlink-server`.
 
-## Software necesario para configurar 
-- IPSCANNER - para identificar ip de equipo
-- PUTTY - para administrar Linux por SSH
-- Raspberry pi Imager (recomendado)
 ---
 
-## ⚙️ Instalación paso a paso
+# 🚀 Instalación rápida
 
-### 1. Instala los paquetes base
-```bash
-sudo apt update
-sudo apt install apache2 -y
-sudo apt install php libapache2-mod-php -y
-sudo apt install network-manager alsa-utils -y
-sudo apt install git -y
-```
-### 2. Instalar SVXlink Server  (SvxLink v1.7.0 Copyright (C) 2003-2019 Tobias Blomberg / SM0SVX)
-```bash
-sudo apt-get update
-sudo apt-get install svxlink-server
-```
-### 2.1 Instalar SVXlink Server [Upgrade] (SvxLink v1.8.0@24.02 Copyright (C) 2003-2023 Tobias Blomberg / SM0SVX)
+En una instalación limpia ejecuta:
 
-...
-
-### 3. Clona AuroxLink en tu servidor web (Auroxlink v1.5 2025 Roman Carvajal / CA2RDP)
 ```bash
-cd /var/www/
-sudo rm -rf /var/www/html
-sudo git clone https://github.com/telecov/auroxlink.git html
+curl -fsSL https://raw.githubusercontent.com/telecov/auroxlink/main/install_auroxlink.sh | sudo bash
 ```
 
-### 3.1 Instalacion de idioma INGLES (sm0svx)
+El instalador realiza automáticamente:
+
+- Instalación de dependencias
+- Instalación de Apache y PHP
+- Instalación de `svxlink-server` desde la distribución
+- Instalación de Tailscale
+- Descarga de AUROXLINK desde GitHub
+- Inicialización de archivos por defecto
+- Configuración de permisos
+- Configuración de sudoers para el panel
+- Creación del monitor de SvxLink
+- Configuración del cron de AUROXLINK
+- Activación de servicios
+- Verificación final de la instalación
+
+> El instalador principal **no actualiza SvxLink desde GitHub**. Se mantiene la versión entregada por la distribución como base estable.
+
+---
+
+## ✅ Verificar instalación
+
+Comprueba los servicios principales:
+
 ```bash
-cd /usr/share/svxlink/sounds/
-sudo wget https://github.com/sm0svx/svxlink-sounds-en_US-heather/releases/download/14.08/svxlink-sounds-en_US-heather-16k-13.12.tar.bz2
-sudo tar xvjf svxlink-sounds-en_US-heather-16k-13.12.tar.bz2
-sudo ln -s en_US-heather-16k en_US
+sudo systemctl status apache2 --no-pager
+sudo systemctl status svxlink --no-pager
+sudo systemctl status auroralink-monitor --no-pager
 ```
 
-### 3.2 Instalacion de idioma ESPAÑOL
+También puedes comprobar la versión instalada de AUROXLINK:
 
-PROXIMAMENTE....
-
-### 4. Configura permisos para ejecutar comandos del sistema 
 ```bash
-sudo chown -R www-data:www-data /var/www/html/
-sudo chmod -R 775 /var/www/html/
-sudo usermod -aG audio www-data
-sudo chown www-data:www-data /etc/svxlink/svxlink.conf
-sudo chown www-data:www-data /etc/svxlink/svxlink.d/ModuleEchoLink.conf
-
-sudo nano /etc/sudoers.d/99-www-data-svxlink
-#escribir estos permisos 
-
-www-data ALL=NOPASSWD: /bin/systemctl restart svxlink
-www-data ALL=NOPASSWD: /bin/systemctl start svxlink
-www-data ALL=NOPASSWD: /bin/systemctl stop svxlink
-www-data ALL=NOPASSWD: /sbin/reboot
-www-data ALL=(ALL) NOPASSWD: /usr/bin/nmcli, /usr/sbin/ip, /bin/systemctl
-www-data ALL=(ALL) NOPASSWD: /sbin/iwlist
-www-data ALL=(ALL) NOPASSWD: /usr/bin/amixer
-www-data ALL=(ALL) NOPASSWD: /usr/bin/bash /tmp/update_auroxlink.sh
-
-#guardar & cerrar
-```
-### 5. Crear servicio log monitor para telegram
-```bash
-sudo nano /etc/systemd/system/auroralink-monitor.service
-#escribir esto
-
-[Unit]
-Description=AuroraLink - Monitor de Conexiones SVXLink
-After=network.target
-
-[Service]
-ExecStart=/usr/bin/php /var/www/html/monitor_log_svx.php
-Restart=always
-User=www-data
-Group=www-data
-StandardOutput=append:/var/log/auroralink_monitor.log
-StandardError=append:/var/log/auroralink_monitor_error.log
-
-[Install]
-WantedBy=multi-user.target
-
-#guardar & cerrar
+cat /var/www/html/version.txt
 ```
 
+---
 
-### 6. Inicia Servicios
+## 🌐 Acceder al panel
+
+Obtén la dirección IP del servidor:
+
 ```bash
-sudo systemctl daemon-reload
-sudo systemctl enable auroralink-monitor.service
-sudo systemctl enable svxlink
+hostname -I
+```
 
+Luego abre en un navegador:
+
+```text
+http://IP-DEL-SERVIDOR/
+```
+
+Credencial inicial de AUROXLINK:
+
+```text
+Contraseña: admin123
+```
+
+Por seguridad, cambia la contraseña desde AUROXLINK después del primer acceso.
+
+---
+
+# 📡 Actualizar SvxLink — opcional
+
+AUROXLINK incluye un segundo instalador para usuarios que quieran utilizar la última release estable oficial de SvxLink publicada por SM0SVX.
+
+Primero consulta si existe una versión más reciente:
+
+```bash
+sudo bash /var/www/html/install_svxlink_latest.sh --check
+```
+
+Si deseas instalarla:
+
+```bash
+sudo bash /var/www/html/install_svxlink_latest.sh
+```
+
+Para forzar una reinstalación de la release detectada:
+
+```bash
+sudo bash /var/www/html/install_svxlink_latest.sh --force
+```
+
+El actualizador de SvxLink:
+
+- Consulta automáticamente la última release estable oficial
+- Conserva el paquete SvxLink de Debian/Raspberry Pi OS como respaldo
+- Compila la nueva release en un directorio separado
+- Mantiene juntos binarios, librerías, plugins y eventos TCL de cada versión
+- Respalda `/etc/svxlink`
+- Prueba la nueva versión antes de activarla
+- Comprueba que no se mezclen plugins entre versiones
+- Solo cambia el servicio si la prueba finaliza correctamente
+- Ejecuta rollback automático si algo falla
+- Mantiene `/etc/svxlink/svxlink.conf` como configuración activa para AUROXLINK
+
+Las releases administradas por este instalador se almacenan en:
+
+```text
+/opt/auroxlink/svxlink/releases/
+```
+
+La release activa queda enlazada en:
+
+```text
+/opt/auroxlink/svxlink/current
+```
+
+---
+
+## 🎙️ Configuración de audio
+
+Lista los dispositivos ALSA disponibles:
+
+```bash
+aplay -l
+arecord -l
+```
+
+Para ajustar niveles:
+
+```bash
+alsamixer
+```
+
+Después configura RX/TX desde el panel AUROXLINK.
+
+---
+
+## 📻 Configuración EchoLink
+
+Configura desde AUROXLINK:
+
+- Indicativo
+- Contraseña EchoLink
+- Nombre y descripción del nodo
+- RX y TX
+- Dispositivo de audio
+- Parámetros de SvxLink
+
+Después verifica:
+
+```bash
+sudo systemctl restart svxlink
+sudo systemctl status svxlink --no-pager
+```
+
+Logs:
+
+```bash
+sudo tail -f /var/log/svxlink
+```
+
+---
+
+## 🔐 Tailscale
+
+El instalador instala Tailscale, pero el nodo debe asociarse a tu cuenta/Tailnet cuando corresponda.
+
+Puedes hacerlo desde AUROXLINK o desde consola:
+
+```bash
+sudo tailscale up
+```
+
+Estado:
+
+```bash
+tailscale status
+```
+
+---
+
+## 🤖 Telegram — opcional
+
+Desde AUROXLINK puedes configurar:
+
+- Token del bot
+- Chat ID
+
+Crea el bot utilizando **@BotFather** y agrega el bot al grupo o canal que utilizará el nodo.
+
+Las credenciales reales de Telegram se almacenan localmente y no deben subirse al repositorio.
+
+---
+
+## 🛠️ Comandos útiles
+
+```bash
+sudo systemctl status svxlink --no-pager
+sudo systemctl restart svxlink
+sudo systemctl stop svxlink
 sudo systemctl start svxlink
-sudo systemctl start auroralink-monitor.service
+
+sudo systemctl status apache2 --no-pager
+sudo systemctl restart apache2
+
+sudo tail -f /var/log/svxlink
+
+aplay -l
+arecord -l
+alsamixer
+lsusb
+ip addr
 ```
 
-✅ ¡AuroxLink está listo!
-Ahora puedes acceder a tu panel desde el navegador:
+---
 
-http://IP-DE-TU-RASPBERRY/
+## 🔄 Reinstalar o actualizar AUROXLINK
 
-🔧 Archivos importantes
-index.php: dashboard principal
-configuracion.php: editor de configuración EchoLink y SVXlink
------ password : admin123
+El mismo instalador puede ejecutarse nuevamente:
 
-
-### Comandos basicos 
 ```bash
-sudo systemctl enable svxlink	-- INICIA SERVICIOS AUTOMATICAMENTE
-sudo systemctl disable svxlink	-- PARA QUE NO INICIE AUTOMATICAMENTE
-sudo systemctl status svxlink	-- CONSULTA STATUS OPERACIONAL DE SERVICIO
-sudo systemctl start svxlink 	-- INICIA SERVICIOS
-sudo systemctl stop svxlink	-- DETIENEN SERVICIO
-sudo systemctl restart svxlink	-- REINICIA SERVICIO
-sudo -u svxlink svxlink		-- INICIA SERVICIO EN VIVO
-aplay -l 			-- LISTA DISPOSITIVOS CONECTADO
-lsusb 				-- LISTA DISPOSITIVOS USB 
-alsamixer			-- AJUSTAR AUDIO DE INTERFACE
-lsb_release -a			-- REVISAR VERSION DE LINUX
+curl -fsSL https://raw.githubusercontent.com/telecov/auroxlink/main/install_auroxlink.sh | sudo bash
 ```
-### 7. Configura Telegram (opcional)
 
-- Crea un bot en @BotFather
-- Obten el token http api
-- crea un canal o agraga tu bot como admin al grupo Telegram
-- buscar el ID del canal o grupo a utilizar
-	https://api.telegram.org/bot<token-de-telegram->/getUpdates
-### 8. Personalizacion
+Si detecta una instalación existente, crea un respaldo antes de reemplazar el código y conserva los datos configurados contemplados por el instalador.
 
-- imagen debes subirla en 1500 px x 150 px
-- debe estar en formato .png
-- debes subirla con el nombre ----->>>>  auroxlink_banner.png  <<<<-----
-- puede ser cualquier imagen personalizada a tu antojo pero debe ser subida con ese nombre.
+---
 
-🧯 Soporte
-Cualquier duda o aporte, estare agradecido de tu feedback - Román (CA2RDP)
+## 🧯 Soporte y reportes
 
-🛠️ ¿Cómo crear un issue?
-Ve al repositorio en GitHub (por ejemplo: https://github.com/telecov/auroxlink)
-- Haz clic en la pestaña "Issues"
-- Luego clic en "New Issue"
-- Escribe:
----- Un título claro (ej: Agregar panel de control de audio)
--Una descripción detallada del problema o idea
+Repositorio oficial:
 
-- Haz clic en "Submit new issue"
+```text
+https://github.com/telecov/auroxlink
+```
 
+Para reportar un problema o proponer una mejora utiliza la sección **Issues** del repositorio e incluye:
+
+- Descripción del problema
+- Sistema operativo
+- Modelo de Raspberry Pi o servidor
+- Versión de AUROXLINK
+- Versión de SvxLink
+- Logs relevantes
+
+---
+
+**AUROXLINK v1.7**
