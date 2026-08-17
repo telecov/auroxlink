@@ -2,6 +2,11 @@
 set -Eeuo pipefail
 
 # =========================================================
+# IMPORTANTE: Este script instala el paquete svxlink-server
+# de la distribución como base. NO actualiza SvxLink desde
+# GitHub. Esa acción es opcional y se realiza mediante
+# install_svxlink_latest.sh.
+# =========================================================
 # AUROXLINK - Instalador oficial v1.7+
 # Compatible con Debian / Raspberry Pi OS / Ubuntu / Armbian
 # =========================================================
@@ -90,7 +95,7 @@ log "[2/13] Instalando dependencias de AUROXLINK v1.7"
 apt_update_safe
 apt_install_safe \
   apache2 \
-  php php-cli php-curl libapache2-mod-php \
+  php php-cli php-curl php-zip libapache2-mod-php \
   git curl wget unzip bzip2 ca-certificates lsb-release psmisc cron sudo \
   network-manager wireless-tools alsa-utils \
   iproute2 procps usbutils \
@@ -98,6 +103,7 @@ apt_install_safe \
 
 command -v php >/dev/null 2>&1 || fail "PHP no quedó instalado."
 php -m | grep -qi '^curl$' || fail "La extensión PHP cURL no está cargada."
+php -r 'exit(class_exists("ZipArchive") ? 0 : 1);' || fail "La extensión PHP ZipArchive no está cargada."
 command -v svxlink >/dev/null 2>&1 || fail "SVXLink no quedó instalado."
 ok "Dependencias instaladas. PHP $(php -r 'echo PHP_VERSION;')"
 
@@ -391,4 +397,3 @@ printf '\nClave inicial del panel: admin123\n'
 printf 'Cámbiala inmediatamente desde la configuración de AUROXLINK.\n'
 printf '\nTailscale queda instalado pero no conectado hasta que lo configures.\n'
 printf 'Si SVXLink no inició, configura primero CALLSIGN, EchoLink y audio.\n'
-
