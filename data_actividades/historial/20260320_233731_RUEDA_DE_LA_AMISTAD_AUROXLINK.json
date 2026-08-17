@@ -1,0 +1,37 @@
+{
+    "actividad": {
+        "nombre": "RUEDA DE LA AMISTAD AUROXLINK",
+        "tipo": "SVXLINK",
+        "modulo": "CA2RDP-L",
+        "descripcion": "RUEDA DE LA AMISTAD EN AUROXLINK",
+        "fecha_inicio": "2026-03-20 23:35:50",
+        "estado": "finished",
+        "fecha_fin": "2026-03-20 23:37:31"
+    },
+    "participantes": [
+        {
+            "id": "p_69be042e4533c2.16627852",
+            "hora": "23:36",
+            "callsign": "CA2RDP",
+            "nombre": "ROMAN",
+            "ubicacion": "CHILE",
+            "senal": "5\/9",
+            "modo": "FM",
+            "condicion": "MOVIL",
+            "potencia": "10W",
+            "comentario": "SALUDOS TELECOS"
+        },
+        {
+            "id": "p_69be045c659111.98537277",
+            "hora": "23:37",
+            "callsign": "CA2RDP",
+            "nombre": "ROMAN",
+            "ubicacion": "La Serena, Coquimbo, Chile",
+            "senal": "5\/9",
+            "modo": "FM",
+            "condicion": "PORTATIL",
+            "potencia": "5W",
+            "comentario": "PRUEBA DE COMUNICACIONES 73"
+        }
+    ]
+}

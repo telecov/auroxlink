@@ -1,0 +1,13 @@
+{
+    "nombre_zona": "AUROXLINK",
+    "radioaficionado": "TU NOMBRE / INDICATIVO",
+    "frecuencia": "145.000 MHz",
+    "titulo_dashboard": "Dashboard Nodo EchoLink",
+    "indicativo": "TU-INDICATIVO-L",
+    "ciudad": "Tu ciudad",
+    "utc_offset": "0",
+    "color_sidebar": "#212529",
+    "color_fondo": "#e9ecef",
+    "color_titulo": "#000000",
+    "logo": "auroxlink_banner.png"
+}

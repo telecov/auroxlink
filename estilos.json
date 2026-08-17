@@ -1,0 +1,13 @@
+{
+    "nombre_zona": "AUROXLINK",
+    "radioaficionado": "Roman CA2RDP",
+    "frecuencia": "145.050 Mhz",
+    "titulo_dashboard": "Dashboard Nodo EchoLink ",
+    "indicativo": "CA2RDP-L",
+    "ciudad": "La Serena, Chile",
+    "utc_offset": "-4",
+    "color_sidebar": "#212529",
+    "color_fondo": "#e9ecef",
+    "color_titulo": "#000000",
+    "logo": "auroralink_banner.png"
+}

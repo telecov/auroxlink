@@ -1,0 +1,18 @@
+# AUROXLINK - Credenciales y secretos
+
+# Telegram real del nodo
+/telegram_config.json
+
+# Variables privadas
+.env
+.env.*
+!.env.example
+
+# Claves / certificados privados
+*.key
+*.pem
+
+# Archivos explícitos de secretos
+secrets/
+secret.*
+credentials.*

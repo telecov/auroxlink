@@ -1,0 +1,22 @@
+[
+    {
+        "titulo": "PROBANDO AUROXLINK QSL",
+        "fecha": "2025-05-11",
+        "hora": "02:00",
+        "lugar": "LA SERENA ",
+        "frecuencia": "145.050 Mhz",
+        "modo": "FM ECHOLINK",
+        "qsl": "Sí",
+        "mensaje": "PRUEBA DE QSL"
+    },
+    {
+        "titulo": "RUEDA DE LA AMISTAD AUROXLINK",
+        "fecha": "2026-03-20",
+        "hora": "00:00",
+        "lugar": "CHILE",
+        "frecuencia": "145.680 MHZ",
+        "modo": "SIMPLEX",
+        "qsl": "Sí",
+        "mensaje": "RUEDA DE LA AMISTAD AUROXLINK"
+    }
+]
