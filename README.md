@@ -161,9 +161,23 @@ Radioaficionado, telecomunicaciones y desarrollo de herramientas para la comunid
 
 ---
 
-## ❤️ Apoya el proyecto
+## ❤️ Apoya AUROXLINK y futuros proyectos
 
-Si AUROXLINK te resulta útil, puedes apoyar el proyecto compartiéndolo, reportando errores, proponiendo mejoras o marcando el repositorio con una ⭐.
+AUROXLINK es un proyecto desarrollado para la comunidad. Si este software te ha sido útil y quieres ayudar a que siga creciendo, puedes **hacerte miembro del canal TelecoViajero en YouTube**.
+
+Tu apoyo ayuda a seguir desarrollando **AUROXLINK y otros proyectos de radioafición, telecomunicaciones, redes y software**, además de permitir nuevas pruebas, documentación y mejoras para la comunidad.
+
+<p align="center">
+  <a href="https://www.youtube.com/channel/UCekZOnVxrOoDuJlFCgGKi9A/join">
+    <img src="https://img.shields.io/badge/Hazte%20Miembro-YouTube-red?style=for-the-badge&logo=youtube" alt="Hazte miembro de TelecoViajero en YouTube">
+  </a>
+</p>
+
+<p align="center">
+  <b>Gracias por apoyar el desarrollo de herramientas abiertas para la comunidad de radioaficionados. 📡</b>
+</p>
+
+También puedes apoyar compartiendo AUROXLINK, reportando errores, proponiendo mejoras o marcando el repositorio con una ⭐.
 
 ---
 
