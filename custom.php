@@ -98,7 +98,7 @@ $colorTitulo  = $style['color_titulo'] ?? '#000000';
 /* =========================================================
    MENSAJES
 ========================================================= */
-$guardado_ok = false;
+$guardado_ok = isset($_GET['guardado']) && $_GET['guardado'] === 'ok';
 $guardado_ip = false;
 $guardado_wifi = false;
 $error_red = '';
@@ -204,14 +204,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
-        file_put_contents($styleFile, json_encode($nuevo_estilo, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
-        $style = $nuevo_estilo;
+        $json_estilo = json_encode(
+            $nuevo_estilo,
+            JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE
+        );
 
-        $colorFondo   = $style['color_fondo'] ?? '#e9ecef';
-        $colorSidebar = $style['color_sidebar'] ?? '#212529';
-        $colorTitulo  = $style['color_titulo'] ?? '#000000';
-
-        $guardado_ok = true;
+        if (
+            $json_estilo === false ||
+            file_put_contents($styleFile, $json_estilo, LOCK_EX) === false
+        ) {
+            $message = '❌ No fue posible guardar la personalización.';
+        } else {
+            header('Location: custom.php?guardado=ok');
+            exit;
+        }
     }
 
     if (isset($_POST['guardar_ip'])) {

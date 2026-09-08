@@ -1206,14 +1206,20 @@ if (
                                     <h2
                                         class="fs-4 titulo mb-1"
                                     >
-                                        📻 Identificación CW
+                                        📻 <?= t(
+                                            'settings_cw_title',
+                                            'Identificación CW'
+                                        ); ?>
                                     </h2>
 
 
                                     <small
                                         class="text-muted"
                                     >
-                                        Configuración de identificación Morse en [SimplexLogic]
+                                        <?= t(
+                                            'settings_cw_description',
+                                            'Configuración de identificación Morse en [SimplexLogic]'
+                                        ); ?>
                                     </small>
 
                                 </div>
@@ -1227,7 +1233,10 @@ if (
                                     <span
                                         class="badge bg-success"
                                     >
-                                        CW ACTIVO
+                                        <?= t(
+                                            'settings_cw_active',
+                                            'CW ACTIVO'
+                                        ); ?>
                                     </span>
 
                                 <?php
@@ -1237,7 +1246,10 @@ if (
                                     <span
                                         class="badge bg-secondary"
                                     >
-                                        CW DESACTIVADO
+                                        <?= t(
+                                            'settings_cw_inactive',
+                                            'CW DESACTIVADO'
+                                        ); ?>
                                     </span>
 
                                 <?php
@@ -1254,7 +1266,10 @@ if (
                             >
 
                                 <strong>
-                                    Indicativo:
+                                    <?= t(
+                                        'settings_cw_callsign',
+                                        'Indicativo'
+                                    ); ?>:
                                 </strong>
 
                                 <?= htmlspecialchars(
@@ -1344,7 +1359,10 @@ if (
                                     <h5
                                         class="mb-3"
                                     >
-                                        ⏱️ Identificación corta
+                                        ⏱️ <?= t(
+                                            'settings_cw_short_ident',
+                                            'Identificación corta'
+                                        ); ?>
                                     </h5>
 
 
@@ -1394,7 +1412,10 @@ if (
                                                     class="form-check-label"
                                                     for="cw_short_voice"
                                                 >
-                                                    🔊 Voz
+                                                    🔊 <?= t(
+                                                        'settings_cw_voice',
+                                                        'Voz'
+                                                    ); ?>
                                                 </label>
 
 
@@ -1466,7 +1487,10 @@ if (
                                                 for="cw_short_interval"
                                                 class="form-label"
                                             >
-                                                Intervalo
+                                                <?= t(
+                                                    'settings_cw_interval',
+                                                    'Intervalo'
+                                                ); ?>
                                             </label>
 
 
@@ -1496,7 +1520,10 @@ if (
                                                 <span
                                                     class="input-group-text"
                                                 >
-                                                    minutos
+                                                    <?= t(
+                                                        'settings_cw_minutes',
+                                                        'minutos'
+                                                    ); ?>
                                                 </span>
 
 
@@ -1525,7 +1552,10 @@ if (
                                     <h5
                                         class="mb-3"
                                     >
-                                        ⏱️ Identificación larga
+                                        ⏱️ <?= t(
+                                            'settings_cw_long_ident',
+                                            'Identificación larga'
+                                        ); ?>
                                     </h5>
 
 
@@ -1575,7 +1605,10 @@ if (
                                                     class="form-check-label"
                                                     for="cw_long_voice"
                                                 >
-                                                    🔊 Voz
+                                                    🔊 <?= t(
+                                                        'settings_cw_voice',
+                                                        'Voz'
+                                                    ); ?>
                                                 </label>
 
 
@@ -1647,7 +1680,10 @@ if (
                                                 for="cw_long_interval"
                                                 class="form-label"
                                             >
-                                                Intervalo
+                                                <?= t(
+                                                    'settings_cw_interval',
+                                                    'Intervalo'
+                                                ); ?>
                                             </label>
 
 
@@ -1677,7 +1713,10 @@ if (
                                                 <span
                                                     class="input-group-text"
                                                 >
-                                                    minutos
+                                                    <?= t(
+                                                        'settings_cw_minutes',
+                                                        'minutos'
+                                                    ); ?>
                                                 </span>
 
 
@@ -1706,7 +1745,10 @@ if (
                                     <h5
                                         class="mb-3"
                                     >
-                                        🎛️ Configuración Morse
+                                        🎛️ <?= t(
+                                            'settings_cw_morse_config',
+                                            'Configuración Morse'
+                                        ); ?>
                                     </h5>
 
 
@@ -1724,7 +1766,10 @@ if (
                                                 for="cw_wpm"
                                                 class="form-label"
                                             >
-                                                Velocidad
+                                                <?= t(
+                                                    'settings_cw_speed',
+                                                    'Velocidad'
+                                                ); ?>
                                             </label>
 
 
@@ -1774,7 +1819,10 @@ if (
                                                 for="cw_pitch"
                                                 class="form-label"
                                             >
-                                                Tono
+                                                <?= t(
+                                                    'settings_cw_tone',
+                                                    'Tono'
+                                                ); ?>
                                             </label>
 
 
@@ -1824,7 +1872,10 @@ if (
                                                 for="cw_amp"
                                                 class="form-label"
                                             >
-                                                Nivel
+                                                <?= t(
+                                                    'settings_cw_level',
+                                                    'Nivel'
+                                                ); ?>
                                             </label>
 
 
@@ -1877,13 +1928,22 @@ if (
 
                                     <small>
 
-                                        Si estos parámetros todavía
-                                        no existen en
+                                        <?= t(
+                                            'settings_cw_auto_create',
+                                            'Si estos parámetros todavía no existen en'
+                                        ); ?>
                                         <strong>svxlink.conf</strong>,
-                                        AUROXLINK los creará
-                                        automáticamente dentro de
+                                        <?= t(
+                                            'settings_cw_auto_create_2',
+                                            'AUROXLINK los creará automáticamente dentro de'
+                                        ); ?>
                                         <strong>[SimplexLogic]</strong>.
-					<strong>Compatibilidad: SvxLink 1.7.0 (19.09)+</strong>.
+                                        <strong>
+                                            <?= t(
+                                                'settings_cw_compatibility',
+                                                'Compatibilidad: SvxLink 1.7.0 (19.09)+'
+                                            ); ?>
+                                        </strong>.
 
                                     </small>
 
@@ -1899,7 +1959,10 @@ if (
                                         type="submit"
                                         class="btn btn-primary"
                                     >
-                                        💾 Guardar configuración CW
+                                        💾 <?= t(
+                                            'settings_cw_save',
+                                            'Guardar configuración CW'
+                                        ); ?>
                                     </button>
 
                                 </div>

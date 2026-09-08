@@ -62,7 +62,6 @@
   "unknown_weather": "Unknown weather",
   "weather_unavailable": "Weather unavailable",
   "city_not_found": "City not found",
-
   "menu_dashboard": "DASHBOARD",
   "menu_node_status": "Node Status",
   "menu_echolink_traffic": "EchoLink Traffic",
@@ -77,7 +76,6 @@
   "sidebar_new_version": "New AUROXLINK version",
   "sidebar_update_button": "Update",
   "sidebar_confirm_update": "Do you want to update AUROXLINK right now?",
-
   "txrx_unknown": "Unknown",
   "tx_active": "TX Active",
   "rx_standby": "RX Standby",
@@ -85,7 +83,6 @@
   "last_tx": "Last TX",
   "duration": "Duration",
   "not_available": "Not available",
-
   "online": "Online",
   "manual_disconnect": "Manually disconnected",
   "cannot_detect_active_connection": "Could not detect the active connection.",
@@ -149,7 +146,6 @@
   "custom_vpn_step_9": "From another device, open http://100.x.x.x.",
   "ready": "Done",
   "custom_vpn_ready_text": "You now have remote access to your node.",
-
   "backup_restore_title": "Backup and Restore",
   "backup_restore_desc": "Download a backup copy of customization and Telegram, or restore it from a file.",
   "backup_download": "Download configuration backup",
@@ -157,9 +153,6 @@
   "backup_restore_button": "Restore backup",
   "backup_restore_confirm": "Are you sure you want to restore the configuration? This will overwrite styles and Telegram.",
   "backup_restore_success": "Backup restored successfully.",
-
-
-
   "settings_echolink_module": "EchoLink Module Settings",
   "settings_view_help": "View Help",
   "settings_node_id_placeholder": "Node ID or 0 to disable",
@@ -181,8 +174,6 @@
   "settings_enter": "Enter",
   "settings_back_dashboard": "Back to Dashboard",
   "back_to_customization": "Back to Customization",
-
-
   "inactive": "Inactive",
   "statusnode_system_on_since": "System has been running for",
   "statusnode_cpu_temp": "CPU Temp.",
@@ -203,7 +194,6 @@
   "statusnode_system_version": "System Version",
   "statusnode_chart_cpu": "CPU (%)",
   "statusnode_chart_temp": "Temp (°C)",
-
   "about_title": "About AuroxLink",
   "about_subtitle": "Visual Control System for SVXLink",
   "about_hero_title": "AUROXLINK: clarity, control and community",
@@ -259,7 +249,6 @@
   "about_join_youtube_membership": "Join YouTube Membership",
   "about_follow_me": "Follow me on my social networks:",
   "about_understood": "Who understood, understood.",
-
   "connections_title": "Active EchoLink Connections",
   "connections_aprs_status": "APRS Status",
   "connections_server": "Server",
@@ -275,7 +264,6 @@
   "connections_type_child_node": "Child node",
   "connections_type_child_station": "Child station",
   "connections_type_child_conference": "Child conference",
-
   "traffic_title": "EchoLink Traffic",
   "traffic_export_data": "Export Data",
   "traffic_activity_by_hour": "Activity by Hour",
@@ -297,7 +285,6 @@
   "traffic_node": "Node",
   "traffic_user": "User",
   "traffic_unknown_country": "Unknown",
-
   "qsl_generator_title": "QSL Generator",
   "qsl_digital_title": "Digital QSLs",
   "qsl_manager_title": "Activity and QSL Manager",
@@ -340,7 +327,6 @@
   "qsl_delete_error": "Error deleting",
   "yes": "Yes",
   "no": "No",
-
   "qsl_no_saved": "There are no saved QSLs yet.",
   "qsl_download": "Download",
   "qsl_delete": "Delete",
@@ -348,7 +334,6 @@
   "qsl_share_telegram": "Share on Telegram",
   "qsl_direct_link": "Direct link",
   "qsl_delete_confirm_file": "Are you sure you want to delete this QSL?",
-
   "help_title": "AUROXLINK Help Center",
   "help_official_center": "Official Help Center for",
   "help_everything_title": "Everything you need to know to get your AUROXLINK node running at 100%",
@@ -424,7 +409,6 @@
   "help_admin_photo_desc": "Administrator avatar (upload it using the name [admin.png]).",
   "help_colors": "Colors",
   "help_colors_desc": "Background, sidebar and title colors.",
-
   "tg_new_connection_title": "AUROXLINK - New Connection",
   "tg_disconnect_title": "AUROXLINK - Disconnection",
   "tg_callsign": "Callsign",
@@ -436,7 +420,6 @@
   "tg_test_success_message": "Prueba exitosa de Telegram desde AUROXLINK!",
   "tg_test_error": "Error al enviar mensaje de prueba a Telegram.",
   "tg_test_sent_ok": "Mensaje de prueba enviado correctamente a tu Telegram.",
-
   "daily_admin": "Administrator",
   "daily_hello": "Hello",
   "daily_status_intro": "Here is the daily status of your AUROXLINK node:",
@@ -447,7 +430,6 @@
   "daily_svx_stopped": "SVXLink: Stopped",
   "daily_log_sent": "Daily status sent to",
   "daily_log_error": "Error sending daily status",
-
   "activity_log_title": "Activity Log",
   "activity_log_heading": "Radio Activity Log",
   "activity_log_subtitle": "Create activities, register participants and keep a historical record.",
@@ -485,8 +467,8 @@
   "participant_delete_confirm": "Delete this participant?",
   "participant_list_title": "Registered Participants",
   "participant_count_label": "participant(s)",
-  "participant_none_active": "No participants have been registered yet.",
-  "participant_none_no_activity": "Start an activity to register participants.",
+  "participant_none_active": "No participants registered yet.",
+  "participant_none_no_activity": "There is no active activity. Create one in QSL Generator to begin.",
   "participant_none_history": "No participants were registered in this activity.",
   "history_title": "Activity History",
   "history_backup_button": "Download Backup ZIP",
@@ -494,7 +476,7 @@
   "history_actions": "Actions",
   "history_view_button": "View",
   "history_download_button": "Download",
-  "history_empty": "No historical activities yet.",
+  "history_empty": "No activities yet.",
   "view_activity_title": "View Activity",
   "view_activity_heading": "Activity Details",
   "view_activity_invalid_file": "Invalid file.",
@@ -512,25 +494,30 @@
   "table_power": "Power",
   "table_comment": "Comment",
   "table_action": "Action",
-  "menu_activity_log": "Activity Log",
- 
   "activity_date": "Date",
   "activity_time": "Time",
   "activity_place": "Place",
   "activity_frequency": "Frequency",
   "activity_mode": "Mode",
-
-  "participant_none_active": "No participants registered yet.",
-  "participant_none_no_activity": "There is no active activity. Create one in QSL Generator to begin.",
-
-  "history_title": "Activity History",
-  "history_file": "File",
-  "history_actions": "Actions",
-  "history_view_button": "View",
-  "history_download_button": "Download",
-  "history_empty": "No activities yet.",
-  "history_backup_button": "Download Backup ZIP",
-"activity_no_active_title": "No active activity",
-  "activity_no_active_message": "To start a new activity, create it first from QSL Generator. Once created, it will appear here automatically."
-
+  "activity_no_active_title": "No active activity",
+  "activity_no_active_message": "To start a new activity, create it first from QSL Generator. Once created, it will appear here automatically.",
+  "settings_cw_title": "CW Identification",
+  "settings_cw_description": "Morse identification settings in [SimplexLogic]",
+  "settings_cw_active": "CW ACTIVE",
+  "settings_cw_inactive": "CW DISABLED",
+  "settings_cw_callsign": "Callsign",
+  "settings_cw_not_configured": "Not configured",
+  "settings_cw_short_ident": "Short identification",
+  "settings_cw_long_ident": "Long identification",
+  "settings_cw_voice": "Voice",
+  "settings_cw_interval": "Interval",
+  "settings_cw_minutes": "minutes",
+  "settings_cw_morse_config": "Morse Configuration",
+  "settings_cw_speed": "Speed",
+  "settings_cw_tone": "Tone",
+  "settings_cw_level": "Level",
+  "settings_cw_auto_create": "If these parameters do not yet exist in",
+  "settings_cw_auto_create_2": "AUROXLINK will automatically create them inside",
+  "settings_cw_compatibility": "Compatibility: SvxLink 1.7.0 (19.09)+",
+  "settings_cw_save": "Save CW configuration"
 }
