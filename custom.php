@@ -355,24 +355,35 @@ $chat_id_actual = $telegram_config['chat_id'] ?? '';
             <div class="col-12 col-md-10 p-3">
                 <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
                     <div class="d-flex align-items-center">
-                        <button class="btn btn-dark d-md-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu">
+                        <button class="btn btn-dark d-md-none me-2" type="button"
+                                data-bs-toggle="offcanvas" data-bs-target="#mobileMenu"
+                                aria-controls="mobileMenu">
                             ☰
                         </button>
                         <h2 class="fs-4 titulo m-0">🎨 <?= t('custom_system_customization', 'System Customization'); ?></h2>
                     </div>
-                    <a href="index.php" class="btn btn-outline-secondary">⬅️ <?= t('settings_back_dashboard', 'Back to Dashboard'); ?></a>
+
+                    <a href="index.php" class="btn btn-outline-secondary">
+                        ⬅️ <?= t('settings_back_dashboard', 'Back to Dashboard'); ?>
+                    </a>
                 </div>
 
                 <?php if ($guardado_ok): ?>
-                    <div class="alert alert-success mt-3">✅ <?= t('custom_saved_successfully', 'Customization saved successfully.'); ?></div>
+                    <div class="alert alert-success mt-3">
+                        ✅ <?= t('custom_saved_successfully', 'Customization saved successfully.'); ?>
+                    </div>
                 <?php endif; ?>
 
                 <?php if ($guardado_ip): ?>
-                    <div class="alert alert-info mt-3">✅ <?= t('ip_saved_successfully', 'IP configured and applied successfully.'); ?></div>
+                    <div class="alert alert-info mt-3">
+                        ✅ <?= t('ip_saved_successfully', 'IP configured and applied successfully.'); ?>
+                    </div>
                 <?php endif; ?>
 
                 <?php if ($guardado_wifi): ?>
-                    <div class="alert alert-info mt-3">📶 <?= t('wifi_connected_successfully', 'WiFi connected successfully.'); ?></div>
+                    <div class="alert alert-info mt-3">
+                        📶 <?= t('wifi_connected_successfully', 'WiFi connected successfully.'); ?>
+                    </div>
                 <?php endif; ?>
 
                 <?php if ($error_red): ?>
@@ -384,117 +395,167 @@ $chat_id_actual = $telegram_config['chat_id'] ?? '';
                 <?php endif; ?>
 
                 <?php if (isset($_GET['restore']) && $_GET['restore'] === 'ok'): ?>
-                    <div class="alert alert-success mt-3">✅ <?= t('backup_restore_success', 'Backup restored successfully.'); ?></div>
+                    <div class="alert alert-success mt-3">
+                        ✅ <?= t('backup_restore_success', 'Backup restored successfully.'); ?>
+                    </div>
                 <?php endif; ?>
 
-                <div class="row mt-3">
-                    <div class="col-md-6">
-                        <form method="POST" enctype="multipart/form-data">
-                            <input type="hidden" name="guardar_estilo" value="1">
+                <div class="row g-4 mt-1">
 
-                            <div class="form-group mb-3">
-                                <label><?= t('custom_dashboard_name', 'Dashboard Name'); ?></label>
-                                <input type="text" name="titulo_dashboard" class="form-control" value="<?= htmlspecialchars($style['titulo_dashboard'] ?? '') ?>">
+                    <!-- =====================================================
+                         COLUMNA IZQUIERDA
+                    ====================================================== -->
+                    <div class="col-12 col-xl-6">
+
+                        <!-- Personalización general -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-3">
+                                    <div>
+                                        <h5 class="card-title mb-1">🎨 <?= t('custom_system_customization', 'System Customization'); ?></h5>
+                                        <p class="text-muted mb-0">
+                                            <?= t('custom_visual_settings_desc', 'Identity, station information and visual appearance of AUROXLINK.'); ?>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <form method="POST" enctype="multipart/form-data">
+                                    <input type="hidden" name="guardar_estilo" value="1">
+
+                                    <div class="row g-3">
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label"><?= t('custom_dashboard_name', 'Dashboard Name'); ?></label>
+                                            <input type="text" name="titulo_dashboard" class="form-control"
+                                                   value="<?= htmlspecialchars($style['titulo_dashboard'] ?? '') ?>">
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label"><?= t('custom_ham_name', 'Radio Amateur Name'); ?></label>
+                                            <input type="text" name="radioaficionado" class="form-control"
+                                                   value="<?= htmlspecialchars($style['radioaficionado'] ?? '') ?>">
+                                        </div>
+
+                                        <div class="col-12 col-md-4">
+                                            <label class="form-label"><?= t('mode', 'Mode'); ?></label>
+                                            <input type="text" name="modo" class="form-control"
+                                                   value="<?= htmlspecialchars($style['modo'] ?? '') ?>">
+                                        </div>
+
+                                        <div class="col-12 col-md-4">
+                                            <label class="form-label"><?= t('custom_node_frequency', 'Node Frequency'); ?></label>
+                                            <input type="text" name="frecuencia" class="form-control"
+                                                   value="<?= htmlspecialchars($style['frecuencia'] ?? '') ?>">
+                                        </div>
+
+                                        <div class="col-12 col-md-4">
+                                            <label class="form-label"><?= t('offset', 'Offset'); ?></label>
+                                            <input type="text" name="offset" class="form-control"
+                                                   value="<?= htmlspecialchars($style['offset'] ?? '') ?>">
+                                        </div>
+
+                                        <div class="col-12 col-md-4">
+                                            <label class="form-label"><?= t('tone', 'Tone'); ?></label>
+                                            <input type="text" name="tono" class="form-control"
+                                                   value="<?= htmlspecialchars($style['tono'] ?? '') ?>">
+                                        </div>
+
+                                        <div class="col-12 col-md-8">
+                                            <label class="form-label"><?= t('custom_system_location', 'System Location'); ?></label>
+                                            <input type="text" name="ubicacion" class="form-control"
+                                                   value="<?= htmlspecialchars($style['ubicacion'] ?? '') ?>">
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label class="form-label"><?= t('custom_aprs_server', 'APRS Web Server'); ?></label>
+                                            <input type="text" name="aprs_web" class="form-control"
+                                                   value="<?= htmlspecialchars($style['aprs_web'] ?? '') ?>">
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label"><?= t('custom_zone_name', 'Zone Name'); ?></label>
+                                            <input type="text" name="nombre_zona" class="form-control"
+                                                   value="<?= htmlspecialchars($style['nombre_zona'] ?? '') ?>">
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label"><?= t('callsign', 'Callsign'); ?></label>
+                                            <input type="text" name="indicativo" class="form-control"
+                                                   value="<?= htmlspecialchars($style['indicativo'] ?? '') ?>">
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label"><?= t('location', 'City'); ?></label>
+                                            <input type="text" name="ciudad" class="form-control"
+                                                   value="<?= htmlspecialchars($style['ciudad'] ?? '') ?>">
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label"><?= t('custom_utc_offset', 'UTC Offset'); ?></label>
+                                            <input type="text" name="utc_offset" class="form-control"
+                                                   value="<?= htmlspecialchars($style['utc_offset'] ?? '') ?>">
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label class="form-label"><?= t('custom_system_language', 'System Language'); ?></label>
+                                            <select name="idioma" class="form-select">
+                                                <option value="es" <?= (($style['idioma'] ?? 'es') === 'es') ? 'selected' : '' ?>>Español</option>
+                                                <option value="en" <?= (($style['idioma'] ?? 'es') === 'en') ? 'selected' : '' ?>>English</option>
+                                                <option value="pt" <?= (($style['idioma'] ?? 'es') === 'pt') ? 'selected' : '' ?>>Português</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label"><?= t('custom_banner_logo', 'Banner Logo (PNG/JPG)'); ?></label>
+                                            <input type="hidden" name="logo_actual"
+                                                   value="<?= htmlspecialchars($style['logo'] ?? 'auroralink_banner.png') ?>">
+                                            <input type="file" name="logo" class="form-control">
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label"><?= t('custom_admin_photo', 'Admin Photo (PNG/JPG)'); ?></label>
+                                            <input type="hidden" name="foto_admin_actual"
+                                                   value="<?= htmlspecialchars($style['foto_admin'] ?? 'img/admin.png') ?>">
+                                            <input type="file" name="foto_admin" class="form-control">
+                                        </div>
+
+                                        <div class="col-12 col-md-4">
+                                            <label class="form-label"><?= t('custom_background_color', 'Background Color'); ?></label>
+                                            <input type="color" name="color_fondo"
+                                                   class="form-control form-control-color"
+                                                   value="<?= htmlspecialchars($colorFondo) ?>">
+                                        </div>
+
+                                        <div class="col-12 col-md-4">
+                                            <label class="form-label"><?= t('custom_sidebar_color', 'Sidebar Color'); ?></label>
+                                            <input type="color" name="color_sidebar"
+                                                   class="form-control form-control-color"
+                                                   value="<?= htmlspecialchars($colorSidebar) ?>">
+                                        </div>
+
+                                        <div class="col-12 col-md-4">
+                                            <label class="form-label"><?= t('custom_title_color', 'Title Color'); ?></label>
+                                            <input type="color" name="color_titulo"
+                                                   class="form-control form-control-color"
+                                                   value="<?= htmlspecialchars($colorTitulo) ?>">
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-end mt-4">
+                                        <button type="submit" class="btn btn-success">
+                                            💾 <?= t('custom_save_customization', 'Save Customization'); ?>
+                                        </button>
+                                    </div>
+                                </form>
                             </div>
+                        </div>
 
-                            <div class="form-group mb-3">
-                                <label><?= t('custom_ham_name', 'Radio Amateur Name'); ?></label>
-                                <input type="text" name="radioaficionado" class="form-control" value="<?= htmlspecialchars($style['radioaficionado'] ?? '') ?>">
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label><?= t('mode', 'Mode'); ?></label>
-                                <input type="text" name="modo" class="form-control" value="<?= htmlspecialchars($style['modo'] ?? '') ?>">
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label><?= t('custom_node_frequency', 'Node Frequency'); ?></label>
-                                <input type="text" name="frecuencia" class="form-control" value="<?= htmlspecialchars($style['frecuencia'] ?? '') ?>">
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label><?= t('offset', 'Offset'); ?></label>
-                                <input type="text" name="offset" class="form-control" value="<?= htmlspecialchars($style['offset'] ?? '') ?>">
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label><?= t('tone', 'Tone'); ?></label>
-                                <input type="text" name="tono" class="form-control" value="<?= htmlspecialchars($style['tono'] ?? '') ?>">
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label><?= t('custom_system_location', 'System Location'); ?></label>
-                                <input type="text" name="ubicacion" class="form-control" value="<?= htmlspecialchars($style['ubicacion'] ?? '') ?>">
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label><?= t('custom_aprs_server', 'APRS Web Server'); ?></label>
-                                <input type="text" name="aprs_web" class="form-control" value="<?= htmlspecialchars($style['aprs_web'] ?? '') ?>">
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label><?= t('custom_zone_name', 'Zone Name'); ?></label>
-                                <input type="text" name="nombre_zona" class="form-control" value="<?= htmlspecialchars($style['nombre_zona'] ?? '') ?>">
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label><?= t('callsign', 'Callsign'); ?></label>
-                                <input type="text" name="indicativo" class="form-control" value="<?= htmlspecialchars($style['indicativo'] ?? '') ?>">
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label><?= t('location', 'City'); ?></label>
-                                <input type="text" name="ciudad" class="form-control" value="<?= htmlspecialchars($style['ciudad'] ?? '') ?>">
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label><?= t('custom_utc_offset', 'UTC Offset'); ?></label>
-                                <input type="text" name="utc_offset" class="form-control" value="<?= htmlspecialchars($style['utc_offset'] ?? '') ?>">
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label><?= t('custom_system_language', 'System Language'); ?></label>
-                                <select name="idioma" class="form-control">
-                                    <option value="es" <?= (($style['idioma'] ?? 'es') === 'es') ? 'selected' : '' ?>>Español</option>
-                                    <option value="en" <?= (($style['idioma'] ?? 'es') === 'en') ? 'selected' : '' ?>>English</option>
-                                    <option value="pt" <?= (($style['idioma'] ?? 'es') === 'pt') ? 'selected' : '' ?>>Português</option>
-                                </select>
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label><?= t('custom_banner_logo', 'Banner Logo (PNG/JPG)'); ?></label>
-                                <input type="hidden" name="logo_actual" value="<?= htmlspecialchars($style['logo'] ?? 'auroralink_banner.png') ?>">
-                                <input type="file" name="logo" class="form-control">
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label><?= t('custom_admin_photo', 'Admin Photo (PNG/JPG)'); ?></label>
-                                <input type="hidden" name="foto_admin_actual" value="<?= htmlspecialchars($style['foto_admin'] ?? 'img/admin.png') ?>">
-                                <input type="file" name="foto_admin" class="form-control">
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label><?= t('custom_background_color', 'Background Color'); ?></label>
-                                <input type="color" name="color_fondo" class="form-control form-control-color" value="<?= htmlspecialchars($colorFondo) ?>">
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label><?= t('custom_sidebar_color', 'Sidebar Color'); ?></label>
-                                <input type="color" name="color_sidebar" class="form-control form-control-color" value="<?= htmlspecialchars($colorSidebar) ?>">
-                            </div>
-
-                            <div class="form-group mb-3">
-                                <label><?= t('custom_title_color', 'Title Color'); ?></label>
-                                <input type="color" name="color_titulo" class="form-control form-control-color" value="<?= htmlspecialchars($colorTitulo) ?>">
-                            </div>
-
-                            <button type="submit" class="btn btn-success mb-3">💾 <?= t('custom_save_customization', 'Save Customization'); ?></button>
-                        </form>
-
-                        <div class="card mt-4 mb-4">
+                        <!-- Backup y restauración -->
+                        <div class="card shadow-sm mb-4">
                             <div class="card-body">
                                 <h5 class="card-title">🗂️ <?= t('backup_restore_title', 'Backup and Restore'); ?></h5>
-                                <p class="mb-3"><?= t('backup_restore_desc', 'Download a backup copy of customization and Telegram, or restore it from a file.'); ?></p>
+                                <p class="text-muted">
+                                    <?= t('backup_restore_desc', 'Download a backup copy of customization and Telegram, or restore it from a file.'); ?>
+                                </p>
 
                                 <div class="d-grid gap-2 mb-3">
                                     <a href="backup_config.php" class="btn btn-outline-primary">
@@ -503,47 +564,55 @@ $chat_id_actual = $telegram_config['chat_id'] ?? '';
                                 </div>
 
                                 <form method="POST" action="restore_config.php" enctype="multipart/form-data">
-                                    <div class="form-group mb-3">
-                                        <label><?= t('backup_restore_label', 'Restore from backup file (.json)'); ?></label>
-                                        <input type="file" name="backup_file" class="form-control" accept=".json,application/json" required>
-                                    </div>
+                                    <label class="form-label">
+                                        <?= t('backup_restore_label', 'Restore from backup file (.json)'); ?>
+                                    </label>
+                                    <input type="file" name="backup_file" class="form-control mb-3"
+                                           accept=".json,application/json" required>
+
                                     <button type="submit" class="btn btn-warning"
-                                        onclick="return confirm('<?= t('backup_restore_confirm', 'Are you sure you want to restore the configuration? This will overwrite styles and Telegram.'); ?>');">
+                                            onclick="return confirm('<?= t('backup_restore_confirm', 'Are you sure you want to restore the configuration? This will overwrite styles and Telegram.'); ?>');">
                                         ♻️ <?= t('backup_restore_button', 'Restore backup'); ?>
                                     </button>
                                 </form>
                             </div>
                         </div>
 
-                        <div class="card mt-4">
+                        <!-- Tailscale -->
+                        <div class="card shadow-sm mb-4">
                             <div class="card-body">
                                 <h5 class="card-title">🔒 <?= t('custom_tailscale_vpn', 'Tailscale VPN Connection'); ?></h5>
 
                                 <?php if (!empty($auth_output)): ?>
-                                    <div class="alert alert-info">
+                                    <div class="alert alert-info mt-3">
                                         <strong><?= t('result', 'Result'); ?>:</strong>
                                         <pre class="mb-0"><?= htmlspecialchars($auth_output) ?></pre>
                                     </div>
                                 <?php endif; ?>
 
-                                <form method="POST" class="mb-3">
+                                <form method="POST" class="mt-3">
                                     <label class="form-label">🔑 <?= t('custom_tailscale_authkey', 'Tailscale AuthKey'); ?></label>
-                                    <input type="text" name="authkey" class="form-control mb-2" placeholder="tskey-..." required>
-                                    <button class="btn btn-primary">🔐 <?= t('custom_connect_vpn', 'Connect VPN'); ?></button>
+                                    <div class="input-group">
+                                        <input type="text" name="authkey" class="form-control" placeholder="tskey-..." required>
+                                        <button class="btn btn-primary">🔐 <?= t('custom_connect_vpn', 'Connect VPN'); ?></button>
+                                    </div>
                                 </form>
 
-                                <form method="POST" class="mb-3">
-                                    <input type="hidden" name="vpn_disconnect" value="1">
-                                    <button class="btn btn-danger mt-2">🔓 <?= t('custom_disconnect_vpn', 'Disconnect VPN'); ?></button>
-                                </form>
+                                <div class="d-flex flex-wrap gap-2 mt-3">
+                                    <form method="POST">
+                                        <input type="hidden" name="vpn_disconnect" value="1">
+                                        <button class="btn btn-danger">
+                                            🔓 <?= t('custom_disconnect_vpn', 'Disconnect VPN'); ?>
+                                        </button>
+                                    </form>
 
-                                <form method="POST" class="mb-3">
-                                    <button type="button" class="btn btn-outline-info mt-0" data-bs-toggle="modal" data-bs-target="#modalAyudaVPN">
+                                    <button type="button" class="btn btn-outline-info"
+                                            data-bs-toggle="modal" data-bs-target="#modalAyudaVPN">
                                         📘 <?= t('custom_vpn_tutorial', 'VPN Tutorial'); ?>
                                     </button>
-                                </form>
+                                </div>
 
-                                <ul class="list-group">
+                                <ul class="list-group mt-3">
                                     <li class="list-group-item">📛 Hostname: <strong><?= htmlspecialchars($hostname) ?></strong></li>
                                     <li class="list-group-item">🌐 IP Tailscale: <strong><?= htmlspecialchars($ip ?: t('not_connected', 'Not connected')) ?></strong></li>
                                     <li class="list-group-item">📶 <?= t('status', 'Status'); ?>: <strong><?= $status ?></strong></li>
@@ -552,99 +621,172 @@ $chat_id_actual = $telegram_config['chat_id'] ?? '';
                         </div>
                     </div>
 
-                    <div class="col-md-6">
-                        <form method="POST">
-                            <input type="hidden" name="guardar_ip" value="1">
-                            <h5>🌐 <?= t('custom_manual_ip_config', 'Manual IP Configuration'); ?></h5>
+                    <!-- =====================================================
+                         COLUMNA DERECHA
+                    ====================================================== -->
+                    <div class="col-12 col-xl-6">
 
-                            <div class="form-group mb-2">
-                                <label><?= t('custom_interface', 'Interface'); ?></label>
-                                <select name="interfaz" class="form-control">
-                                    <?php foreach ($interfaces_disponibles as $iface => $ip_actual): ?>
-                                        <option value="<?= htmlspecialchars($iface) ?>">
-                                            <?= htmlspecialchars($iface) ?> (<?= t('current', 'current'); ?>: <?= htmlspecialchars($ip_actual) ?>)
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
+                        <!-- Configuración de red -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">🌐 <?= t('custom_manual_ip_config', 'Manual IP Configuration'); ?></h5>
+                                <p class="text-muted mb-3">
+                                    <?= t('custom_network_settings_desc', 'Configure the static IPv4 parameters of the selected interface.'); ?>
+                                </p>
+
+                                <form method="POST">
+                                    <input type="hidden" name="guardar_ip" value="1">
+
+                                    <div class="mb-3">
+                                        <label class="form-label"><?= t('custom_interface', 'Interface'); ?></label>
+                                        <select name="interfaz" class="form-select">
+                                            <?php foreach ($interfaces_disponibles as $iface => $ip_actual): ?>
+                                                <option value="<?= htmlspecialchars($iface) ?>">
+                                                    <?= htmlspecialchars($iface) ?> (<?= t('current', 'current'); ?>: <?= htmlspecialchars($ip_actual) ?>)
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label class="form-label">IP</label>
+                                            <input type="text" name="ip" placeholder="192.168.x.x" class="form-control" required>
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label">Gateway</label>
+                                            <input type="text" name="gateway" placeholder="Gateway" class="form-control" required>
+                                        </div>
+
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label">DNS</label>
+                                            <input type="text" name="dns" placeholder="DNS" class="form-control" required>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mt-4">
+                                        <button type="submit" class="btn btn-primary">
+                                            🌐 <?= t('custom_save_static_ip', 'Save Static IP'); ?>
+                                        </button>
+                                    </div>
+                                </form>
+
+                                <hr>
+
+                                <form method="POST">
+                                    <button type="submit" name="reboot" class="btn btn-danger"
+                                            onclick="return confirm('<?= t('custom_confirm_reboot', 'Are you sure you want to reboot the Raspberry Pi?'); ?>')">
+                                        🔁 <?= t('custom_reboot_raspberry', 'Reboot Raspberry'); ?>
+                                    </button>
+                                </form>
                             </div>
+                        </div>
 
-                            <input type="text" name="ip" placeholder="IP (192.168.x.x)" class="form-control mb-2" required>
-                            <input type="text" name="gateway" placeholder="Gateway" class="form-control mb-2" required>
-                            <input type="text" name="dns" placeholder="DNS" class="form-control mb-2" required>
+                        <!-- WiFi -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">📶 <?= t('custom_connect_wifi', 'Connect WiFi'); ?></h5>
 
-                            <button type="submit" class="btn btn-primary mt-1">🌐 <?= t('custom_save_static_ip', 'Save Static IP'); ?></button>
-                        </form>
+                                <form method="POST" class="mt-3">
+                                    <input type="hidden" name="guardar_wifi" value="1">
 
-                        <form method="POST" class="mt-3">
-                            <button type="submit" name="reboot" class="btn btn-danger" onclick="return confirm('<?= t('custom_confirm_reboot', 'Are you sure you want to reboot the Raspberry Pi?'); ?>')">
-                                🔁 <?= t('custom_reboot_raspberry', 'Reboot Raspberry'); ?>
-                            </button>
-                        </form>
+                                    <div class="mb-3">
+                                        <label class="form-label"><?= t('custom_wifi_network', 'WiFi Network (SSID)'); ?></label>
+                                        <select name="ssid" class="form-select">
+                                            <?php foreach ($redes_disponibles as $ssid): ?>
+                                                <option value="<?= htmlspecialchars($ssid) ?>"><?= htmlspecialchars($ssid) ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
 
-                        <form method="POST" class="mt-4">
-                            <input type="hidden" name="guardar_wifi" value="1">
-                            <h5>📶 <?= t('custom_connect_wifi', 'Connect WiFi'); ?></h5>
+                                    <div class="mb-3">
+                                        <label class="form-label"><?= t('password', 'Password'); ?></label>
+                                        <input type="password" name="wifi_password" class="form-control"
+                                               placeholder="<?= t('custom_wifi_password_placeholder', 'WiFi network password'); ?>" required>
+                                    </div>
 
-                            <div class="form-group mb-1">
-                                <label><?= t('custom_wifi_network', 'WiFi Network (SSID)'); ?></label>
-                                <select name="ssid" class="form-control">
-                                    <?php foreach ($redes_disponibles as $ssid): ?>
-                                        <option value="<?= htmlspecialchars($ssid) ?>"><?= htmlspecialchars($ssid) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
+                                    <button type="submit" class="btn btn-info">
+                                        📶 <?= t('custom_connect_wifi', 'Connect WiFi'); ?>
+                                    </button>
+                                </form>
                             </div>
+                        </div>
 
-                            <div class="form-group mb-3">
-                                <label><?= t('password', 'Password'); ?></label>
-                                <input type="password" name="wifi_password" class="form-control" placeholder="<?= t('custom_wifi_password_placeholder', 'WiFi network password'); ?>" required>
+                        <!-- Telegram -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">📱 <?= t('custom_telegram_settings', 'Telegram Settings'); ?></h5>
+
+                                <form method="POST" class="mt-3">
+                                    <input type="hidden" name="guardar_telegram" value="1">
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Bot Token</label>
+                                        <input type="text" name="token" class="form-control"
+                                               value="<?= htmlspecialchars($token_actual) ?>" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label">Chat ID</label>
+                                        <input type="text" name="chat_id" class="form-control"
+                                               value="<?= htmlspecialchars($chat_id_actual) ?>" required>
+                                    </div>
+
+                                    <div class="d-grid d-md-flex gap-2">
+                                        <button type="submit" class="btn btn-info flex-fill">
+                                            💬 <?= t('custom_save_settings', 'Save Settings'); ?>
+                                        </button>
+                                        <a href="includes/test-telegram.php" class="btn btn-success flex-fill">
+                                            📩 <?= t('custom_test_telegram', 'Test Telegram'); ?>
+                                        </a>
+                                    </div>
+                                </form>
                             </div>
+                        </div>
 
-                            <button type="submit" class="btn btn-info">📶 <?= t('custom_connect_wifi', 'Connect WiFi'); ?></button>
-                        </form>
+                        <!-- Contraseña -->
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">🔑 <?= t('custom_change_access_password', 'Change Secure Access Password'); ?></h5>
 
-                        <form method="POST" class="mt-4">
-                            <input type="hidden" name="guardar_telegram" value="1">
-                            <h5>📱 <?= t('custom_telegram_settings', 'Telegram Settings'); ?></h5>
+                                <form method="POST" class="mt-3">
+                                    <input type="hidden" name="change_password" value="1">
 
-                            <div class="form-group mb-2">
-                                <label>Bot Token</label>
-                                <input type="text" name="token" class="form-control" value="<?= htmlspecialchars($token_actual) ?>" required>
+                                    <div class="mb-3">
+                                        <label class="form-label"><?= t('custom_current_password', 'Current password'); ?></label>
+                                        <input type="password" name="password_actual" class="form-control" required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label class="form-label"><?= t('custom_new_password', 'New password'); ?></label>
+                                        <input type="password" name="password_nueva" class="form-control" required>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-danger">
+                                        🔐 <?= t('custom_change_password', 'Change password'); ?>
+                                    </button>
+                                </form>
                             </div>
-
-                            <div class="form-group mb-2">
-                                <label>Chat ID</label>
-                                <input type="text" name="chat_id" class="form-control" value="<?= htmlspecialchars($chat_id_actual) ?>" required>
-                            </div>
-
-                            <div style="display: flex; gap: 10px; margin-top: 15px;">
-                                <button type="submit" class="btn btn-info" style="flex:1;">💬 <?= t('custom_save_settings', 'Save Settings'); ?></button>
-                                <a href="includes/test-telegram.php" class="btn btn-success" style="flex:1; text-align:center;">📩 <?= t('custom_test_telegram', 'Test Telegram'); ?></a>
-                            </div>
-                        </form>
-
-                        <form method="POST" class="my-4">
-                            <input type="hidden" name="change_password" value="1">
-                            <h5>🔑 <?= t('custom_change_access_password', 'Change Secure Access Password'); ?></h5>
-
-                            <div class="form-group">
-                                <input type="password" name="password_actual" class="form-control mb-2" placeholder="<?= t('custom_current_password', 'Current password'); ?>" required>
-                                <input type="password" name="password_nueva" class="form-control mb-2" placeholder="<?= t('custom_new_password', 'New password'); ?>" required>
-                                <button type="submit" class="btn btn-danger">🔐 <?= t('custom_change_password', 'Change password'); ?></button>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="modal fade" id="modalAyudaVPN" tabindex="-1" aria-labelledby="modalAyudaVPNLabel" aria-hidden="true">
+    <div class="modal fade" id="modalAyudaVPN" tabindex="-1"
+         aria-labelledby="modalAyudaVPNLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalAyudaVPNLabel">🚀 <?= t('custom_vpn_tutorial_title', 'Tutorial: Enable VPN in AuroxLink'); ?></h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="<?= t('close', 'Close'); ?>"></button>
+                    <h5 class="modal-title" id="modalAyudaVPNLabel">
+                        🚀 <?= t('custom_vpn_tutorial_title', 'Tutorial: Enable VPN in AuroxLink'); ?>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="<?= t('close', 'Close'); ?>"></button>
                 </div>
+
                 <div class="modal-body">
                     <ol>
                         <li><?= t('custom_vpn_step_1', 'Go to tailscale.com and create an account.'); ?></li>
@@ -657,10 +799,17 @@ $chat_id_actual = $telegram_config['chat_id'] ?? '';
                         <li><?= t('custom_vpn_step_8', 'Install Tailscale on your phone or PC.'); ?></li>
                         <li><?= t('custom_vpn_step_9', 'From another device, open http://100.x.x.x.'); ?></li>
                     </ol>
-                    <p><strong><?= t('ready', 'Done'); ?>!</strong> <?= t('custom_vpn_ready_text', 'You now have remote access to your node.'); ?></p>
+
+                    <p>
+                        <strong><?= t('ready', 'Done'); ?>!</strong>
+                        <?= t('custom_vpn_ready_text', 'You now have remote access to your node.'); ?>
+                    </p>
                 </div>
+
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><?= t('close', 'Close'); ?></button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <?= t('close', 'Close'); ?>
+                    </button>
                 </div>
             </div>
         </div>

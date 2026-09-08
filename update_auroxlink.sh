@@ -226,6 +226,22 @@ if [ -f "$APP_DIR/update_auroxlink.sh" ]; then
   sudo chmod +x "$APP_DIR/update_auroxlink.sh"
 fi
 
+# ===> Paso 10.1: Directorio de respaldos internos
+# mkdir -p es idempotente:
+# - si ya existe, no lo elimina ni borra su contenido;
+# - si no existe, lo crea.
+SVX_CONFIG_BACKUP_DIR="$APP_DIR/includes/backups"
+
+if [[ -d "$SVX_CONFIG_BACKUP_DIR" ]]; then
+  log "  - Directorio de respaldos ya existe: $SVX_CONFIG_BACKUP_DIR"
+else
+  mkdir -p "$SVX_CONFIG_BACKUP_DIR"
+  log "  - Directorio de respaldos creado: $SVX_CONFIG_BACKUP_DIR"
+fi
+
+chown www-data:www-data "$SVX_CONFIG_BACKUP_DIR"
+chmod 750 "$SVX_CONFIG_BACKUP_DIR"
+
 # ===> Paso 10.5: Actualizadores privilegiados protegidos
 log "===> Paso 10.5: Instalando componentes privilegiados protegidos"
 

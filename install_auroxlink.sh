@@ -142,6 +142,7 @@ mkdir -p \
   "$APP_DIR/data_actividades/historial" \
   "$APP_DIR/qsl" \
   "$APP_DIR/includes/logs" \
+  "$APP_DIR/includes/backups" \
   "$APP_DIR/img" \
   /tmp/auroxlink_logs
 
@@ -176,7 +177,7 @@ else
     fi
   done
 
-  for rel in data_actividades qsl; do
+  for rel in data_actividades qsl includes/backups; do
     if [[ -d "$BACKUP_DIR/$rel" ]]; then
       rm -rf "$APP_DIR/$rel"
       cp -a "$BACKUP_DIR/$rel" "$APP_DIR/$rel"
@@ -284,6 +285,15 @@ for dir in "${WRITABLE_DIRS[@]}"; do
   chown -R www-data:www-data "$dir"
   chmod 775 "$dir"
 done
+
+# Respaldos internos de configuración generados por AUROXLINK.
+# PHP (www-data) necesita escribir aquí, pero este directorio
+# debe quedar más restringido que el resto de carpetas web.
+SVX_CONFIG_BACKUP_DIR="$APP_DIR/includes/backups"
+mkdir -p "$SVX_CONFIG_BACKUP_DIR"
+chown -R www-data:www-data "$SVX_CONFIG_BACKUP_DIR"
+chmod 750 "$SVX_CONFIG_BACKUP_DIR"
+ok "Directorio de respaldos preparado: $SVX_CONFIG_BACKUP_DIR"
 
 WRITABLE_FILES=(
   "$APP_DIR/telegram_config.json"
@@ -413,6 +423,9 @@ log "[13/13] Verificación final"
 [[ -f "$APP_DIR/data/qsls.json" ]] || fail "Falta data/qsls.json"
 [[ -f "$APP_DIR/svxlink_update_api.php" ]] || fail "Falta svxlink_update_api.php"
 [[ -f "$APP_DIR/includes/svxlink_update_panel.php" ]] || fail "Falta includes/svxlink_update_panel.php"
+[[ -d "$APP_DIR/includes/backups" ]] || fail "Falta includes/backups"
+[[ "$(stat -c '%U:%G:%a' "$APP_DIR/includes/backups" 2>/dev/null)" == "www-data:www-data:750" ]] \
+  || fail "Permisos incorrectos en includes/backups; se esperaba www-data:www-data:750"
 [[ -x "/usr/local/libexec/auroxlink/svxlink_update_worker.sh" ]] || fail "Falta worker protegido de SvxLink"
 [[ -x "/usr/local/libexec/auroxlink/install_svxlink_latest.sh" ]] || fail "Falta actualizador protegido de SvxLink"
 [[ -x "/usr/local/libexec/auroxlink/update_auroxlink.sh" ]] || fail "Falta actualizador protegido de AUROXLINK"

@@ -394,7 +394,7 @@ $origenActividad       = $actividad['origen'] ?? 'qsl_generator';
 
                         <form method="POST">
                             <label class="form-label"><?= h(t('participant_callsign', 'Callsign')); ?></label>
-                            <input name="callsign" class="form-control mb-2" placeholder="CA2RDP" required>
+                            <input name="callsign" class="form-control mb-2" placeholder="CE2RDP" required>
 
                             <label class="form-label"><?= h(t('participant_name', 'Name')); ?></label>
                             <input name="participant_name" class="form-control mb-2" placeholder="<?= h(t('participant_name_placeholder', 'Operator name')); ?>" required>

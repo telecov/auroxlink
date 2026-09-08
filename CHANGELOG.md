@@ -1,5 +1,34 @@
 # CHANGELOG – AUROXLINK
 
+## 1.8.4 - 2026-09-08
+
+### Identificación CW
+- Se incorpora configuración de identificación CW nativa de SvxLink.
+- Activación independiente de identificación CW corta y larga.
+- Configuración de intervalos de identificación.
+- Configuración de velocidad CW en WPM.
+- Configuración de frecuencia de tono CW.
+- Configuración de nivel de audio CW.
+- Compatibilidad con SvxLink 1.7.0 / 19.09 o superior.
+- Los parámetros CW ausentes se crean automáticamente en `[SimplexLogic]`.
+- Validación y rollback automático si SvxLink no inicia después de guardar cambios.
+- Indicador de estado CW en el dashboard: 🟢 CW ON / 🔴 CW OFF.
+
+### Interfaz
+- Reorganización visual de `settings.php`.
+- Reorganización visual de `custom.php`.
+- Se mantiene la lógica y estilos existentes de AUROXLINK.
+
+### Instalación y actualización
+- Nuevo directorio interno `includes/backups` para respaldos de configuración.
+- El instalador conserva los respaldos durante reinstalaciones/actualizaciones.
+- El actualizador crea el directorio automáticamente si no existe.
+- Permisos restringidos `www-data:www-data` con modo `750`.
+
+### Identidad
+- Actualización del indicativo del desarrollador de CA2RDP a CE2RDP.
+- Actualización de la firma de integridad correspondiente.
+
 ## v1.8.3 – Servicio de monitor AUROXLINK (2026-08-17)
 
 ### Correcciones

@@ -184,12 +184,77 @@ function getSvxlinkVersion()
     return t('unknown_version', 'Unknown version');
 }
 
+/**
+ * Detecta si la identificación CW nativa de SvxLink está habilitada
+ * en la sección [SimplexLogic].
+ *
+ * Se considera activa cuando SHORT_CW_ID_ENABLE=1 o LONG_CW_ID_ENABLE=1.
+ */
+function getEstadoCW()
+{
+    $archivo = '/etc/svxlink/svxlink.conf';
+
+    if (!is_readable($archivo)) {
+        return [
+            'activo' => false,
+            'texto' => t('cw_unavailable', 'CW unavailable')
+        ];
+    }
+
+    $lineas = @file($archivo, FILE_IGNORE_NEW_LINES);
+    if (!$lineas) {
+        return [
+            'activo' => false,
+            'texto' => t('cw_unavailable', 'CW unavailable')
+        ];
+    }
+
+    $enSimplexLogic = false;
+    $shortCW = 0;
+    $longCW = 0;
+
+    foreach ($lineas as $linea) {
+        $trim = trim($linea);
+
+        if ($trim === '' || str_starts_with($trim, '#') || str_starts_with($trim, ';')) {
+            continue;
+        }
+
+        if (preg_match('/^\[(.+)\]$/', $trim, $m)) {
+            $enSimplexLogic = ($m[1] === 'SimplexLogic');
+            continue;
+        }
+
+        if (!$enSimplexLogic) {
+            continue;
+        }
+
+        if (preg_match('/^SHORT_CW_ID_ENABLE\s*=\s*([01])\s*$/i', $trim, $m)) {
+            $shortCW = (int) $m[1];
+        }
+
+        if (preg_match('/^LONG_CW_ID_ENABLE\s*=\s*([01])\s*$/i', $trim, $m)) {
+            $longCW = (int) $m[1];
+        }
+    }
+
+    $activo = ($shortCW === 1 || $longCW === 1);
+
+    return [
+        'activo' => $activo,
+        'texto' => $activo
+            ? t('cw_identification_active', 'CW IDENTIFICATION ACTIVE')
+            : t('cw_identification_off', 'CW IDENTIFICATION OFF')
+    ];
+}
+
 $stats = getSystemStats();
 $txCount = getTxCount();
 $lastConnections = getLastConnections();
 $lastTx = getLastTxTime();
 $tempValue = $stats['temp_raw'] ? round($stats['temp_raw'] / 1000, 1) : 0;
 $statusNodo = getServiceStatus();
+$estadoCW = getEstadoCW();
 $mem = preg_match('/(\d+)MB \/ (\d+)MB/', $stats['memory'], $m) ? round($m[1] / $m[2] * 100) : 0;
 ?>
 <!doctype html>
@@ -235,6 +300,17 @@ $mem = preg_match('/(\d+)MB \/ (\d+)MB/', $stats['memory'], $m) ? round($m[1] / 
                             <span class="badge bg-light text-dark px-3 py-2 fw-semibold"><?= getModuloEchoLink(); ?></span>
                             <span class="badge bg-light text-dark px-3 py-2 fw-semibold"><?= $statusNodo; ?></span>
                             <span class="badge bg-light text-dark px-3 py-2 fw-semibold"><?= getEstadoVPN(); ?></span>
+
+                            <a href="settings.php"
+    class="badge bg-light text-dark px-3 py-2 fw-semibold text-decoration-none"
+    title="<?= $estadoCW['activo']
+        ? t('cw_active_title', 'CW identification is enabled in SvxLink settings')
+        : t('cw_off_title', 'CW identification is disabled in SvxLink settings'); ?>">
+
+    <?= $estadoCW['activo'] ? '🟢' : '🔴'; ?>
+    CW <?= $estadoCW['activo'] ? 'ENCENDIDO' : 'APAGADO'; ?>
+</a>
+
                             <a href="<?= $aprs_web; ?>" target="_blank"
                                 class="badge bg-light text-dark px-3 py-2 fw-semibold"
                                 title="<?= t('click_view_aprs', 'Click to view APRS-IS web'); ?>">
@@ -455,7 +531,7 @@ $mem = preg_match('/(\d+)MB \/ (\d+)MB/', $stats['memory'], $m) ? round($m[1] / 
 
                     <footer class="text-center mt-4 mb-3 px-3" style="font-size: 0.8rem; color: #777;">
                         <hr>
-                        <p class="mb-0">🚀 <?= t('developed_by', 'Developed by'); ?> <strong>Telecoviajero - CA2RDP</strong></p>
+                        <p class="mb-0">🚀 <?= t('developed_by', 'Developed by'); ?> <strong>Telecoviajero - CE2RDP</strong></p>
                         <p class="mb-0">
                             <a href="https://github.com/telecov/auroxlink" target="_blank"
                                 style="color: #0d6efd; text-decoration: none;">
@@ -463,7 +539,7 @@ $mem = preg_match('/(\d+)MB \/ (\d+)MB/', $stats['memory'], $m) ? round($m[1] / 
                             </a>
                         </p>
                         <p class="mt-1 mb-0" style="font-size: 0.75rem;">
-                            © 2026 Telecoviajero - CA2RDP. <?= t('all_rights_reserved', 'All rights reserved'); ?>
+                            © 2026 Telecoviajero - CE2RDP. <?= t('all_rights_reserved', 'All rights reserved'); ?>
                         </p>
                     </footer>
                 </div>

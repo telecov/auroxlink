@@ -11,7 +11,7 @@ if (
 }
 
 // Validación segura de hash
-if (!hash_equals(md5($teleco), 'e84a85ae05830fa9dc95bcf6915445b7') ||
+if (!hash_equals(md5($teleco), '4938345bf81f90ebfdd95ab380a84e24') ||
     !hash_equals(md5($hammer), '4504960fc54f592c90cbfcd703f8c306')) {
     $_SESSION['integridad_modificada'] = true;
     die("Error: la firma fue modificada.");
@@ -440,7 +440,7 @@ ob_start();
             </a>
           </div>
 
-          <p class="fw-bold mt-4 mb-1">CA2RDP - TELECOVIAJERO</p>
+          <p class="fw-bold mt-4 mb-1">CE2RDP - TELECOVIAJERO</p>
           <p class="text-muted mb-2"><?= t('about_follow_me', 'Follow me on my social networks:'); ?></p>
 
           <div class="social-icons">

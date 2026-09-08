@@ -7,8 +7,8 @@ if (!is_array($style)) {
 
 $nombreZona = $style['nombre_zona'] ?? 'AUROXLINK';
 $tituloDashboard = $style['titulo_dashboard'] ?? 'Dashboard Nodo EchoLink';
-$indicativo = $style['indicativo'] ?? 'CA2RDP-L';
-$radioaficionado = $style['radioaficionado'] ?? 'CA2RDP';
+$indicativo = $style['indicativo'] ?? 'CE2RDP-L';
+$radioaficionado = $style['radioaficionado'] ?? 'CE2RDP';
 $ciudad = $style['ciudad'] ?? 'La Serena';
 $modo = $style['modo'] ?? 'SIMPLEX';
 $frecuencia = $style['frecuencia'] ?? '145.600';
@@ -26,7 +26,7 @@ $colorTitulo = $style['color_titulo'] ?? '#000000';
 
 $clave_acceso = '0192023a7bbd73250516f069df18b500';
 
-$teleco = 'Román - CA2RDP';
+$teleco = 'Román - CE2RDP';
 $hammer = 'Esteban - CA3EUO';
 
 $titleSite = $nombreZona;
