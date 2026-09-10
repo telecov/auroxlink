@@ -1,3 +1,4 @@
+
 <?php
 
 $archivo = "/etc/svxlink/svxlink.conf";
@@ -449,55 +450,239 @@ file_put_contents(
 
 /*
  * Reiniciar SvxLink.
+ *
+ * IMPORTANTE:
+ * En una instalación nueva SvxLink puede no iniciar todavía porque
+ * AUDIO_DEV, PTT, SQUELCH u otros parámetros aún están siendo configurados.
+ *
+ * AUROXLINK debe conservar los valores guardados para permitir que el
+ * usuario continúe configurando el nodo.
+ */
+
+/*
+ * Limpiar un posible estado "failed" anterior.
+ * Si esta operación no está autorizada por sudoers, no impide guardar.
  */
 exec(
-    "sudo systemctl restart svxlink 2>&1",
+    "sudo -n /usr/bin/systemctl reset-failed svxlink 2>&1",
+    $salida_reset,
+    $codigo_reset
+);
+
+
+/*
+ * Intentar reiniciar SvxLink.
+ */
+exec(
+    "sudo -n /usr/bin/systemctl restart svxlink 2>&1",
     $salida_restart,
     $codigo_restart
 );
 
 
 /*
- * Comprobar que realmente quedó funcionando.
+ * Dar tiempo al servicio para inicializar.
  */
 sleep(2);
 
+
+/*
+ * Comprobar si realmente quedó funcionando.
+ */
 exec(
-    "sudo systemctl is-active --quiet svxlink",
+    "sudo -n /usr/bin/systemctl is-active --quiet svxlink",
     $salida_estado,
     $codigo_estado
 );
 
 
+/*
+ * Si SvxLink no quedó activo:
+ *
+ * - NO restaurar automáticamente el respaldo.
+ * - Mantener la nueva configuración.
+ * - Conservar el backup por seguridad.
+ * - Mostrar el último error útil del log.
+ */
 if ($codigo_restart !== 0 || $codigo_estado !== 0) {
 
-    /*
-     * Rollback automático.
-     */
-    copy($backup, $archivo);
+    $detalle_error = "";
+    $log_svxlink = "/var/log/svxlink";
 
-    exec(
-        "sudo systemctl restart svxlink 2>&1",
-        $salida_rollback,
-        $codigo_rollback
-    );
+    if (is_readable($log_svxlink)) {
 
-    responderError(
-        "SvxLink no pudo iniciar con la nueva configuración. " .
-        "AUROXLINK restauró automáticamente el respaldo anterior."
-    );
+        $lineas_log = @file(
+            $log_svxlink,
+            FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES
+        );
+
+        if (is_array($lineas_log)) {
+
+            $errores = [];
+
+            foreach (array_reverse($lineas_log) as $linea) {
+
+                if (
+                    stripos($linea, "ERROR") !== false ||
+                    stripos($linea, "failed") !== false ||
+                    stripos($linea, "could not") !== false ||
+                    stripos($linea, "no such file") !== false
+                ) {
+                    $errores[] = trim($linea);
+                }
+
+                if (count($errores) >= 6) {
+                    break;
+                }
+            }
+
+            if (!empty($errores)) {
+                $errores = array_reverse($errores);
+                $detalle_error = implode("\n", $errores);
+            }
+        }
+    }
+
+
+    echo "
+<div style='
+    max-width:900px;
+    margin:40px auto;
+    padding:25px;
+    font-family:sans-serif;
+    border:1px solid #ffc107;
+    border-radius:10px;
+    background:#fff8e1;
+'>
+
+    <h2 style='margin-top:0;'>⚠️ Configuración guardada</h2>
+
+    <p>
+        Los parámetros fueron guardados correctamente en
+        <strong>/etc/svxlink/svxlink.conf</strong>.
+    </p>
+
+    <p>
+        SvxLink no pudo quedar operativo con la configuración actual.
+    </p>
+
+    <p>
+        <strong>
+            AUROXLINK mantuvo los nuevos valores para que puedas continuar
+            configurando el nodo.
+        </strong>
+    </p>
+";
+
+
+    if ($detalle_error !== "") {
+
+        echo "
+    <div style='
+        margin-top:20px;
+        padding:15px;
+        background:#212529;
+        color:#f8f9fa;
+        border-radius:8px;
+        overflow:auto;
+    '>
+        <strong>Último error detectado:</strong>
+
+        <pre style='
+            margin-top:10px;
+            margin-bottom:0;
+            color:#f8f9fa;
+            white-space:pre-wrap;
+        '>" .
+        htmlspecialchars(
+            $detalle_error,
+            ENT_QUOTES,
+            "UTF-8"
+        ) .
+        "</pre>
+    </div>
+";
+    }
+
+
+    echo "
+    <p style='margin-top:20px;'>
+        Esto puede ser normal durante la configuración inicial, por ejemplo
+        si todavía debes seleccionar el dispositivo de audio RX/TX, PTT,
+        squelch u otros parámetros.
+    </p>
+
+    <p>
+        El respaldo anterior se conserva en:
+    </p>
+
+    <code>" .
+    htmlspecialchars(
+        $backup,
+        ENT_QUOTES,
+        "UTF-8"
+    ) .
+    "</code>
+
+    <br><br>
+
+    <a
+        href='../settings.php'
+        style='
+            display:inline-block;
+            padding:10px 18px;
+            background:#0d6efd;
+            color:white;
+            text-decoration:none;
+            border-radius:6px;
+        '
+    >
+        ← Volver a configuración
+    </a>
+
+</div>
+";
+
+    exit;
 }
 
 
+/*
+ * SvxLink quedó operativo.
+ */
 echo "
-<div style='padding:20px;font-family:sans-serif;'>
-    ✅ Configuración guardada correctamente.
+<div style='
+    max-width:900px;
+    margin:40px auto;
+    padding:25px;
+    font-family:sans-serif;
+    border:1px solid #198754;
+    border-radius:10px;
+    background:#eaf7ef;
+'>
+
+    <h2 style='margin-top:0;'>✅ Configuración aplicada correctamente</h2>
+
+    <p>✅ Los parámetros fueron guardados.</p>
+    <p>✅ SvxLink fue reiniciado.</p>
+    <p>✅ El servicio quedó operativo.</p>
+
     <br>
-    ✅ SvxLink reiniciado.
-    <br>
-    ✅ Servicio operativo.
-    <br><br>
-    <a href='../settings.php'>Volver a configuración de SvxLink</a>
+
+    <a
+        href='../settings.php'
+        style='
+            display:inline-block;
+            padding:10px 18px;
+            background:#198754;
+            color:white;
+            text-decoration:none;
+            border-radius:6px;
+        '
+    >
+        ← Volver a configuración
+    </a>
+
 </div>
 ";
 
