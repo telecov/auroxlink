@@ -103,6 +103,24 @@ function t($key, $default = '')
       font-size: 0.95rem;
       color: #ffffff;
     }
+
+    .help-note {
+      background: rgba(0, 180, 216, 0.08);
+      border: 1px solid rgba(0, 180, 216, 0.25);
+      border-radius: 10px;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+
+    .help-note strong { color: #ffffff; }
+    code {
+      color: #7ddff2;
+      background: #0e1621;
+      padding: .15rem .35rem;
+      border-radius: 5px;
+    }
+
+    .help-list li { margin-bottom: .55rem; }
   </style>
 </head>
 
@@ -336,6 +354,81 @@ function t($key, $default = '')
           </tr>
         </tbody>
       </table>
+    </div>
+
+
+    <div class="section">
+      <h2><i class="bi bi-broadcast-pin icon"></i><?= t('help_cw_title', 'Identificación CW'); ?> <span class="aurox-badge"><?= t('help_cw_badge', 'Indicativo por radio'); ?></span></h2>
+      <p class="desc"><?= t('help_cw_desc', 'AUROXLINK permite configurar la identificación periódica en CW de la lógica SimplexLogic. Esta función transmite el indicativo del nodo en código Morse mediante SvxLink.'); ?></p>
+      <table class="table table-bordered table-sm">
+        <thead>
+          <tr>
+            <th><?= t('help_parameter', 'Parámetro'); ?></th>
+            <th><?= t('help_example', 'Ejemplo'); ?></th>
+            <th><?= t('help_description', 'Descripción'); ?></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>CW_ENABLE</td><td>1</td><td><?= t('help_cw_enable_desc', 'Activa o desactiva la identificación CW.'); ?></td></tr>
+          <tr><td>CW_AMP</td><td>0.5</td><td><?= t('help_cw_amp_desc', 'Nivel de audio utilizado para el tono CW.'); ?></td></tr>
+          <tr><td>CW_PITCH</td><td>800</td><td><?= t('help_cw_pitch_desc', 'Frecuencia del tono CW en Hz.'); ?></td></tr>
+          <tr><td>CW_WPM</td><td>20</td><td><?= t('help_cw_wpm_desc', 'Velocidad de transmisión Morse en palabras por minuto.'); ?></td></tr>
+          <tr><td>SHORT_IDENT_INTERVAL</td><td>10</td><td><?= t('help_cw_short_interval_desc', 'Intervalo de identificación corta configurado para la lógica.'); ?></td></tr>
+          <tr><td>LONG_IDENT_INTERVAL</td><td>60</td><td><?= t('help_cw_long_interval_desc', 'Intervalo de identificación larga configurado para la lógica.'); ?></td></tr>
+        </tbody>
+      </table>
+      <div class="help-note"><strong><?= t('help_important', 'Importante'); ?>:</strong> <?= t('help_cw_note', 'Después de guardar, AUROXLINK escribe estos parámetros en /etc/svxlink/svxlink.conf y solicita el reinicio de SvxLink para aplicar la configuración.'); ?></div>
+    </div>
+
+    <div class="section">
+      <h2><i class="bi bi-arrow-repeat icon"></i><?= t('help_svx_update_title', 'Actualización de SvxLink'); ?> <span class="aurox-badge"><?= t('help_svx_update_badge', 'Actualización segura'); ?></span></h2>
+      <p class="desc"><?= t('help_svx_update_desc', 'Desde Settings, AUROXLINK puede consultar la última release oficial de SvxLink y gestionar su instalación mediante un worker privilegiado. SvxLink es un proyecto independiente de SM0SVX; AUROXLINK administra el proceso desde su interfaz.'); ?></p>
+      <ul class="help-list">
+        <li><strong><?= t('help_svx_distro_label', 'Paquete de la distribución'); ?>:</strong> <?= t('help_svx_distro_desc', 'Muestra la versión de SvxLink instalada por Debian/Raspberry Pi OS.'); ?></li>
+        <li><strong><?= t('help_svx_managed_label', 'Versión AUROXLINK gestionada'); ?>:</strong> <?= t('help_svx_managed_desc', 'Indica la versión instalada mediante el actualizador de AUROXLINK, cuando corresponda.'); ?></li>
+        <li><strong><?= t('help_svx_latest_label', 'Última versión encontrada'); ?>:</strong> <?= t('help_svx_latest_desc', 'Corresponde a la release oficial detectada por el sistema.'); ?></li>
+        <li><strong><?= t('help_svx_progress_label', 'Progreso'); ?>:</strong> <?= t('help_svx_progress_desc', 'La compilación puede tardar varios minutos y el estado permanece guardado en el servidor aunque recargues la página.'); ?></li>
+      </ul>
+      <div class="help-note"><strong><?= t('help_recommendation', 'Recomendación'); ?>:</strong> <?= t('help_svx_update_note', 'No desconectes la alimentación ni reinicies el equipo durante una compilación o activación de SvxLink. La actualización de SvxLink es independiente de la actualización del panel AUROXLINK.'); ?></div>
+    </div>
+
+    <div class="section">
+      <h2><i class="bi bi-activity icon"></i><?= t('help_seismic_title', 'Sismógrafo AUROXLINK'); ?> <span class="aurox-badge"><?= t('help_seismic_badge', 'CSN / USGS + RF'); ?></span></h2>
+      <p class="desc"><?= t('help_seismic_desc', 'El módulo sísmico muestra eventos recientes en el mapa y puede evaluar automáticamente cuáles cumplen los umbrales configurados para una alerta por radio.'); ?></p>
+      <table class="table table-bordered table-sm">
+        <thead>
+          <tr>
+            <th><?= t('help_function', 'Función'); ?></th>
+            <th><?= t('help_description', 'Descripción'); ?></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><?= t('help_seismic_provider_auto', 'Proveedor AUTO'); ?></td><td><?= t('help_seismic_provider_auto_desc', 'Selecciona la fuente apropiada; para Chile prioriza CSN y dispone de USGS como fuente mundial/fallback.'); ?></td></tr>
+          <tr><td><?= t('help_seismic_location', 'Ubicación del nodo'); ?></td><td><?= t('help_seismic_location_desc', 'La latitud y longitud permiten calcular la distancia aproximada entre el nodo y cada evento.'); ?></td></tr>
+          <tr><td><?= t('help_seismic_thresholds', 'Umbrales'); ?></td><td><?= t('help_seismic_thresholds_desc', 'Permiten definir magnitud y distancia para los niveles Local, Regional, Amplia y Nacional/Global.'); ?></td></tr>
+          <tr><td><?= t('help_seismic_rf_auto', 'RF automático'); ?></td><td><?= t('help_seismic_rf_auto_desc', 'Cuando está habilitado, el monitor evalúa nuevos eventos y transmite únicamente los que cumplen la configuración.'); ?></td></tr>
+          <tr><td><?= t('help_seismic_repetitions', 'Repeticiones'); ?></td><td><?= t('help_seismic_repetitions_desc', 'Define la cantidad configurada de anuncios para una alerta que califique.'); ?></td></tr>
+          <tr><td><?= t('help_seismic_voice', 'Voz'); ?></td><td><?= t('help_seismic_voice_desc', 'AUROXLINK utiliza Piper como motor principal y dispone de espeak-ng como alternativa.'); ?></td></tr>
+          <tr><td><?= t('help_seismic_monitor', 'Monitor'); ?></td><td><?= t('help_seismic_monitor_desc', 'El timer del sistema ejecuta el monitor sísmico aproximadamente cada 60 segundos.'); ?></td></tr>
+        </tbody>
+      </table>
+      <div class="help-note">
+        <strong><?= t('help_seismic_test_title', 'Prueba manual de voz/RF'); ?>:</strong><br>
+        <code>sudo -u svxlink php /opt/auroxlink/scripts/seismic-monitor.php --test-rf</code><br><br>
+        <?= t('help_seismic_test_desc', 'Esta prueba genera una locución y la entrega a SvxLink mediante COMMAND_PTY. El RF automático queda desactivado por defecto en una instalación nueva.'); ?>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2><i class="bi bi-shield-check icon"></i><?= t('help_backup_title', 'Backup y restauración'); ?> <span class="aurox-badge"><?= t('help_backup_badge', 'Personalización'); ?></span></h2>
+      <p class="desc"><?= t('help_backup_desc', 'En Personalización, AUROXLINK dispone de funciones de respaldo para proteger la configuración y los elementos personalizados del nodo antes de realizar cambios importantes.'); ?></p>
+      <ul class="help-list">
+        <li><?= t('help_backup_item1', 'Realiza un respaldo antes de una actualización importante o de modificar extensamente la configuración del nodo.'); ?></li>
+        <li><?= t('help_backup_item2', 'Conserva el archivo generado en otro equipo o almacenamiento seguro.'); ?></li>
+        <li><?= t('help_backup_item3', 'La restauración debe utilizar un respaldo correspondiente a AUROXLINK y debe realizarse con especial cuidado, ya que puede reemplazar configuraciones actuales.'); ?></li>
+        <li><?= t('help_backup_item4', 'Los respaldos internos que AUROXLINK crea al guardar parámetros de SvxLink son una protección adicional y no sustituyen el backup general realizado desde Personalización.'); ?></li>
+      </ul>
+      <div class="help-note"><strong><?= t('help_good_practice', 'Buena práctica'); ?>:</strong> <?= t('help_backup_note', 'Genera un backup cuando el nodo esté funcionando correctamente. Así tendrás un punto conocido al cual volver si una modificación posterior presenta problemas.'); ?></div>
     </div>
 
     <div class="section">

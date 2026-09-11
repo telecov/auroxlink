@@ -16,3 +16,29 @@
 secrets/
 secret.*
 credentials.*
+
+# ============================================================
+# AUROXLINK - Archivos generados en ejecución
+# ============================================================
+
+# Sesiones PHP
+*.ses
+*:memory:.ses
+
+# Backups automáticos/locales
+/includes/backups/
+/includes/*.bak.*
+/settings.php.bak-*
+*.bak.*
+
+# Logs generados por AUROXLINK
+/includes/logs/*.txt
+/includes/logs/*.log
+
+# Estado runtime del monitor sísmico
+/data/seismic_state.json
+
+# Archivos temporales
+*.tmp
+*.swp
+*~

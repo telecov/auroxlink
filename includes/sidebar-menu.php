@@ -1,15 +1,16 @@
 <?php
 $menuItems = '
-    <li class="nav-item"><a class="nav-link" href="index.php">' . t('menu_dashboard', 'DASHBOARD') . '</a></li>
-    <li class="nav-item"><a class="nav-link" href="status-node.php">' . t('menu_node_status', 'Node Status') . '</a></li>
-    <li class="nav-item"><a class="nav-link" href="echolink-traffic.php">' . t('menu_echolink_traffic', 'EchoLink Traffic') . '</a></li>
-    <li class="nav-item"><a class="nav-link" href="connections.php">' . t('menu_active_connections', 'Active Connections') . '</a></li>
-    <li class="nav-item"><a class="nav-link" href="qsl_generator.php">' . t('menu_qsl_manager', 'Activity and QSL Manager') . '</a></li>
-    <li class="nav-item"><a class="nav-link" href="qsl_digital.php">' . t('menu_digital_qsl', 'Digital QSL') . '</a></li>
-    <li class="nav-item"><a class="nav-link" href="activity_log.php">'. t('menu_activity_log', 'Activity Log'). '</a></li>
-    <li class="nav-item"><a class="nav-link" href="settings.php">' . t('menu_settings', 'Settings') . '</a></li>
-    <li class="nav-item"><a class="nav-link" href="custom.php">' . t('menu_customization', 'Customization') . '</a></li>
-    <li class="nav-item"><a class="nav-link" href="about.php">' . t('menu_about', 'About') . ' ' . $titleSite . '</a></li>
+    <li class="nav-item"><a class="nav-link" href="index.php">📊 ' . t('menu_dashboard', 'DASHBOARD') . '</a></li>
+    <li class="nav-item"><a class="nav-link" href="status-node.php">📡 ' . t('menu_node_status', 'Node Status') . '</a></li>
+    <li class="nav-item"><a class="nav-link" href="echolink-traffic.php">🌐 ' . t('menu_echolink_traffic', 'EchoLink Traffic') . '</a></li>
+    <li class="nav-item"><a class="nav-link" href="connections.php">🔗 ' . t('menu_active_connections', 'Active Connections') . '</a></li>
+    <li class="nav-item"><a class="nav-link" href="qsl_generator.php">📮 ' . t('menu_qsl_manager', 'Activity and QSL Manager') . '</a></li>
+    <li class="nav-item"><a class="nav-link" href="qsl_digital.php">💳 ' . t('menu_digital_qsl', 'Digital QSL') . '</a></li>
+    <li class="nav-item"><a class="nav-link" href="activity_log.php">📋 '. t('menu_activity_log', 'Activity Log'). '</a></li>
+    <li class="nav-item"><a class="nav-link" href="sismografo.php">🌎 ' . t('menu_seismograph', 'Sismógrafo') . '</a></li>
+    <li class="nav-item"><a class="nav-link" href="settings.php">⚙️ ' . t('menu_settings', 'Settings') . '</a></li>
+    <li class="nav-item"><a class="nav-link" href="custom.php">🎨 ' . t('menu_customization', 'Customization') . '</a></li>
+    <li class="nav-item"><a class="nav-link" href="about.php">ℹ️ ' . t('menu_about', 'About') . ' ' . $titleSite . '</a></li>
 ';
 ?>
 

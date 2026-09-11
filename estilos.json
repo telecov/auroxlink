@@ -1,13 +1,20 @@
 {
     "nombre_zona": "AUROXLINK",
-    "radioaficionado": "Roman CA2RDP",
-    "frecuencia": "145.050 Mhz",
+    "radioaficionado": "Roman CE2RDP",
+    "modo": "SIMPLEX",
+    "frecuencia": "145.680 Mhz",
+    "offset": "0.000",
+    "tono": "88.5",
+    "ubicacion": "CALETA SAN PEDRO [LSE]",
+    "aprs_web": "https:\/\/aprs.fi\/",
     "titulo_dashboard": "Dashboard Nodo EchoLink ",
-    "indicativo": "CA2RDP-L",
+    "indicativo": "CE2RDP-L",
     "ciudad": "La Serena, Chile",
     "utc_offset": "-4",
+    "idioma": "en",
     "color_sidebar": "#212529",
     "color_fondo": "#e9ecef",
     "color_titulo": "#000000",
-    "logo": "auroralink_banner.png"
+    "logo": "auroxlink_banner.png",
+    "foto_admin": "img\/admin.png"
 }

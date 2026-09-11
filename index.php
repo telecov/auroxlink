@@ -44,6 +44,13 @@ function getSystemStats()
     $disk = shell_exec("df -h / | tail -1");
     $disk_info = preg_split('/\s+/', trim($disk));
 
+    $disk_percent = isset($disk_info[4])
+        ? (int) rtrim($disk_info[4], '%')
+        : 0;
+
+    $load = @file_get_contents('/proc/loadavg');
+    $load_parts = $load ? preg_split('/\s+/', trim($load)) : [];
+
     return [
         'temp_raw' => $temp,
         'cpu' => shell_exec("top -bn1 | grep 'Cpu(s)' | awk '{print 100 - $8}'"),
@@ -51,7 +58,11 @@ function getSystemStats()
         'uptime' => trim($uptime),
         'uptime_seconds' => $uptime_seconds,
         'memory' => $mem_info,
-        'disk' => ($disk_info[2] ?? 'N/A') . ' ' . t('used_of', 'used of') . ' ' . ($disk_info[1] ?? 'N/A')
+        'disk' => ($disk_info[2] ?? 'N/A') . ' ' . t('used_of', 'used of') . ' ' . ($disk_info[1] ?? 'N/A'),
+        'disk_percent' => $disk_percent,
+        'load' => implode('  ', array_slice($load_parts, 0, 3)),
+        'kernel' => trim((string) shell_exec('uname -r')),
+        'arch' => trim((string) shell_exec('uname -m'))
     ];
 }
 
@@ -248,6 +259,73 @@ function getEstadoCW()
     ];
 }
 
+
+/**
+ * Estado resumido del módulo Sismógrafo.
+ */
+function getEstadoSismografo()
+{
+    $configFile = __DIR__ . '/data/seismic_config.json';
+
+    if (!is_readable($configFile)) {
+        return [
+            'activo' => false,
+            'rf' => false,
+            'texto' => t('seismic_unavailable', 'Sismógrafo no disponible')
+        ];
+    }
+
+    $config = json_decode(@file_get_contents($configFile), true);
+
+    if (!is_array($config)) {
+        return [
+            'activo' => false,
+            'rf' => false,
+            'texto' => t('seismic_unavailable', 'Sismógrafo no disponible')
+        ];
+    }
+
+    $activo = !empty($config['enabled']);
+    $rf = !empty($config['rf']['enabled']);
+
+    return [
+        'activo' => $activo,
+        'rf' => $rf,
+        'texto' => $activo
+            ? t('seismic_active', 'SISMÓGRAFO ENCENDIDO')
+            : t('seismic_off', 'SISMÓGRAFO APAGADO')
+    ];
+}
+
+/**
+ * Obtiene los últimos eventos sísmicos disponibles desde el backend local.
+ * Se limita a pocos elementos para mantener liviano el dashboard.
+ */
+function getUltimosSismos($limit = 6)
+{
+    $url = 'http://127.0.0.1/includes/seismic-data.php';
+
+    $context = stream_context_create([
+        'http' => [
+            'timeout' => 4
+        ]
+    ]);
+
+    $json = @file_get_contents($url, false, $context);
+
+    if (!$json) {
+        return [];
+    }
+
+    $data = json_decode($json, true);
+
+    if (!is_array($data) || empty($data['events']) || !is_array($data['events'])) {
+        return [];
+    }
+
+    return array_slice($data['events'], 0, max(1, (int)$limit));
+}
+
 $stats = getSystemStats();
 $txCount = getTxCount();
 $lastConnections = getLastConnections();
@@ -255,6 +333,8 @@ $lastTx = getLastTxTime();
 $tempValue = $stats['temp_raw'] ? round($stats['temp_raw'] / 1000, 1) : 0;
 $statusNodo = getServiceStatus();
 $estadoCW = getEstadoCW();
+$estadoSismografo = getEstadoSismografo();
+$ultimosSismos = $estadoSismografo['activo'] ? getUltimosSismos(6) : [];
 $mem = preg_match('/(\d+)MB \/ (\d+)MB/', $stats['memory'], $m) ? round($m[1] / $m[2] * 100) : 0;
 ?>
 <!doctype html>
@@ -311,7 +391,20 @@ $mem = preg_match('/(\d+)MB \/ (\d+)MB/', $stats['memory'], $m) ? round($m[1] / 
     CW <?= $estadoCW['activo'] ? 'ENCENDIDO' : 'APAGADO'; ?>
 </a>
 
-                            <a href="<?= $aprs_web; ?>" target="_blank"
+                            <a href="settings.php#seismic-settings"
+                                class="badge bg-light text-dark px-3 py-2 fw-semibold text-decoration-none"
+                                title="<?= $estadoSismografo['activo']
+                                    ? t('seismic_active_title', 'El monitoreo sísmico está habilitado')
+                                    : t('seismic_off_title', 'El monitoreo sísmico está deshabilitado'); ?>">
+
+                                <?= $estadoSismografo['activo'] ? '🟢' : '🔴'; ?>
+                                SISMÓGRAFO <?= $estadoSismografo['activo'] ? 'ENCENDIDO' : 'APAGADO'; ?>
+                                <?php if ($estadoSismografo['activo'] && $estadoSismografo['rf']): ?>
+                                    · RF
+                                <?php endif; ?>
+                            </a>
+
+                            <a href="<?= $aprs_web; ?>\" target="_blank"
                                 class="badge bg-light text-dark px-3 py-2 fw-semibold"
                                 title="<?= t('click_view_aprs', 'Click to view APRS-IS web'); ?>">
                                 <?= getEstadoAPRS(); ?>
@@ -438,9 +531,13 @@ $mem = preg_match('/(\d+)MB \/ (\d+)MB/', $stats['memory'], $m) ? round($m[1] / 
                     <div class="col-lg-6 col-12 mb-3">
                         <div class="card h-100 p-4 shadow-sm d-flex flex-column"
                             style="border-radius: 12px; min-height: 100%;">
-                            <h5>📈 <?= t('recent_station_activity', 'Recent Station Activity'); ?></h5>
-                            <div style="max-height: 200px; overflow-y: auto;">
-                                <table class="table table-sm mb-0">
+                            <div class="d-flex justify-content-between align-items-center mb-2 gap-2">
+                                <h5 class="mb-0">📈 <?= t('recent_station_activity', 'Recent Station Activity'); ?></h5>
+                                <span class="badge bg-secondary"><?= count($lastConnections); ?></span>
+                            </div>
+
+                            <div style="max-height: 220px; overflow-y: auto;">
+                                <table class="table table-sm mb-0 align-middle">
                                     <thead class="sticky-top bg-light">
                                         <tr>
                                             <th><?= t('date_time', 'Date and Time'); ?></th>
@@ -448,86 +545,321 @@ $mem = preg_match('/(\d+)MB \/ (\d+)MB/', $stats['memory'], $m) ? round($m[1] / 
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php foreach ($lastConnections as $conn): ?>
+                                        <?php foreach (array_slice($lastConnections, 0, 8) as $conn): ?>
                                             <tr>
-                                                <td><?= $conn[0]; ?></td>
+                                                <td><?= htmlspecialchars($conn[0]); ?></td>
                                                 <td>
                                                     <a href="https://www.qrz.com/db/<?= urlencode($conn[1]); ?>"
                                                         target="_blank"><?= htmlspecialchars($conn[1]); ?> 🔍</a>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
+
+                                        <?php if (empty($lastConnections)): ?>
+                                            <tr>
+                                                <td colspan="2" class="text-center text-muted py-3">
+                                                    <?= t('no_recent_station_activity', 'Sin actividad reciente'); ?>
+                                                </td>
+                                            </tr>
+                                        <?php endif; ?>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
 
-                    <!-- RECURSOS DEL SISTEMA -->
+                    <!-- ULTIMOS SISMOS -->
                     <div class="col-lg-6 col-12 mb-3">
-                        <div class="card h-100 p-4 shadow-sm d-flex flex-column justify-content-center align-items-center"
+                        <div class="card h-100 p-4 shadow-sm d-flex flex-column"
                             style="border-radius: 12px; min-height: 100%;">
-                            <h5 class="mb-3">🖥️ <?= t('system_resources', 'System Resources'); ?></h5>
-                            <div class="row w-100">
-                                <div class="col-5 d-flex justify-content-center align-items-center">
-                                    <canvas id="tempGauge" width="50" height="50"></canvas>
+                            <div class="d-flex justify-content-between align-items-center mb-2 gap-2">
+                                <h5 class="mb-0">🌎 <?= t('recent_earthquakes', 'Últimos sismos'); ?></h5>
+
+                                <?php if ($estadoSismografo['activo']): ?>
+                                    <span class="badge bg-success px-3 py-2 fw-semibold rounded-pill">
+                                        <?= $estadoSismografo['rf'] ? '● MONITOR + RF' : '● MONITOR'; ?>
+                                    </span>
+                                <?php else: ?>
+                                    <span class="badge bg-secondary">APAGADO</span>
+                                <?php endif; ?>
+                            </div>
+
+                            <?php if (!$estadoSismografo['activo']): ?>
+                                <div class="d-flex flex-column justify-content-center align-items-center text-center flex-grow-1 py-4">
+                                    <div style="font-size: 2.2rem;">🌎</div>
+                                    <div class="fw-semibold mt-2">Sismógrafo desactivado</div>
+                                    <small class="text-muted">
+                                        Actívalo desde Settings para mostrar los últimos eventos del CSN.
+                                    </small>
                                 </div>
-                                <div class="col-7">
-                                    <h6 class="mt-2">🧠 <?= t('cpu_usage', 'CPU Usage'); ?></h6>
-                                    <p class="mb-1"><strong><?= round(floatval($stats['cpu']), 1); ?>%</strong></p>
-                                    <div class="progress mb-3" style="height: 16px;">
-                                        <div class="progress-bar bg-warning" role="progressbar"
-                                            style="width: <?= round(floatval($stats['cpu']), 1); ?>%;">
-                                            <?= round(floatval($stats['cpu']), 1); ?>%
+                            <?php elseif (!empty($ultimosSismos)): ?>
+                                <div style="max-height: 220px; overflow-y: auto;">
+                                    <table class="table table-sm mb-0 align-middle">
+                                        <thead class="sticky-top bg-light">
+                                            <tr>
+                                                <th>M</th>
+                                                <th>Referencia</th>
+                                                <th>Hora</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php foreach ($ultimosSismos as $sismo): ?>
+                                                <?php
+                                                $mag = isset($sismo['magnitude']) ? (float)$sismo['magnitude'] : 0;
+                                                $badge = $mag >= 6.0
+                                                    ? 'bg-danger'
+                                                    : ($mag >= 5.0
+                                                        ? 'bg-warning text-dark'
+                                                        : ($mag >= 4.0 ? 'bg-info text-dark' : 'bg-secondary'));
+                                                ?>
+                                                <tr>
+                                                    <td>
+                                                        <span class="badge <?= $badge; ?>">
+                                                            <?= htmlspecialchars(number_format($mag, 1)); ?>
+                                                        </span>
+                                                    </td>
+                                                    <td>
+                                                        <?= htmlspecialchars((string)($sismo['reference'] ?? 'Sin referencia')); ?>
+                                                        <?php if (isset($sismo['depth'])): ?>
+                                                            <div class="small text-muted">
+                                                                <?= htmlspecialchars((string)$sismo['depth']); ?> km
+                                                            </div>
+                                                        <?php endif; ?>
+                                                    </td>
+                                                    <td class="text-nowrap">
+                                                        <?php
+                                                        $fechaSismo = (string)($sismo['local_time'] ?? '');
+                                                        echo htmlspecialchars($fechaSismo !== '' ? $fechaSismo : 'N/A');
+                                                        ?>
+                                                    </td>
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <div class="mt-3 text-end">
+                                    <a href="sismografo.php" class="btn btn-sm btn-outline-primary">
+                                        🌎 Ver Sismógrafo
+                                    </a>
+                                </div>
+                            <?php else: ?>
+                                <div class="d-flex flex-column justify-content-center align-items-center text-center flex-grow-1 py-4">
+                                    <div style="font-size: 2rem;">📡</div>
+                                    <div class="fw-semibold mt-2">Sin datos sísmicos disponibles</div>
+                                    <small class="text-muted">El monitor está activo, pero no fue posible obtener eventos.</small>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- RECURSOS DEL SISTEMA -->
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <div class="card p-4 shadow-sm border-0"
+                            style="background:#ffffff; border-radius:16px; border-left:6px solid #198754 !important;">
+
+                            <!-- CABECERA -->
+                            <div class="d-flex justify-content-between align-items-center flex-wrap gap-3 mb-4">
+                                <div>
+                                    <h5 class="mb-1" style="color:#045d56;">
+                                        🖥️ <?= t('system_resources', 'System Resources'); ?>
+                                    </h5>
+                                    <p class="mb-0 text-muted" style="font-size:.9rem;">
+                                        Estado en tiempo real del nodo AUROXLINK
+                                    </p>
+                                </div>
+
+                                <span class="badge bg-success px-3 py-2 fw-semibold rounded-pill">
+                                    ● SISTEMA OPERATIVO
+                                </span>
+                            </div>
+
+                            <!-- METRICAS PRINCIPALES -->
+                            <div class="row g-3">
+
+                                <!-- TEMPERATURA -->
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="h-100 p-3 rounded-3"
+                                        style="background:#fff; border:1px solid #e9ecef; box-shadow:0 3px 10px rgba(0,0,0,.04);">
+
+                                        <div class="d-flex align-items-center gap-3 mb-3">
+                                            <div class="d-flex align-items-center justify-content-center rounded-circle"
+                                                style="width:48px; height:48px; background:#e8f5ee; font-size:1.45rem;">
+                                                🌡️
+                                            </div>
+                                            <div>
+                                                <div class="small text-muted">CPU Temp</div>
+                                                <div class="fs-4 fw-bold text-dark">
+                                                    <?= number_format($tempValue, 1); ?> °C
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="progress mb-2"
+                                            style="height:8px; background:#edf1f4;">
+                                            <div class="progress-bar <?= $tempValue < 50 ? 'bg-success' : ($tempValue < 70 ? 'bg-warning' : 'bg-danger'); ?>"
+                                                style="width:<?= min(100, max(0, ($tempValue / 85) * 100)); ?>%;">
+                                            </div>
+                                        </div>
+
+                                        <small class="<?= $tempValue < 50 ? 'text-success' : ($tempValue < 70 ? 'text-warning' : 'text-danger'); ?> fw-semibold">
+                                            <?= $tempValue < 50 ? 'Normal' : ($tempValue < 70 ? 'Elevada' : 'Alta'); ?>
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <!-- CPU -->
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="h-100 p-3 rounded-3"
+                                        style="background:#fff; border:1px solid #e9ecef; box-shadow:0 3px 10px rgba(0,0,0,.04);">
+
+                                        <div class="d-flex align-items-center gap-3 mb-3">
+                                            <div class="d-flex align-items-center justify-content-center rounded-circle"
+                                                style="width:48px; height:48px; background:#e7f1ff; font-size:1.45rem;">
+                                                🧠
+                                            </div>
+                                            <div>
+                                                <div class="small text-muted">
+                                                    <?= t('cpu_usage', 'CPU Usage'); ?>
+                                                </div>
+                                                <div class="fs-4 fw-bold text-dark">
+                                                    <?= round(floatval($stats['cpu']), 1); ?>%
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="progress mb-2"
+                                            style="height:8px; background:#edf1f4;">
+                                            <div class="progress-bar bg-primary"
+                                                style="width:<?= min(100, max(0, round(floatval($stats['cpu']), 1))); ?>%;">
+                                            </div>
+                                        </div>
+
+                                        <small class="text-muted">Uso actual</small>
+                                    </div>
+                                </div>
+
+                                <!-- RAM -->
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="h-100 p-3 rounded-3"
+                                        style="background:#fff; border:1px solid #e9ecef; box-shadow:0 3px 10px rgba(0,0,0,.04);">
+
+                                        <div class="d-flex align-items-center gap-3 mb-3">
+                                            <div class="d-flex align-items-center justify-content-center rounded-circle"
+                                                style="width:48px; height:48px; background:#f2ebff; font-size:1.45rem;">
+                                                💾
+                                            </div>
+                                            <div>
+                                                <div class="small text-muted">
+                                                    <?= t('ram_memory', 'RAM Memory'); ?>
+                                                </div>
+                                                <div class="fs-4 fw-bold text-dark">
+                                                    <?= $mem; ?>%
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="progress mb-2"
+                                            style="height:8px; background:#edf1f4;">
+                                            <div class="progress-bar"
+                                                style="width:<?= min(100, max(0, $mem)); ?>%; background:#6f42c1;">
+                                            </div>
+                                        </div>
+
+                                        <small class="text-muted">
+                                            <?= htmlspecialchars($stats['memory']); ?>
+                                        </small>
+                                    </div>
+                                </div>
+
+                                <!-- ALMACENAMIENTO -->
+                                <div class="col-xl-3 col-md-6">
+                                    <div class="h-100 p-3 rounded-3"
+                                        style="background:#fff; border:1px solid #e9ecef; box-shadow:0 3px 10px rgba(0,0,0,.04);">
+
+                                        <div class="d-flex align-items-center gap-3 mb-3">
+                                            <div class="d-flex align-items-center justify-content-center rounded-circle"
+                                                style="width:48px; height:48px; background:#fff4df; font-size:1.45rem;">
+                                                🗄️
+                                            </div>
+                                            <div>
+                                                <div class="small text-muted">
+                                                    <?= t('disk', 'Disk'); ?>
+                                                </div>
+                                                <div class="fs-5 fw-bold text-dark">
+                                                    <?= htmlspecialchars($stats['disk']); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="progress mb-2"
+                                            style="height:8px; background:#edf1f4;">
+                                            <div class="progress-bar bg-success"
+                                                style="width:<?= min(100, max(0, $stats['disk_percent'])); ?>%;">
+                                            </div>
+                                        </div>
+
+                                        <small class="text-muted">
+                                            <?= (int)$stats['disk_percent']; ?>% utilizado
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- RESUMEN TECNICO INFERIOR -->
+                            <div class="mt-4 pt-3"
+                                style="border-top:1px solid #edf0f2;">
+
+                                <div class="row g-3 align-items-center">
+
+                                    <div class="col-lg-5 col-md-12">
+                                        <div class="d-flex align-items-center gap-3">
+                                            <div class="d-flex align-items-center justify-content-center rounded-circle"
+                                                style="min-width:44px; width:44px; height:44px; background:#e7f1ff; font-size:1.25rem;">
+                                                ⏱️
+                                            </div>
+                                            <div>
+                                                <div class="small text-muted">
+                                                    <?= t('uptime', 'Uptime'); ?>
+                                                </div>
+                                                <div class="fw-semibold text-dark">
+                                                    <?= htmlspecialchars($stats['uptime']); ?>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
 
-                                    <h6>💾 <?= t('ram_memory', 'RAM Memory'); ?></h6>
-                                    <p class="mb-1"><strong><?= $stats['memory']; ?></strong></p>
-                                    <div class="progress mb-3" style="height: 16px;">
-                                        <div class="progress-bar bg-info" role="progressbar"
-                                            style="width: <?= $mem; ?>%;">
-                                            <?= $mem; ?>%
+                                    <div class="col-lg-3 col-md-4">
+                                        <div class="small text-muted">Carga del sistema</div>
+                                        <div class="fw-semibold text-dark">
+                                            <?= htmlspecialchars($stats['load'] ?: 'N/A'); ?>
                                         </div>
                                     </div>
 
-                                    <h6>🗄 <?= t('disk', 'Disk'); ?></h6>
-                                    <p class="mb-1"><strong><?= $stats['disk']; ?></strong></p>
+                                    <div class="col-lg-2 col-md-4">
+                                        <div class="small text-muted">Kernel</div>
+                                        <div class="fw-semibold text-dark text-truncate"
+                                            title="<?= htmlspecialchars($stats['kernel']); ?>">
+                                            <?= htmlspecialchars($stats['kernel'] ?: 'N/A'); ?>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-2 col-md-4">
+                                        <div class="small text-muted">Arquitectura</div>
+                                        <div class="fw-semibold text-dark">
+                                            <?= htmlspecialchars($stats['arch'] ?: 'N/A'); ?>
+                                        </div>
+                                    </div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                    <script>
-                        const tempValue = <?= $tempValue ?>;
-                        new Chart(document.getElementById('tempGauge').getContext('2d'), {
-                            type: 'doughnut',
-                            data: {
-                                datasets: [{
-                                    data: [tempValue, 85 - tempValue],
-                                    backgroundColor: [
-                                        tempValue < 50 ? '#0d6efd' : (tempValue < 70 ? '#ffc107' : '#dc3545'),
-                                        '#e9ecef'
-                                    ],
-                                    borderWidth: 0,
-                                    cutout: '80%'
-                                }]
-                            },
-                            options: {
-                                plugins: {
-                                    tooltip: { enabled: false },
-                                    legend: { display: false },
-                                    title: {
-                                        display: true,
-                                        text: `CPU: ${tempValue} °C`,
-                                        color: '#000',
-                                        font: { size: 14, weight: 'bold' }
-                                    }
-                                }
-                            }
-                        });
-                    </script>
+                    
 
                     <footer class="text-center mt-4 mb-3 px-3" style="font-size: 0.8rem; color: #777;">
                         <hr>

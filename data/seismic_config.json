@@ -1,0 +1,44 @@
+{
+    "enabled": true,
+    "provider": "auto",
+    "latitude": 0,
+    "longitude": 0,
+    "refresh_seconds": 60,
+    "display": {
+        "min_magnitude": 2.5,
+        "radius_km": 3000
+    },
+    "rf": {
+        "enabled": false,
+        "command_pty": "/dev/shm/simplex_logic_ctrl",
+        "local": {
+            "enabled": true,
+            "radius_km": 200,
+            "min_magnitude": 3.5
+        },
+        "regional": {
+            "enabled": true,
+            "radius_km": 500,
+            "min_magnitude": 4.2
+        },
+        "wide": {
+            "enabled": true,
+            "radius_km": 1000,
+            "min_magnitude": 5.0
+        },
+        "national": {
+            "enabled": true,
+            "min_magnitude": 6.0
+        },
+        "repetitions": 1,
+        "pre_tone": false
+    },
+    "tts": {
+        "engine": "piper",
+        "voice": "es_ES-davefx-medium",
+        "model": "/opt/auroxlink/piper/voices/es_ES-davefx-medium.onnx",
+        "length_scale": 1,
+        "fallback_voice": "es",
+        "fallback_speed": 145
+    }
+}
