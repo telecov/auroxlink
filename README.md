@@ -161,7 +161,7 @@ Radioaficionado, telecomunicaciones y desarrollo de herramientas para la comunid
 
 - **Esteban Burgoa — CA3EUO**: auditoría de seguridad, desarrollo y colaboración técnica.
 - **Fábio Guilherme — PY2FGD**: colaboración en traducciones.
-- **ERWIN HERNANADEZ - CA5EHC**: Colaboracion y aportes de ideas para incorporar en sistemas sismico y uso de comandos por voz.
+- **Erwin Hernandez  - CA5EHC**: Colaboracion y aportes de ideas para incorporar en sistemas sismico y uso de comandos por voz.
 - **Jose Huaiquimil - CA3HRS**  Colaboracion y aportes de ideas para incorporar en sistemas sismico y uso de comandos por voz.
 - **Tobias Blomberg / SM0SVX** y colaboradores: desarrollo y mantenimiento del proyecto SvxLink.
 
