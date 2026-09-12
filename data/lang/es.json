@@ -519,7 +519,7 @@
     "settings_cw_level": "Nivel",
     "settings_cw_auto_create": "Si estos parámetros todavía no existen en",
     "settings_cw_auto_create_2": "AUROXLINK los creará automáticamente dentro de",
-    "settings_cw_compatibility": "Compatibilidad: SvxLink 1.7.0 (19.09)+",
+    "settings_cw_compatibility": "Compatibilidad: SvxLink 1.8.0 / release 24.02 +",
     "settings_cw_save": "Guardar configuración CW",
     "help_cw_title": "Identificación CW",
     "help_cw_badge": "Indicativo por radio",

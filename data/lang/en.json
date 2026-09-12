@@ -519,7 +519,7 @@
     "settings_cw_level": "Level",
     "settings_cw_auto_create": "If these parameters do not yet exist in",
     "settings_cw_auto_create_2": "AUROXLINK will automatically create them inside",
-    "settings_cw_compatibility": "Compatibility: SvxLink 1.7.0 (19.09)+",
+    "settings_cw_compatibility": "Compatibility: SvxLink 1.8.0 / release 24.02 +",
     "settings_cw_save": "Save CW configuration",
     "help_cw_title": "CW Identification",
     "help_cw_badge": "On-air callsign",
