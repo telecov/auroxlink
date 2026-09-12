@@ -46,6 +46,8 @@ El instalador realiza automáticamente:
 - Verificación final de la instalación
 
 > El instalador principal **no actualiza SvxLink desde GitHub**. Se mantiene la versión entregada por la distribución como base estable.
+>
+> IMPORTANTE... PARA EL USO DE LAS NUEVAS FUCNIONES DEBES ACTUALIZAR SVXLINK DESDE SETTING A SU NUEVA VERSION 
 
 ---
 
