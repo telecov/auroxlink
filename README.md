@@ -31,17 +31,20 @@ Permite visualizar el estado del nodo, revisar actividad, controlar servicios, e
 - 📡 **Dashboard en tiempo real** con estado del nodo y conexiones.
 - 📊 **Actividad y estadísticas** de transmisiones y tráfico EchoLink.
 - 🎚️ **Control de audio ALSA desde la web**.
-- 🔄 **Actualización segura de SvxLink desde la interfaz web**, con compilación aislada, prueba previa y rollback automático.
-- ⚙️ **Edición de `svxlink.conf` y `ModuleEchoLink.conf`**.
+- 🔄 **Actualización de SvxLink** directamente desde AUROXLINK.
+- ⚙️ **Configuración de SvxLink y EchoLink** desde la interfaz.
 - ▶️ **Control del servicio SvxLink**: iniciar, detener y reiniciar.
 - 🌐 **Configuración de red y WiFi** desde la interfaz.
-- 🔐 **Acceso protegido** para áreas sensibles.
-- 🔔 **Alertas y estado por Telegram** de forma opcional.
-- 🖼️ **Personalización visual** de banner, colores, nombre y datos del nodo.
-- 🔒 **Tailscale** para acceso remoto seguro.
-- 🧾 **Monitoreo de logs** y estado del sistema.
-- 💾 **Backup y restauración** de configuración de AUROXLINK.
-- 📱 **Diseño responsive** para escritorio, tablet y móvil.
+- 🔒 **Acceso remoto seguro mediante Tailscale**.
+- 🔔 **Notificaciones y estado del nodo por Telegram**.
+- 🖼️ **Personalización del nodo**: banner, colores, nombre y datos.
+- 🧾 **Visualización de logs y estado del sistema**.
+- 💾 **Backup y restauración** de la configuración.
+- 📱 **Interfaz responsive** para escritorio, tablet y móvil.
+- 🌎 **Sismógrafo integrado** con información de eventos sísmicos de CSN y USGS.
+- 🗺️ **Mapa de sismos recientes** con magnitud, ubicación y distancia al nodo.
+- 📻 **Avisos sísmicos automáticos por RF**, configurables por magnitud y distancia.
+- 🔊 **Síntesis de voz para alertas sísmicas**, integrada con SvxLink.
 
 ---
 
@@ -133,7 +136,7 @@ update_auroxlink.sh            Actualizador de AUROXLINK
 
 ## 📦 Versión actual
 
-**AUROXLINK v1.8.3**
+**AUROXLINK v1.8.5**
 
 La rama `main` puede contener mejoras posteriores en preparación. Las versiones estables quedan identificadas mediante tags/releases.
 
@@ -156,8 +159,10 @@ Radioaficionado, telecomunicaciones y desarrollo de herramientas para la comunid
 
 ## 🙌 Agradecimientos
 
-- **Esteban — CA3EUO**: auditoría de seguridad, desarrollo y colaboración técnica.
+- **Esteban Burgoa — CA3EUO**: auditoría de seguridad, desarrollo y colaboración técnica.
 - **Fábio Guilherme — PY2FGD**: colaboración en traducciones.
+- **ERWIN HERNANADEZ - CA5EHC**: Colaboracion y aportes de ideas para incorporar en sistemas sismico y uso de comandos por voz.
+- **Jose Huaiquimil - CA3HRS**  Colaboracion y aportes de ideas para incorporar en sistemas sismico y uso de comandos por voz.
 - **Tobias Blomberg / SM0SVX** y colaboradores: desarrollo y mantenimiento del proyecto SvxLink.
 
 ---
