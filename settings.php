@@ -485,21 +485,102 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_audio'])) {
         </div>
 
         <div class="border rounded p-3 mb-3">
-            <h5 class="mb-3">📍 Ubicación y consulta</h5>
+            <h5 class="mb-2">📍 Ubicación y consulta</h5>
+
+            <div class="alert alert-light border py-2 small mb-3">
+                <strong>Formato de coordenadas:</strong>
+                utiliza grados decimales.<br>
+                Ejemplo:
+                <code>-29.902880, -71.251989</code><br>
+                También puedes pegar ambas coordenadas directamente en el campo
+                <strong>Latitud</strong> y AUROXLINK las separará automáticamente.
+            </div>
+
             <div class="row g-3">
+
                 <div class="col-md-4">
-                    <label class="form-label">Latitud del nodo</label>
-                    <input type="number" step="0.000001" min="-90" max="90" name="latitude" class="form-control" value="<?= htmlspecialchars((string)$seismic_config['latitude']); ?>" required>
+                    <label for="seismic_latitude" class="form-label">
+                        Latitud del nodo
+                    </label>
+
+                    <input
+                        type="text"
+                        inputmode="decimal"
+                        id="seismic_latitude"
+                        name="latitude"
+                        class="form-control"
+                        value="<?= htmlspecialchars((string)$seismic_config['latitude']); ?>"
+                        placeholder="-29.902880"
+                        autocomplete="off"
+                        required
+                    >
+
+                    <small class="text-muted">
+                        Ejemplo: <code>-29.902880</code>
+                    </small>
+
+                    <div class="invalid-feedback">
+                        Ingresa una latitud válida entre -90 y 90.
+                    </div>
                 </div>
+
                 <div class="col-md-4">
-                    <label class="form-label">Longitud del nodo</label>
-                    <input type="number" step="0.000001" min="-180" max="180" name="longitude" class="form-control" value="<?= htmlspecialchars((string)$seismic_config['longitude']); ?>" required>
+                    <label for="seismic_longitude" class="form-label">
+                        Longitud del nodo
+                    </label>
+
+                    <input
+                        type="text"
+                        inputmode="decimal"
+                        id="seismic_longitude"
+                        name="longitude"
+                        class="form-control"
+                        value="<?= htmlspecialchars((string)$seismic_config['longitude']); ?>"
+                        placeholder="-71.251989"
+                        autocomplete="off"
+                        required
+                    >
+
+                    <small class="text-muted">
+                        Ejemplo: <code>-71.251989</code>
+                    </small>
+
+                    <div class="invalid-feedback">
+                        Ingresa una longitud válida entre -180 y 180.
+                    </div>
                 </div>
+
                 <div class="col-md-4">
-                    <label class="form-label">Intervalo de consulta</label>
-                    <div class="input-group"><input type="number" min="30" max="3600" name="refresh_seconds" class="form-control" value="<?= (int)$seismic_config['refresh_seconds']; ?>" required><span class="input-group-text">s</span></div>
-                    <small class="text-muted">El timer actual consulta cada 60 s; este valor también controla la interfaz.</small>
+                    <label class="form-label">
+                        Intervalo de consulta
+                    </label>
+
+                    <div class="input-group">
+                        <input
+                            type="number"
+                            min="30"
+                            max="3600"
+                            name="refresh_seconds"
+                            class="form-control"
+                            value="<?= (int)$seismic_config['refresh_seconds']; ?>"
+                            required
+                        >
+                        <span class="input-group-text">s</span>
+                    </div>
+
+                    <small class="text-muted">
+                        El timer actual consulta cada 60 s; este valor también controla la interfaz.
+                    </small>
                 </div>
+
+            </div>
+
+            <div class="alert alert-secondary py-2 small mt-3 mb-0">
+                📌 <strong>Coordenadas configuradas:</strong>
+                <span id="coordinates_value">
+                    <?= htmlspecialchars((string)$seismic_config['latitude']); ?>,
+                    <?= htmlspecialchars((string)$seismic_config['longitude']); ?>
+                </span>
             </div>
         </div>
 
@@ -807,8 +888,247 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_audio'])) {
 <script>
 function togglePassword(id) {
     const input = document.getElementById(id);
+
+    if (!input) {
+        return;
+    }
+
     input.type = (input.type === 'password') ? 'text' : 'password';
 }
+
+
+/* =========================================================
+   COORDENADAS SISMOGRAFO
+========================================================= */
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const latitudeInput  = document.getElementById('seismic_latitude');
+    const longitudeInput = document.getElementById('seismic_longitude');
+    const preview        = document.getElementById('coordinates_value');
+
+    if (!latitudeInput || !longitudeInput) {
+        return;
+    }
+
+
+    /*
+     * Normaliza coordenadas individuales.
+     *
+     * Ejemplos aceptados:
+     *
+     * -29.902880
+     * -29,902880
+     */
+    function normalizeCoordinate(value) {
+
+        value = String(value).trim();
+
+        if (
+            value.includes(',') &&
+            !value.includes('.') &&
+            (value.match(/,/g) || []).length === 1
+        ) {
+            value = value.replace(',', '.');
+        }
+
+        return value;
+    }
+
+
+    function isValidNumberString(value) {
+        return /^-?\d+(?:\.\d+)?$/.test(value);
+    }
+
+
+    function validateCoordinates() {
+
+        const latText = normalizeCoordinate(latitudeInput.value);
+        const lonText = normalizeCoordinate(longitudeInput.value);
+
+        const lat = parseFloat(latText);
+        const lon = parseFloat(lonText);
+
+        const latValid =
+            isValidNumberString(latText) &&
+            lat >= -90 &&
+            lat <= 90;
+
+        const lonValid =
+            isValidNumberString(lonText) &&
+            lon >= -180 &&
+            lon <= 180;
+
+
+        /* LATITUD */
+
+        if (latitudeInput.value.trim() === '') {
+
+            latitudeInput.classList.remove(
+                'is-valid',
+                'is-invalid'
+            );
+
+        } else if (latValid) {
+
+            latitudeInput.classList.remove('is-invalid');
+            latitudeInput.classList.add('is-valid');
+
+        } else {
+
+            latitudeInput.classList.remove('is-valid');
+            latitudeInput.classList.add('is-invalid');
+        }
+
+
+        /* LONGITUD */
+
+        if (longitudeInput.value.trim() === '') {
+
+            longitudeInput.classList.remove(
+                'is-valid',
+                'is-invalid'
+            );
+
+        } else if (lonValid) {
+
+            longitudeInput.classList.remove('is-invalid');
+            longitudeInput.classList.add('is-valid');
+
+        } else {
+
+            longitudeInput.classList.remove('is-valid');
+            longitudeInput.classList.add('is-invalid');
+        }
+
+
+        /* VISTA PREVIA */
+
+        if (preview && latValid && lonValid) {
+
+            preview.textContent =
+                lat.toFixed(6) + ', ' + lon.toFixed(6);
+        }
+    }
+
+
+    /*
+     * Permite pegar directamente:
+     *
+     * -29.902880, -71.251989
+     *
+     * o
+     *
+     * -29.902880; -71.251989
+     *
+     * dentro del campo LATITUD.
+     */
+    latitudeInput.addEventListener('paste', function (event) {
+
+        const clipboard =
+            event.clipboardData ||
+            window.clipboardData;
+
+        if (!clipboard) {
+            return;
+        }
+
+        const pastedText =
+            clipboard.getData('text').trim();
+
+        const match = pastedText.match(
+            /^\s*(-?\d+(?:\.\d+)?)\s*[,;]\s*(-?\d+(?:\.\d+)?)\s*$/
+        );
+
+        if (!match) {
+            return;
+        }
+
+        const lat = parseFloat(match[1]);
+        const lon = parseFloat(match[2]);
+
+        if (
+            lat < -90 ||
+            lat > 90 ||
+            lon < -180 ||
+            lon > 180
+        ) {
+            return;
+        }
+
+        event.preventDefault();
+
+        latitudeInput.value  = lat.toFixed(6);
+        longitudeInput.value = lon.toFixed(6);
+
+        validateCoordinates();
+    });
+
+
+    /*
+     * Normalizar LATITUD al salir del campo.
+     */
+    latitudeInput.addEventListener('blur', function () {
+
+        const value = normalizeCoordinate(this.value);
+
+        if (isValidNumberString(value)) {
+
+            const number = parseFloat(value);
+
+            if (
+                number >= -90 &&
+                number <= 90
+            ) {
+                this.value = number.toFixed(6);
+            }
+        }
+
+        validateCoordinates();
+    });
+
+
+    /*
+     * Normalizar LONGITUD al salir del campo.
+     */
+    longitudeInput.addEventListener('blur', function () {
+
+        const value = normalizeCoordinate(this.value);
+
+        if (isValidNumberString(value)) {
+
+            const number = parseFloat(value);
+
+            if (
+                number >= -180 &&
+                number <= 180
+            ) {
+                this.value = number.toFixed(6);
+            }
+        }
+
+        validateCoordinates();
+    });
+
+
+    latitudeInput.addEventListener(
+        'input',
+        validateCoordinates
+    );
+
+    longitudeInput.addEventListener(
+        'input',
+        validateCoordinates
+    );
+
+
+    /*
+     * Validar valores ya almacenados
+     * cuando abre settings.php
+     */
+    validateCoordinates();
+
+});
 </script>
 </body>
 </html>
