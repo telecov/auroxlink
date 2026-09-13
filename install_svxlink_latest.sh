@@ -726,7 +726,7 @@ if runuser -u svxlink -- \
   timeout --signal=TERM "${TEST_SECONDS}s" \
   "${RELEASE_DIR}/bin/svxlink" \
   --config="$TEST_CONFIG" \
-  --logfile="$TEST_LOG"
+  >"$TEST_LOG" 2>&1
 then
   TEST_RC=0
 else
