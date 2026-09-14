@@ -47,7 +47,7 @@ Permite visualizar el estado del nodo, revisar actividad, controlar servicios, e
 - 🔊 **Síntesis de voz para alertas sísmicas**, integrada con SvxLink.
 
 ---
-## > [!IMPORTANT]
+> [!IMPORTANT]
 > ### ⚠️ Usuarios de versiones anteriores
 >
 > Si vienes de una **versión anterior de AUROXLINK** y la actualización no se completa correctamente, presenta errores o quedan componentes antiguos, se recomienda realizar una **instalación limpia de AUROXLINK**.
