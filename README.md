@@ -47,6 +47,17 @@ Permite visualizar el estado del nodo, revisar actividad, controlar servicios, e
 - 🔊 **Síntesis de voz para alertas sísmicas**, integrada con SvxLink.
 
 ---
+## > [!IMPORTANT]
+> ### ⚠️ Usuarios de versiones anteriores
+>
+> Si vienes de una **versión anterior de AUROXLINK** y la actualización no se completa correctamente, presenta errores o quedan componentes antiguos, se recomienda realizar una **instalación limpia de AUROXLINK**.
+>
+> A partir de las versiones actuales, el proceso de instalación se ha simplificado y se realiza mediante **un único comando de instalación**.
+>
+> Para reinstalar AUROXLINK, sigue la **guía oficial de instalación desde el inicio** y ejecuta nuevamente el comando de instalación indicado.
+>
+> Esto permitirá instalar correctamente las dependencias, servicios, permisos y archivos requeridos por la versión actual.
+
 
 ## 📦 Instalación rápida
 
