@@ -5,13 +5,15 @@ set -Eeuo pipefail
 # AUROXLINK 1.8.5 - INSTALADOR OFICIAL
 #
 # Origen del código:
-#   1) Si se entrega un ZIP por argumento, usa ese paquete.
-#   2) Si encuentra un ZIP AUROXLINK en /media, /mnt o /run/media,
-#      usa ese paquete.
-#   3) Si no existe un ZIP local, descarga AUROXLINK desde GitHub.
+#   1) La instalación normal descarga AUROXLINK desde GitHub (rama main).
+#   2) Si se entrega explícitamente un ZIP por argumento, usa ese paquete.
 #
-# El ZIP local se conserva como método de instalación/prueba y respaldo.
-# La instalación normal, sin ZIP, obtiene el código oficial desde GitHub.
+# El instalador NO busca ZIP automáticamente en pendrives, /media, /mnt
+# ni /run/media. Esto evita seleccionar por accidente un paquete ajeno.
+#
+# El ZIP local se conserva como método opcional de instalación/prueba.
+# La instalación normal, sin argumento, obtiene siempre el código oficial
+# desde GitHub.
 #
 # Uso normal:
 #
@@ -120,64 +122,61 @@ apt_install_safe() {
 }
 
 find_zip() {
-    local candidate
+    # AUROXLINK no busca ZIP automáticamente en /media, /mnt ni /run/media.
+    # Un ZIP local solo se utiliza cuando se entrega explícitamente:
+    #
+    #   sudo bash install_auroxlink.sh /ruta/auroxlink.zip
+    #
+    # La instalación normal siempre obtiene AUROXLINK desde GitHub.
 
-    if [[ -n "$ZIP_ARG" ]]; then
-        if [[ -f "$ZIP_ARG" ]]; then
-            printf '%s\n' "$ZIP_ARG"
-            return 0
-        fi
-
-        warn "No existe el ZIP indicado: $ZIP_ARG"
-        warn "Se intentará continuar descargando AUROXLINK desde GitHub."
+    if [[ -z "$ZIP_ARG" ]]; then
         return 1
     fi
 
-    # Buscar primero nombres típicos.
-    for base in /media /mnt /run/media; do
-        [[ -d "$base" ]] || continue
+    if [[ -f "$ZIP_ARG" ]]; then
+        printf '%s
+' "$ZIP_ARG"
+        return 0
+    fi
 
-        candidate="$(find "$base" -maxdepth 4 -type f \
-            \( -iname 'auroxlink*.zip' -o -iname '*aurox*.zip' \) \
-            2>/dev/null | head -n1 || true)"
-
-        if [[ -n "$candidate" ]]; then
-            printf '%s\n' "$candidate"
-            return 0
-        fi
-    done
-
-    # Buscar cualquier ZIP si no encontramos uno con nombre AUROXLINK.
-    for base in /media /mnt /run/media; do
-        [[ -d "$base" ]] || continue
-
-        candidate="$(find "$base" -maxdepth 4 -type f -iname '*.zip' \
-            2>/dev/null | head -n1 || true)"
-
-        if [[ -n "$candidate" ]]; then
-            printf '%s\n' "$candidate"
-            return 0
-        fi
-    done
-
+    warn "No existe el ZIP indicado: $ZIP_ARG"
+    warn "Se continuará descargando AUROXLINK desde GitHub."
     return 1
 }
 
 detect_source_root() {
     local dir="$1"
+    local candidate
 
-    if [[ -f "$dir/index.php" ]]; then
-        printf '%s\n' "$dir"
+    # Una raíz AUROXLINK válida debe contener simultáneamente:
+    #   - index.php
+    #   - settings.php
+    #   - includes/
+    #
+    # No se debe seleccionar simplemente el primer index.php encontrado,
+    # porque existen index.php dentro de subdirectorios como includes/.
+
+    if [[ -f "$dir/index.php" && \
+          -f "$dir/settings.php" && \
+          -d "$dir/includes" ]]; then
+        printf '%s
+' "$dir"
         return 0
     fi
 
-    local found
-    found="$(find "$dir" -maxdepth 3 -type f -name index.php -printf '%h\n' \
-        2>/dev/null | head -n1 || true)"
+    while IFS= read -r candidate; do
+        if [[ -f "$candidate/index.php" && \
+              -f "$candidate/settings.php" && \
+              -d "$candidate/includes" ]]; then
+            printf '%s
+' "$candidate"
+            return 0
+        fi
+    done < <(
+        find "$dir" -mindepth 1 -maxdepth 2 -type d 2>/dev/null
+    )
 
-    [[ -n "$found" ]] || return 1
-
-    printf '%s\n' "$found"
+    return 1
 }
 
 cat <<'BANNER'
