@@ -1,4 +1,87 @@
 # CHANGELOG – AUROXLINK
+## 1.8.5 - 2026-09-15
+
+### 🌎 Sismógrafo y alertas sísmicas
+
+- Se incorpora el nuevo módulo **Sismógrafo AUROXLINK**.
+- Consulta automática de eventos sísmicos mediante proveedores **CSN Chile y USGS**.
+- Nuevo modo de proveedor `AUTO`, con selección automática de la fuente disponible.
+- Configuración de **latitud y longitud del nodo** desde la interfaz web.
+- Configuración de magnitud mínima y radio de visualización de eventos.
+- Clasificación de alertas RF según distancia y magnitud:
+  - Local.
+  - Regional.
+  - Amplia.
+  - Nacional.
+- Transmisión automática de alertas sísmicas por RF mediante `COMMAND_PTY`.
+- Configuración independiente para activar o desactivar las alertas RF.
+- Prueba manual de anuncio sísmico por RF desde la interfaz.
+- Registro del último evento detectado y del último evento transmitido por RF.
+- Prevención de anuncios duplicados mediante registro de eventos procesados.
+- Monitor sísmico automático ejecutado mediante `systemd timer` cada 60 segundos.
+
+### 🔊 Síntesis de voz Piper
+
+- Se incorpora **Piper TTS** para generación local de anuncios de voz.
+- Voz española `es_ES-davefx-medium`.
+- Generación de audio local sin depender de servicios externos de síntesis de voz.
+- Compatibilidad con audio RF de SvxLink.
+- Instalación y configuración automática del modelo de voz.
+- Fallback mediante `espeak-ng` cuando sea necesario.
+
+### 📡 Integración con SvxLink
+
+- Configuración automática de `COMMAND_PTY` en la lógica activa de SvxLink.
+- Detección automática de la lógica configurada mediante `LOGICS=`.
+- Compatibilidad con instalaciones existentes que utilizan `[SimplexLogic]`.
+- La configuración existente de `svxlink.conf` se conserva durante las actualizaciones.
+- Se incorporan permisos controlados para que AUROXLINK Web pueda administrar las configuraciones necesarias.
+- Instalación automática de sonidos oficiales **SvxLink/EchoLink en_US Heather** cuando existe una versión compatible.
+- Se agrega `www-data` al grupo `audio` para permitir la detección de dispositivos ALSA desde Settings.
+
+### ⚙️ Instalador AUROXLINK
+
+- Nuevo instalador oficial de AUROXLINK con proceso dividido en etapas y verificación final.
+- Instalación automática de Apache, PHP, dependencias, SvxLink base, Piper y componentes requeridos.
+- Instalación limpia del código AUROXLINK desde GitHub.
+- Se mantiene soporte opcional para instalación mediante ZIP local indicado explícitamente.
+- Se elimina la detección automática de archivos ZIP en dispositivos USB, `/media`, `/mnt` y `/run/media`.
+- Corrección de la detección de la raíz del paquete AUROXLINK.
+- La raíz ahora se valida mediante `index.php`, `settings.php` e `includes/`, evitando seleccionar subdirectorios incorrectos.
+- Configuración automática de permisos web, servicios `systemd`, `sudoers` y directorios de runtime.
+- Verificación automática de componentes al finalizar la instalación.
+
+### 🔄 Actualizador AUROXLINK
+
+- Nuevo proceso de actualización con respaldo automático previo.
+- Actualización basada en la última release oficial publicada en GitHub.
+- Preservación de configuraciones y datos del usuario durante la actualización.
+- Migración automática de configuraciones sísmicas existentes.
+- Actualización idempotente: puede ejecutarse nuevamente para verificar o reparar una instalación.
+- El actualizador de AUROXLINK no modifica automáticamente la versión instalada de SvxLink.
+- Workers de actualización trasladados a `/usr/local/libexec/auroxlink` y protegidos mediante permisos de `root`.
+- Eliminación del antiguo mecanismo de actualización ejecutado desde `/tmp`.
+- Validación de sintaxis PHP y Bash antes de reemplazar el código instalado.
+- Corrección de la detección de la raíz del paquete descargado para evitar seleccionar un `index.php` perteneciente a un subdirectorio.
+
+### 🔐 Seguridad y permisos
+
+- Revisión general de permisos de archivos y directorios.
+- Eliminación de permisos históricos `777/666` en componentes administrados por AUROXLINK.
+- Uso de permisos `775/664` y directorios `setgid` donde se requiere escritura compartida.
+- Actualizadores privilegiados protegidos fuera del directorio web.
+- Revisión y validación automática de reglas `sudoers` mediante `visudo`.
+- Separación entre procesos ejecutados por `www-data`, `svxlink` y `root`.
+
+### 🛠️ Mejoras y correcciones
+
+- Mejoras en la compatibilidad entre Raspberry Pi OS y Debian.
+- Mejor manejo de instalaciones nuevas y migraciones desde versiones anteriores.
+- Mejoras en la detección y configuración de dispositivos de audio.
+- Nuevas verificaciones automáticas del estado de Apache, SvxLink, Piper y servicios sísmicos.
+- Mejoras en los mensajes de diagnóstico del instalador y actualizador.
+- Correcciones generales de estabilidad y preparación de AUROXLINK para futuras ampliaciones.
+
 
 ## 1.8.4 - 2026-09-08
 
