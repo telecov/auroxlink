@@ -102,16 +102,35 @@ apt_install_safe() {
 
 detect_source_root() {
     local dir="$1"
-    local found=""
+    local candidate
 
-    if [[ -f "$dir/index.php" ]]; then
+    # Una raíz AUROXLINK válida debe contener simultáneamente:
+    #   - index.php
+    #   - settings.php
+    #   - includes/
+    #
+    # No usamos el primer index.php encontrado porque AUROXLINK
+    # contiene otros index.php dentro de subdirectorios como includes/.
+
+    if [[ -f "$dir/index.php" && \
+          -f "$dir/settings.php" && \
+          -d "$dir/includes" ]]; then
         printf '%s\n' "$dir"
         return 0
     fi
 
-    found="$(find "$dir" -maxdepth 3 -type f -name index.php -printf '%h\n' 2>/dev/null | head -n1 || true)"
-    [[ -n "$found" ]] || return 1
-    printf '%s\n' "$found"
+    while IFS= read -r candidate; do
+        if [[ -f "$candidate/index.php" && \
+              -f "$candidate/settings.php" && \
+              -d "$candidate/includes" ]]; then
+            printf '%s\n' "$candidate"
+            return 0
+        fi
+    done < <(
+        find "$dir" -mindepth 1 -maxdepth 2 -type d 2>/dev/null
+    )
+
+    return 1
 }
 
 version_ge() {
@@ -248,7 +267,7 @@ if (( NEED_CODE_UPDATE == 1 )); then
     [[ -s "$DOWNLOAD_ZIP" ]] || fail "No se pudo descargar ${LATEST_TAG}."
 
     unzip -q "$DOWNLOAD_ZIP" -d "$EXTRACT_DIR"
-    SOURCE_ROOT="$(detect_source_root "$EXTRACT_DIR")" || fail "El paquete descargado no contiene index.php."
+    SOURCE_ROOT="$(detect_source_root "$EXTRACT_DIR")" || fail "No se pudo detectar una raíz AUROXLINK válida (index.php + settings.php + includes/)."
 
     REQUIRED=(
         "index.php"
